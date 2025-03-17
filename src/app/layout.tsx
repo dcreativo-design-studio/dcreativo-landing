@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import { Metadata } from 'next';
-import { Cabinet_Grotesk, Fira_Code, Inter } from 'next/font/google';
+import { Fira_Code, Inter, Montserrat } from 'next/font/google';
 import './globals.css';
 
 // Font configurations
@@ -10,7 +10,7 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const cabinetGrotesk = Cabinet_Grotesk({
+const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-cabinet-grotesk',
@@ -94,7 +94,7 @@ export default function RootLayout({
     <html
       lang="it"
       suppressHydrationWarning
-      className={`${inter.variable} ${cabinetGrotesk.variable} ${firaCode.variable}`}
+      className={`${inter.variable} ${montserrat.variable} ${firaCode.variable}`}
     >
       <body className="antialiased">
         <ThemeProvider
