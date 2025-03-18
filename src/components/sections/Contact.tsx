@@ -18,7 +18,9 @@ const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px 0px" });
-
+  const now = new Date();
+  const date = now.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const time = now.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
   // Form status state
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [showNotification, setShowNotification] = useState(false);
@@ -50,6 +52,8 @@ const Contact = () => {
           from_email: data.email,
           subject: data.subject,
           message: data.message,
+          date: date,
+          time: time
         }
       );
 
