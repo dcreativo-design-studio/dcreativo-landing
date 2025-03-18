@@ -56,7 +56,7 @@ const Contact = () => {
       // Send confirmation email to the user
       await emailjs.send(
         'service_yp90bx9',
-        'template_autoresponse', // Create this template in EmailJS
+        'template_svp6kxf',
         {
           from_name: data.name,
           from_email: data.email,
