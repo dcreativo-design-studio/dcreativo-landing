@@ -1,7 +1,8 @@
 'use client';
 
+import emailjs from '@emailjs/browser';
 import { motion, useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiAlertTriangle, FiCheck, FiMail, FiMapPin, FiPhone, FiSend } from 'react-icons/fi';
 
@@ -30,33 +31,29 @@ const Contact = () => {
   } = useForm<ContactFormData>();
 
   // Handle form submission
+  useEffect(() => {
+    emailjs.init("Cf4kj_2duT6ja95NU");
+  }, []);
+
+  // Modifica la funzione onSubmit:
   const onSubmit = async (data: ContactFormData) => {
     try {
       setFormStatus('submitting');
 
-      // Example using EmailJS - you would need to setup your own service
-      // Uncomment this when you have your EmailJS configuration
-      /*
       await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
+        'service_yp90bx9',
+        'template_nc5pmjt',
         {
           from_name: data.name,
           from_email: data.email,
           subject: data.subject,
           message: data.message,
-        },
-        'YOUR_PUBLIC_KEY'
+        }
       );
-      */
-
-      // For demo purposes, let's simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1500));
 
       setFormStatus('success');
       reset();
 
-      // Reset success message after 5 seconds
       setTimeout(() => {
         setFormStatus('idle');
       }, 5000);
@@ -64,12 +61,12 @@ const Contact = () => {
       console.error('Error sending email:', error);
       setFormStatus('error');
 
-      // Reset error message after 5 seconds
       setTimeout(() => {
         setFormStatus('idle');
       }, 5000);
     }
   };
+
 
   return (
     <section id="contact" className="py-20 bg-light-200 dark:bg-dark-900">
@@ -136,7 +133,7 @@ const Contact = () => {
                   <div>
                     <h4 className="font-bold">Sede</h4>
                     <p className="text-dark-600 dark:text-light-400">
-                      Lugano, Svizzera
+                      Osogna, Svizzera
                     </p>
                   </div>
                 </div>
