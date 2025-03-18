@@ -1,10 +1,10 @@
 'use client';
 
 import emailjs from '@emailjs/browser';
-import { motion, useInView } from 'framer-motion';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FiAlertTriangle, FiCheck, FiMail, FiMapPin, FiPhone, FiSend } from 'react-icons/fi';
+import { FiAlertTriangle, FiCheck, FiMail, FiMapPin, FiPhone, FiSend, FiX } from 'react-icons/fi';
 
 // Contact form data type
 interface ContactFormData {
@@ -21,6 +21,7 @@ const Contact = () => {
 
   // Form status state
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [showNotification, setShowNotification] = useState(false);
 
   // React Hook Form setup
   const {
@@ -30,16 +31,17 @@ const Contact = () => {
     formState: { errors }
   } = useForm<ContactFormData>();
 
-  // Handle form submission
+  // Initialize EmailJS
   useEffect(() => {
     emailjs.init("Cf4kj_2duT6ja95NU");
   }, []);
 
-  // Modifica la funzione onSubmit:
+  // Handle form submission
   const onSubmit = async (data: ContactFormData) => {
     try {
       setFormStatus('submitting');
 
+      // Send email to you (the site owner)
       await emailjs.send(
         'service_yp90bx9',
         'template_nc5pmjt',
@@ -51,25 +53,126 @@ const Contact = () => {
         }
       );
 
+      // Send confirmation email to the user
+      await emailjs.send(
+        'service_yp90bx9',
+        'template_autoresponse', // Create this template in EmailJS
+        {
+          from_name: data.name,
+          from_email: data.email,
+          subject: data.subject,
+        }
+      );
+
       setFormStatus('success');
+      setShowNotification(true);
       reset();
 
+      // Hide notification after 10 seconds
       setTimeout(() => {
-        setFormStatus('idle');
-      }, 5000);
+        setShowNotification(false);
+        // Reset form status after notification is hidden
+        setTimeout(() => {
+          setFormStatus('idle');
+        }, 500);
+      }, 10000);
     } catch (error) {
       console.error('Error sending email:', error);
       setFormStatus('error');
+      setShowNotification(true);
 
+      // Hide error notification after 8 seconds
       setTimeout(() => {
-        setFormStatus('idle');
-      }, 5000);
+        setShowNotification(false);
+        // Reset form status after notification is hidden
+        setTimeout(() => {
+          setFormStatus('idle');
+        }, 500);
+      }, 8000);
     }
   };
 
-
   return (
-    <section id="contact" className="py-20 bg-light-200 dark:bg-dark-900">
+    <section id="contact" className="py-20 bg-light-200 dark:bg-dark-900 relative">
+      {/* Notification overlay */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -100 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="fixed top-20 inset-x-0 z-50 flex justify-center items-start px-4"
+          >
+            <div className={`
+              max-w-md w-full p-6 rounded-xl shadow-2xl border relative
+              ${formStatus === 'success'
+                ? 'bg-white dark:bg-dark-700 border-green-300 dark:border-green-700'
+                : 'bg-white dark:bg-dark-700 border-red-300 dark:border-red-700'}
+            `}>
+              <button
+                onClick={() => setShowNotification(false)}
+                className="absolute top-4 right-4 text-dark-400 dark:text-light-500 hover:text-dark-600 dark:hover:text-light-300 transition-colors"
+                aria-label="Chiudi notifica"
+              >
+                <FiX size={20} />
+              </button>
+
+              {formStatus === 'success' ? (
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-4">
+                    <FiCheck className="text-green-600 dark:text-green-400" size={32} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">Messaggio inviato con successo!</h3>
+                  <p className="text-dark-600 dark:text-light-400 mb-4">
+                    Grazie per averci contattato! Ti abbiamo inviato una conferma via email e ti risponderemo al più presto.
+                  </p>
+                  <div className="flex space-x-3 mt-2">
+                    <a
+                      href="https://dcreativo.ch"
+                      className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
+                    >
+                      Esplora il sito
+                    </a>
+                    <span className="text-dark-400 dark:text-light-600">•</span>
+                    <a
+                      href="https://barbershop.dcreativo.ch"
+                      className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
+                    >
+                      Vedi progetti
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4">
+                    <FiAlertTriangle className="text-red-600 dark:text-red-400" size={32} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">Si è verificato un errore</h3>
+                  <p className="text-dark-600 dark:text-light-400 mb-4">
+                    Non è stato possibile inviare il messaggio. Riprova più tardi o contattami direttamente via email o telefono.
+                  </p>
+                  <div className="flex space-x-4 mt-2">
+                    <a
+                      href="mailto:info@dcreativo.ch"
+                      className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
+                    >
+                      info@dcreativo.ch
+                    </a>
+                    <a
+                      href="tel:+41767810194"
+                      className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
+                    >
+                      +41 76 781 01 94
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="container-custom" ref={sectionRef}>
         {/* Section heading */}
         <motion.div
@@ -347,20 +450,7 @@ const Contact = () => {
                   )}
                 </button>
 
-                {/* Form status message */}
-                {formStatus === 'success' && (
-                  <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative flex items-center" role="alert">
-                    <FiCheck className="mr-2 flex-shrink-0" />
-                    <span>Messaggio inviato con successo! Ti risponderò al più presto.</span>
-                  </div>
-                )}
 
-                {formStatus === 'error' && (
-                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative flex items-center" role="alert">
-                    <FiAlertTriangle className="mr-2 flex-shrink-0" />
-                    <span>Si è verificato un errore durante l'invio del messaggio. Riprova più tardi o contattami direttamente via email.</span>
-                  </div>
-                )}
               </form>
             </div>
           </motion.div>
