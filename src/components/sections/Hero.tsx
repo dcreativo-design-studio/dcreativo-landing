@@ -226,47 +226,47 @@ async function sendNotifications(users, template) {
         </div>
 
         {/* Stats section */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col items-center p-6 bg-white dark:bg-dark-700 rounded-xl shadow-lg border border-light-300 dark:border-dark-500"
-          >
-            <h3 className="text-3xl md:text-4xl font-bold gradient-text mb-2">20+</h3>
-            <p className="text-center text-dark-600 dark:text-light-400">Progetti completati</p>
-          </motion.div>
+<div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.3 }}
+    className="flex flex-col items-center p-6 bg-white dark:bg-dark-700 rounded-xl shadow-lg border border-light-300 dark:border-dark-500"
+  >
+    <h3 className="text-3xl md:text-4xl font-bold gradient-text mb-2">ROI</h3>
+    <p className="text-center text-dark-600 dark:text-light-400">Massimizzato sugli investimenti</p>
+  </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-col items-center p-6 bg-white dark:bg-dark-700 rounded-xl shadow-lg border border-light-300 dark:border-dark-500"
-          >
-            <h3 className="text-3xl md:text-4xl font-bold gradient-text mb-2">5+</h3>
-            <p className="text-center text-dark-600 dark:text-light-400">Anni di esperienza</p>
-          </motion.div>
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.4 }}
+    className="flex flex-col items-center p-6 bg-white dark:bg-dark-700 rounded-xl shadow-lg border border-light-300 dark:border-dark-500"
+  >
+    <h3 className="text-3xl md:text-4xl font-bold gradient-text mb-2">3+</h3>
+    <p className="text-center text-dark-600 dark:text-light-400">Tecnologie integrate</p>
+  </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="flex flex-col items-center p-6 bg-white dark:bg-dark-700 rounded-xl shadow-lg border border-light-300 dark:border-dark-500"
-          >
-            <h3 className="text-3xl md:text-4xl font-bold gradient-text mb-2">100%</h3>
-            <p className="text-center text-dark-600 dark:text-light-400">Clienti soddisfatti</p>
-          </motion.div>
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.5 }}
+    className="flex flex-col items-center p-6 bg-white dark:bg-dark-700 rounded-xl shadow-lg border border-light-300 dark:border-dark-500"
+  >
+    <h3 className="text-3xl md:text-4xl font-bold gradient-text mb-2">100%</h3>
+    <p className="text-center text-dark-600 dark:text-light-400">Soluzioni personalizzate</p>
+  </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="flex flex-col items-center p-6 bg-white dark:bg-dark-700 rounded-xl shadow-lg border border-light-300 dark:border-dark-500"
-          >
-            <h3 className="text-3xl md:text-4xl font-bold gradient-text mb-2">∞</h3>
-            <p className="text-center text-dark-600 dark:text-light-400">Possibilità creative</p>
-          </motion.div>
-        </div>
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.6 }}
+    className="flex flex-col items-center p-6 bg-white dark:bg-dark-700 rounded-xl shadow-lg border border-light-300 dark:border-dark-500"
+  >
+    <h3 className="text-3xl md:text-4xl font-bold gradient-text mb-2">∞</h3>
+    <p className="text-center text-dark-600 dark:text-light-400">Potenzialità digitali</p>
+  </motion.div>
+</div>
 
         {/* Scroll indicator */}
         <div className="flex justify-center mt-20">
