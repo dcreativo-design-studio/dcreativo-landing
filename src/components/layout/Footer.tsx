@@ -4,11 +4,17 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { FiMail, FiPhone, FiX } from 'react-icons/fi';
+import { FiArrowUp, FiGithub, FiLinkedin, FiMail, FiPhone, FiX } from 'react-icons/fi';
 
 const Footer = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState<'privacy' | 'terms' | null>(null);
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   const openModal = (content: 'privacy' | 'terms') => {
     setModalContent(content);
