@@ -1,4 +1,8 @@
+'use client';
+
+import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
+import { CookieConsentProvider } from '@/cookies/CookieConsentProvider';
 import { Metadata } from 'next';
 import { Fira_Code, Inter, Montserrat } from 'next/font/google';
 import './globals.css';
@@ -103,7 +107,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <CookieConsentProvider>
+            <AnalyticsProvider>
+              {children}
+            </AnalyticsProvider>
+          </CookieConsentProvider>
         </ThemeProvider>
       </body>
     </html>

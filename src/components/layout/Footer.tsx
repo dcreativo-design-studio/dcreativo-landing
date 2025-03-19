@@ -205,27 +205,32 @@ const Footer = () => {
         </div>
 
         {/* Bottom footer with copyright and links */}
-        <div className="border-t border-light-400 dark:border-dark-600 pt-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-dark-600 dark:text-light-400 mb-4 md:mb-0">
-            © {new Date().getFullYear()} DCreativo. Tutti i diritti riservati.
-          </p>
-          <div className="flex space-x-4 text-sm">
-            <button
-              onClick={() => openModal('privacy')}
-              className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-            >
-              Privacy Policy
-            </button>
-            <button
-              onClick={() => openModal('terms')}
-              className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-            >
-              Termini di Servizio
-            </button>
-          </div>
-        </div>
+<div className="border-t border-light-400 dark:border-dark-600 pt-6 flex flex-col md:flex-row justify-between items-center">
+  <p className="text-sm text-dark-600 dark:text-light-400 mb-4 md:mb-0">
+    © {new Date().getFullYear()} DCreativo. Tutti i diritti riservati.
+  </p>
+  <div className="flex space-x-4 text-sm">
+    <button
+      onClick={() => openModal('privacy')}
+      className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+    >
+      Privacy Policy
+    </button>
+    <button
+      onClick={() => openModal('terms')}
+      className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+    >
+      Termini di Servizio
+    </button>
+    <Link
+      href="/cookie-settings"
+      className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+    >
+      Impostazioni Cookie
+    </Link>
+  </div>
+</div>
       </div>
-
       {/* Modal Overlay */}
       <AnimatePresence>
         {showModal && (
