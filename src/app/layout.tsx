@@ -1,8 +1,4 @@
-'use client';
-
-import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
-import { ThemeProvider } from '@/components/layout/ThemeProvider';
-import { CookieConsentProvider } from '@/cookies/CookieConsentProvider';
+import ClientLayout from '@/components/layout/ClientLayout';
 import { Metadata } from 'next';
 import { Fira_Code, Inter, Montserrat } from 'next/font/google';
 import './globals.css';
@@ -101,18 +97,7 @@ export default function RootLayout({
       className={`${inter.variable} ${montserrat.variable} ${firaCode.variable}`}
     >
       <body className="antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <CookieConsentProvider>
-            <AnalyticsProvider>
-              {children}
-            </AnalyticsProvider>
-          </CookieConsentProvider>
-        </ThemeProvider>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
