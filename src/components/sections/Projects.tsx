@@ -140,7 +140,7 @@ const Projects = () => {
             </div>
 
             <a
-              href="https://barbershop.dcreativo.ch"
+              href="https://yourstyle.dcreativo.ch"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center btn-primary self-start"
@@ -288,10 +288,10 @@ const Projects = () => {
                 ))}
               </div>
               <blockquote className="text-dark-600 dark:text-light-400 italic mb-4">
-                "Il sistema ha completamente trasformato la gestione del mio negozio. Le prenotazioni online hanno ridotto il carico di lavoro dello staff, mentre le notifiche automatiche hanno drasticamente diminuito i no-show. Un investimento che si è ripagato in pochi mesi."
+                "Ancora nessuna recensione. In attesa di un feedback sull'utilizzo dell'applicazione "BarberShopSystem", dopo un mese di utilizzo da parte del proprietario del BarberShop "Your Style", in uso attivo."
               </blockquote>
               <div>
-                <h4 className="font-bold">Barbershop Lugano</h4>
+                <h4 className="font-bold">Barbershop Your Style, Lugano</h4>
                 <p className="text-sm text-dark-500 dark:text-light-500">Cliente attivo</p>
               </div>
             </div>

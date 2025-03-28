@@ -93,7 +93,7 @@ const Hero = () => {
             </div>
 
             <p className="text-dark-600 dark:text-light-400 mb-8 text-lg">
-              Trasformo le tue idee in realtà digitali, con un'attenzione maniacale
+              Trasformo le tue idee in realtà digitali, con particolare attenzione
               ai dettagli e alle prestazioni. Creo applicazioni web che funzionano da sole,
               automatizzando i processi e migliorando l'esperienza degli utenti.
             </p>
