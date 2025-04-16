@@ -10,15 +10,9 @@
     overflow: hidden;
   }
 
+  /* Rimuoviamo la linea superiore che causava problemi con lo z-index */
   .unsubscribeContainer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, #3498db 0%, #2c3e50 100%);
-    z-index: 1;
+    content: none;
   }
 
   .unsubscribeCard {
@@ -30,6 +24,9 @@
     overflow: hidden;
     transform-origin: center center;
     will-change: transform, opacity;
+    position: relative;
+    /* Aggiunto z-index per assicurarsi che il card sia sopra gli altri elementi */
+    z-index: 1;
   }
 
   .unsubscribeHeader {
@@ -52,11 +49,14 @@
     pointer-events: none;
   }
 
+  /* Migliorato il logo per renderlo più visibile sulla sfondo */
   .unsubscribeLogo {
     max-width: 160px;
     margin-bottom: 1.5rem;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     will-change: transform;
+    position: relative;
+    z-index: 2; /* Assicura che il logo sia sempre sopra lo sfondo */
   }
 
   .unsubscribeHeader h1 {
@@ -64,6 +64,8 @@
     font-size: 1.8rem;
     font-weight: 600;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 2; /* Assicura che il testo sia sempre sopra lo sfondo */
   }
 
   .unsubscribeForm {
@@ -126,9 +128,10 @@
     color: #3498db;
   }
 
+  /* Migliorato il contrasto per gli stati di errore */
   .inputError {
     border-color: #ef4444 !important;
-    background-color: #fef2f2 !important;
+    background-color: #fff5f5 !important;
   }
 
   .inputError:focus {
@@ -156,6 +159,7 @@
     flex-shrink: 0;
   }
 
+  /* Migliorato il bottone principale con maggiore contrasto */
   .submitButton {
     display: block;
     width: 100%;
@@ -181,7 +185,7 @@
     height: 100%;
     background: linear-gradient(90deg,
       transparent,
-      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.2),
       transparent
     );
     transition: all 0.6s ease;
@@ -225,6 +229,7 @@
     text-align: center;
   }
 
+  /* Migliorato il messaggio di successo con colori più vivaci */
   .successMessage {
     padding: 3rem 2rem;
     text-align: center;
@@ -279,7 +284,7 @@
     height: 100%;
     background: linear-gradient(90deg,
       transparent,
-      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.2),
       transparent
     );
     transition: all 0.6s ease;

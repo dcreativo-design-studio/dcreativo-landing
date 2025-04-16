@@ -8,7 +8,6 @@ import styles from './UnsubscribeForm.module.css';
 
 // EmailJS configuration
 const SERVICE_ID = 'service_y0iefgs';
-const TEMPLATE_USER_ID = 'template_9frtaks';
 const TEMPLATE_ADMIN_ID = 'template_e5osggk';
 const PUBLIC_KEY = 'YsuwIKayg5yIbGYk0';
 
@@ -30,7 +29,7 @@ const cardVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: [0.22, 1, 0.36, 1]  // custom cubic-bezier for smooth entrance
+      ease: [0.22, 1, 0.36, 1]
     }
   },
   exit: {
@@ -165,21 +164,7 @@ const UnsubscribeForm: React.FC = () => {
         day: 'numeric'
       });
 
-      // Send email to user
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_USER_ID,
-        {
-          email: formState.user_email, // This matches the {{email}} in recipient field
-          to_email: formState.user_email, // This matches the {{to_email}} used in content
-          unsubscribe_date: displayDate,
-          from_name: 'DCreativo',
-          reply_to: 'info@dcreativo.ch'
-        },
-        PUBLIC_KEY
-      );
-
-      // Send email to admin
+      // Send email ONLY to admin, not to the user
       await emailjs.send(
         SERVICE_ID,
         TEMPLATE_ADMIN_ID,
@@ -276,8 +261,8 @@ const UnsubscribeForm: React.FC = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
-                <p>Il tuo indirizzo email è stato rimosso con successo dalla nostra mailing list. Non riceverai più email promozionali da DCreativo.</p>
-                <p>Un'e-mail di conferma è stata inviata alla tua casella di posta.</p>
+                <p>Il tuo indirizzo email è stato rimosso con successo dalla nostra mailing list.</p>
+                <p>Non riceverai più email promozionali da DCreativo.</p>
               </motion.div>
 
               <motion.a
@@ -309,7 +294,6 @@ const UnsubscribeForm: React.FC = () => {
                 variants={itemVariants}
               >
                 Inserisci il tuo indirizzo email per annullare l'iscrizione alle nostre email promozionali.
-                Una conferma verrà inviata al tuo indirizzo email.
               </motion.p>
 
               <AnimatePresence>
