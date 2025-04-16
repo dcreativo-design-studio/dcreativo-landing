@@ -1,7 +1,9 @@
 'use client';
 
 import emailjs from '@emailjs/browser';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
+import { FiAlertTriangle, FiCheck, FiMail } from 'react-icons/fi';
 import styles from './UnsubscribeForm.module.css';
 
 // EmailJS configuration
@@ -19,6 +21,93 @@ interface FormState {
   isError: boolean;
   errorMessage: string;
 }
+
+// Animation variants
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1]  // custom cubic-bezier for smooth entrance
+    }
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut"
+    }
+  }
+};
+
+const formVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 24
+    }
+  }
+};
+
+const successVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      type: "spring",
+      stiffness: 200,
+      damping: 20
+    }
+  }
+};
+
+const iconVariants: Variants = {
+  hidden: { scale: 0, rotate: -180 },
+  visible: {
+    scale: 1,
+    rotate: 0,
+    transition: {
+      type: "spring",
+      stiffness: 260,
+      damping: 20,
+      delay: 0.2
+    }
+  }
+};
+
+// Loading spinner animation for button
+const loadingVariants: Variants = {
+  start: { rotate: 0 },
+  end: {
+    rotate: 360,
+    transition: {
+      repeat: Infinity,
+      duration: 1.5,
+      ease: "linear"
+    }
+  }
+};
 
 const UnsubscribeForm: React.FC = () => {
   const [formState, setFormState] = useState<FormState>({
@@ -40,7 +129,12 @@ const UnsubscribeForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormState(prev => ({ ...prev, [name]: value }));
+    setFormState(prev => ({
+      ...prev,
+      [name]: value,
+      // Clear error when user starts typing again
+      ...(name === 'user_email' && prev.isError ? { isError: false, errorMessage: '' } : {})
+    }));
   };
 
   const validateEmail = (email: string): boolean => {
@@ -56,7 +150,7 @@ const UnsubscribeForm: React.FC = () => {
       setFormState(prev => ({
         ...prev,
         isError: true,
-        errorMessage: 'Please enter a valid email address'
+        errorMessage: 'Per favore, inserisci un indirizzo email valido'
       }));
       return;
     }
@@ -65,7 +159,7 @@ const UnsubscribeForm: React.FC = () => {
 
     try {
       // Format date for display in email (e.g., April 16, 2025)
-      const displayDate = new Date(formState.unsubscribe_date).toLocaleDateString('en-US', {
+      const displayDate = new Date(formState.unsubscribe_date).toLocaleDateString('it-IT', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
@@ -113,79 +207,196 @@ const UnsubscribeForm: React.FC = () => {
         ...prev,
         isSubmitting: false,
         isError: true,
-        errorMessage: 'Failed to process your request. Please try again later.'
+        errorMessage: 'Impossibile elaborare la richiesta. Per favore, riprova più tardi.'
       }));
     }
   };
 
   return (
     <div className={styles.unsubscribeContainer}>
-      <div className={styles.unsubscribeCard}>
-        <div className={styles.unsubscribeHeader}>
-          <img src="/logo/dcreativo-logo.svg" alt="DCreativo Logo" className={styles.unsubscribeLogo} />
-          <h1>Annulla iscrizione alla newsletter</h1>
-        </div>
+      <motion.div
+        className={styles.unsubscribeCard}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={cardVariants}
+      >
+        <motion.div
+          className={styles.unsubscribeHeader}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.2,
+            duration: 0.6,
+            ease: "easeOut"
+          }}
+        >
+          <motion.img
+            src="/logo/dcreativo-logo.svg"
+            alt="DCreativo Logo"
+            className={styles.unsubscribeLogo}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300, damping: 10 }}
+          />
+          <motion.h1
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
+            Annulla iscrizione alla newsletter
+          </motion.h1>
+        </motion.div>
 
-        {formState.isSuccess ? (
-          <div className={styles.successMessage}>
-            <div className={styles.successIcon}>✓</div>
-            <h2>Annullamento iscrizione riuscito</h2>
-            <p>Il tuo indirizzo email è stato rimosso con successo dalla nostra mailing list. Non riceverai più email promozionali da DCreativo.</p>
-            <p>Un'e-mail di conferma è stata inviata alla tua casella di posta.</p>
-            <a href="https://dcreativo.ch" className={styles.homeButton}>Ritorna alla home page</a>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className={styles.unsubscribeForm}>
-            <p className={styles.formDescription}>
-            Inserisci il tuo indirizzo email per annullare l'iscrizione alle nostre email promozionali.
-            Una conferma verrà inviata al tuo indirizzo email.
-            </p>
-
-            {formState.isError && (
-              <div className={styles.errorMessage}>
-                {formState.errorMessage}
-              </div>
-            )}
-
-            <div className={styles.formGroup}>
-              <label htmlFor="user_email">Indirizzo e-mail</label>
-              <input
-                type="email"
-                id="user_email"
-                name="user_email"
-                value={formState.user_email}
-                onChange={handleChange}
-                placeholder="Il tuo indirizzo e-mail"
-                required
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="unsubscribe_date">Data di annullamento dell'iscrizione</label>
-              <input
-                type="date"
-                id="unsubscribe_date"
-                name="unsubscribe_date"
-                value={formState.unsubscribe_date}
-                onChange={handleChange}
-                readOnly
-              />
-            </div>
-
-            <button
-              type="submit"
-              className={styles.submitButton}
-              disabled={formState.isSubmitting}
+        <AnimatePresence mode="wait">
+          {formState.isSuccess ? (
+            <motion.div
+              className={styles.successMessage}
+              key="success"
+              initial="hidden"
+              animate="visible"
+              variants={successVariants}
             >
-              {formState.isSubmitting ? 'Processing...' : 'Unsubscribe'}
-            </button>
+              <motion.div
+                className={styles.successIcon}
+                variants={iconVariants}
+              >
+                <FiCheck size={40} />
+              </motion.div>
 
-            <p className={styles.privacyNote}>
-            La tua privacy è importante per noi. Elaboreremo questa richiesta immediatamente.
-            </p>
-          </form>
-        )}
-      </div>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+              >
+                Annullamento iscrizione riuscito
+              </motion.h2>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+              >
+                <p>Il tuo indirizzo email è stato rimosso con successo dalla nostra mailing list. Non riceverai più email promozionali da DCreativo.</p>
+                <p>Un'e-mail di conferma è stata inviata alla tua casella di posta.</p>
+              </motion.div>
+
+              <motion.a
+                href="https://dcreativo.ch"
+                className={styles.homeButton}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.5 }}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 10px 25px rgba(41, 128, 185, 0.5)"
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Ritorna alla home page
+              </motion.a>
+            </motion.div>
+          ) : (
+            <motion.form
+              onSubmit={handleSubmit}
+              className={styles.unsubscribeForm}
+              key="form"
+              initial="hidden"
+              animate="visible"
+              variants={formVariants}
+            >
+              <motion.p
+                className={styles.formDescription}
+                variants={itemVariants}
+              >
+                Inserisci il tuo indirizzo email per annullare l'iscrizione alle nostre email promozionali.
+                Una conferma verrà inviata al tuo indirizzo email.
+              </motion.p>
+
+              <AnimatePresence>
+                {formState.isError && (
+                  <motion.div
+                    className={styles.errorMessage}
+                    initial={{ opacity: 0, height: 0, y: -10 }}
+                    animate={{ opacity: 1, height: "auto", y: 0 }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  >
+                    <div className={styles.errorInner}>
+                      <FiAlertTriangle className={styles.errorIcon} />
+                      {formState.errorMessage}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <motion.div
+                className={styles.formGroup}
+                variants={itemVariants}
+              >
+                <label htmlFor="user_email">Indirizzo e-mail</label>
+                <div className={styles.inputWrapper}>
+                  <FiMail className={styles.inputIcon} />
+                  <input
+                    type="email"
+                    id="user_email"
+                    name="user_email"
+                    value={formState.user_email}
+                    onChange={handleChange}
+                    placeholder="Il tuo indirizzo e-mail"
+                    className={formState.isError ? styles.inputError : ''}
+                    required
+                  />
+                </div>
+              </motion.div>
+
+              <motion.div
+                className={styles.formGroup}
+                variants={itemVariants}
+              >
+                <label htmlFor="unsubscribe_date">Data di annullamento dell'iscrizione</label>
+                <input
+                  type="date"
+                  id="unsubscribe_date"
+                  name="unsubscribe_date"
+                  value={formState.unsubscribe_date}
+                  onChange={handleChange}
+                  readOnly
+                />
+              </motion.div>
+
+              <motion.button
+                type="submit"
+                className={styles.submitButton}
+                disabled={formState.isSubmitting}
+                variants={itemVariants}
+                whileHover={!formState.isSubmitting ? { scale: 1.02 } : {}}
+                whileTap={!formState.isSubmitting ? { scale: 0.98 } : {}}
+              >
+                {formState.isSubmitting ? (
+                  <div className={styles.loadingWrapper}>
+                    <motion.div
+                      className={styles.loadingSpinner}
+                      variants={loadingVariants}
+                      initial="start"
+                      animate="end"
+                    />
+                    <span>Elaborazione in corso...</span>
+                  </div>
+                ) : (
+                  'Annulla iscrizione'
+                )}
+              </motion.button>
+
+              <motion.p
+                className={styles.privacyNote}
+                variants={itemVariants}
+              >
+                La tua privacy è importante per noi. Elaboreremo questa richiesta immediatamente.
+              </motion.p>
+            </motion.form>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 };

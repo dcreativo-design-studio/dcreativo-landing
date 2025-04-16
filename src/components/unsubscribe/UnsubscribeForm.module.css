@@ -1,44 +1,69 @@
-/* src/components/unsubscribe/UnsubscribeForm.module.css */
+/* Enhanced UnsubscribeForm.module.css */
 .unsubscribeContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 80vh;
     padding: 2rem;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.05) 0%, rgba(44, 62, 80, 0.1) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .unsubscribeContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #3498db 0%, #2c3e50 100%);
+    z-index: 1;
   }
 
   .unsubscribeCard {
     width: 100%;
     max-width: 600px;
     background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
     overflow: hidden;
+    transform-origin: center center;
+    will-change: transform, opacity;
   }
 
   .unsubscribeHeader {
     padding: 2rem;
     text-align: center;
-    background: linear-gradient(90deg, #3498db 0%, #2c3e50 100%);
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
     color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .unsubscribeHeader::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
   }
 
   .unsubscribeLogo {
     max-width: 160px;
-    margin-bottom: 1rem;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    will-change: transform;
   }
 
   .unsubscribeHeader h1 {
     margin: 0;
     font-size: 1.8rem;
     font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   .unsubscribeForm {
@@ -61,48 +86,136 @@
     margin-bottom: 0.5rem;
     font-weight: 500;
     color: #2c3e50;
+    transition: color 0.3s ease;
+  }
+
+  .inputWrapper {
+    position: relative;
+  }
+
+  .inputIcon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    pointer-events: none;
+    transition: color 0.3s ease;
   }
 
   .formGroup input {
     width: 100%;
     padding: 0.75rem 1rem;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
+    padding-left: 2.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
     font-size: 1rem;
     color: #333;
-    transition: border-color 0.3s;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
   }
 
   .formGroup input:focus {
     border-color: #3498db;
     outline: none;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    background-color: #fff;
+  }
+
+  .formGroup input:focus + .inputIcon {
+    color: #3498db;
+  }
+
+  .inputError {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+  }
+
+  .inputError:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+  }
+
+  .errorMessage {
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .errorInner {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border-radius: 8px;
+    border-left: 4px solid #ef4444;
+    font-size: 0.875rem;
+  }
+
+  .errorIcon {
+    margin-right: 0.5rem;
+    flex-shrink: 0;
   }
 
   .submitButton {
     display: block;
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
   }
 
-  .submitButton:hover {
+  .submitButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: all 0.6s ease;
+  }
+
+  .submitButton:hover::before {
+    left: 100%;
+  }
+
+  .submitButton:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+    box-shadow: 0 10px 20px rgba(41, 128, 185, 0.3);
   }
 
   .submitButton:disabled {
-    background: #94c6e7;
+    background: linear-gradient(135deg, #94c6e7 0%, #7ab7e0 100%);
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+  }
+
+  .loadingWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loadingSpinner {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    margin-right: 0.5rem;
   }
 
   .privacyNote {
@@ -110,15 +223,6 @@
     font-size: 0.875rem;
     color: #6c757d;
     text-align: center;
-  }
-
-  .errorMessage {
-    padding: 0.75rem 1rem;
-    margin-bottom: 1.5rem;
-    background-color: #f8d7da;
-    color: #721c24;
-    border-radius: 4px;
-    font-size: 0.875rem;
   }
 
   .successMessage {
@@ -133,21 +237,17 @@
     width: 80px;
     height: 80px;
     margin: 0 auto 1.5rem;
-    background-color: #28a745;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
     border-radius: 50%;
     font-size: 2.5rem;
-    animation: fadeIn 0.5s ease-in-out;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
   }
 
   .successMessage h2 {
     margin-bottom: 1rem;
-    color: #28a745;
+    color: #10b981;
+    font-weight: 700;
   }
 
   .successMessage p {
@@ -158,19 +258,40 @@
 
   .homeButton {
     display: inline-block;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     padding: 0.75rem 1.5rem;
-    background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
     color: white;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-weight: 600;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .homeButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: all 0.6s ease;
+  }
+
+  .homeButton:hover::before {
+    left: 100%;
   }
 
   .homeButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(41, 128, 185, 0.4);
   }
 
   @media (max-width: 768px) {
@@ -193,4 +314,20 @@
     .successMessage {
       padding: 2rem 1.5rem;
     }
+
+    .successIcon {
+      width: 70px;
+      height: 70px;
+    }
+  }
+
+  /* Custom Animation for success message */
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+
+  .successIcon {
+    animation: float 3s ease-in-out infinite;
   }
