@@ -155,7 +155,7 @@ const UnsubscribeForm: React.FC = () => {
                 name="user_email"
                 value={formState.user_email}
                 onChange={handleChange}
-                placeholder="Your email address"
+                placeholder="Il tuo indirizzo e-mail"
                 required
               />
             </div>
