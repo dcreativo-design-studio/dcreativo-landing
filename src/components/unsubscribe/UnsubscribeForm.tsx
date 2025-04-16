@@ -76,8 +76,11 @@ const UnsubscribeForm: React.FC = () => {
         SERVICE_ID,
         TEMPLATE_USER_ID,
         {
-          to_email: formState.user_email,
-          unsubscribe_date: displayDate
+          email: formState.user_email, // This matches the {{email}} in recipient field
+          to_email: formState.user_email, // This matches the {{to_email}} used in content
+          unsubscribe_date: displayDate,
+          from_name: 'DCreativo',
+          reply_to: 'info@dcreativo.ch'
         },
         PUBLIC_KEY
       );
@@ -87,9 +90,12 @@ const UnsubscribeForm: React.FC = () => {
         SERVICE_ID,
         TEMPLATE_ADMIN_ID,
         {
-          user_email: formState.user_email,
+          email: formState.admin_email, // This matches the {{email}} in recipient field
+          user_email: formState.user_email, // User's email for the content
           unsubscribe_date: displayDate,
-          admin_email: formState.admin_email
+          admin_email: formState.admin_email,
+          from_name: 'DCreativo Unsubscribe System',
+          reply_to: 'noreply@dcreativo.ch'
         },
         PUBLIC_KEY
       );
@@ -117,22 +123,22 @@ const UnsubscribeForm: React.FC = () => {
       <div className={styles.unsubscribeCard}>
         <div className={styles.unsubscribeHeader}>
           <img src="/logo/dcreativo-logo.svg" alt="DCreativo Logo" className={styles.unsubscribeLogo} />
-          <h1>Unsubscribe from Newsletter</h1>
+          <h1>Annulla iscrizione alla newsletter</h1>
         </div>
 
         {formState.isSuccess ? (
           <div className={styles.successMessage}>
             <div className={styles.successIcon}>✓</div>
-            <h2>Unsubscription Successful</h2>
-            <p>Your email address has been successfully removed from our mailing list. You will no longer receive promotional emails from DCreativo.</p>
-            <p>A confirmation email has been sent to your inbox.</p>
-            <a href="https://dcreativo.ch" className={styles.homeButton}>Return to Homepage</a>
+            <h2>Annullamento iscrizione riuscito</h2>
+            <p>Il tuo indirizzo email è stato rimosso con successo dalla nostra mailing list. Non riceverai più email promozionali da DCreativo.</p>
+            <p>Un'e-mail di conferma è stata inviata alla tua casella di posta.</p>
+            <a href="https://dcreativo.ch" className={styles.homeButton}>Ritorna alla home page</a>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className={styles.unsubscribeForm}>
             <p className={styles.formDescription}>
-              Please enter your email address to unsubscribe from our promotional emails.
-              A confirmation will be sent to your email address.
+            Inserisci il tuo indirizzo email per annullare l'iscrizione alle nostre email promozionali.
+            Una conferma verrà inviata al tuo indirizzo email.
             </p>
 
             {formState.isError && (
@@ -142,7 +148,7 @@ const UnsubscribeForm: React.FC = () => {
             )}
 
             <div className={styles.formGroup}>
-              <label htmlFor="user_email">Email Address</label>
+              <label htmlFor="user_email">Indirizzo e-mail</label>
               <input
                 type="email"
                 id="user_email"
@@ -155,7 +161,7 @@ const UnsubscribeForm: React.FC = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="unsubscribe_date">Unsubscribe Date</label>
+              <label htmlFor="unsubscribe_date">Data di annullamento dell'iscrizione</label>
               <input
                 type="date"
                 id="unsubscribe_date"
@@ -175,7 +181,7 @@ const UnsubscribeForm: React.FC = () => {
             </button>
 
             <p className={styles.privacyNote}>
-              Your privacy is important to us. We will process this request immediately.
+            La tua privacy è importante per noi. Elaboreremo questa richiesta immediatamente.
             </p>
           </form>
         )}
