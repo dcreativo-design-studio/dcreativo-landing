@@ -79,7 +79,7 @@ const Projects = () => {
             </h2>
           </div>
           <p className="text-dark-600 dark:text-light-400 text-lg">
-            Scopri BarberShopSystem, un'applicazione completa che sta rivoluzionando la gestione di un salone a Lugano.
+            Scopri il Sistema di Prenotazioni Online, un'applicazione completa che sta rivoluzionando la gestione di un salone a Lugano.
             Un sistema su misura che automatizza prenotazioni, gestisce clienti e ottimizza l'operatività quotidiana.
           </p>
         </motion.div>
@@ -93,7 +93,7 @@ const Projects = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-5 flex flex-col justify-center"
           >
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">BarberShopSystem</h3>
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">Sistema di Prenotazioni Online</h3>
             <p className="text-dark-600 dark:text-light-400 mb-6">
               Un'applicazione web completa sviluppata per modernizzare e automatizzare la gestione di un barbershop a Lugano.
               Il sistema integra prenotazioni online, gestione clienti, notifiche automatiche e reportistica avanzata in un'unica soluzione.
@@ -288,7 +288,7 @@ const Projects = () => {
         <div className="h-2 w-2 rounded-full bg-accent-500 animate-pulse"></div>
       </div>
       <blockquote className="text-dark-600 dark:text-light-400 mb-4">
-        "Barbershop Your Style inizierà a utilizzare BarberShopSystem dal 31 marzo 2025. Questa sezione verrà aggiornata con un feedback autentico dopo il primo mese di utilizzo attivo. Rimanete sintonizzati per scoprire l'impatto reale della soluzione sulla loro attività."
+        "Barbershop Your Style inizierà a utilizzare il sistema di prenotazione online dal 1 maggio 2025. Questa sezione verrà aggiornata con un feedback autentico dopo il primo mese di utilizzo attivo. Rimanete sintonizzati per scoprire l'impatto reale della soluzione sulla loro attività."
       </blockquote>
       <div>
         <h4 className="font-bold">Barbershop Your Style, Lugano</h4>
