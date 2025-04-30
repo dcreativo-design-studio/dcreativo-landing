@@ -75,16 +75,20 @@ const Hero = () => {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6 leading-tight">
-              Sviluppo <span className="gradient-text">soluzioni web</span> all'avanguardia
+              Sviluppo <span className="gradient-text">soluzioni web</span> che ispirano
             </h1>
 
             <div className="text-xl md:text-2xl text-dark-500 dark:text-light-400 font-medium mb-8 min-h-[4rem]">
               <TypingText
                 texts={[
                   "Applicazioni React avanzate.",
+                  "Siti web moderni per privati e aziende.",
+                  "Landing page che convertono visitatori in clienti.",
+                  "Esperienze digitali responsive e user-friendly.",
                   "Sistemi di prenotazione automatizzati.",
-                  "Integrazioni con notifiche intelligenti.",
-                  "Esperienze digitali su misura."
+                  "Soluzioni su misura per il tuo brand.",
+                  "Design visivamente accattivante e funzionale.",
+                  "Integrazioni con notifiche intelligenti."
                 ]}
                 typingSpeed={60}
                 deletingSpeed={40}
@@ -93,9 +97,9 @@ const Hero = () => {
             </div>
 
             <p className="text-dark-600 dark:text-light-400 mb-8 text-lg">
-              Trasformo le tue idee in realtà digitali, con particolare attenzione
-              ai dettagli e alle prestazioni. Creo applicazioni web che funzionano da sole,
-              automatizzando i processi e migliorando l'esperienza degli utenti.
+              Trasformo le tue idee in realtà digitali, con un occhio attento
+              ai dettagli e alle prestazioni. Creo esperienze web che catturano l'attenzione,
+              automatizzando i processi e migliorando il coinvolgimento degli utenti.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
