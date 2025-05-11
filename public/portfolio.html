@@ -27,7 +27,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <!-- Custom CSS -->
-    
+
     <style>
       :root {
         --primary: #2563eb;
@@ -1191,6 +1191,203 @@
     font-size: 1.5rem;
     transition: transform 0.3s ease;
     }
+    /* Stile testimonial "progetto in corso" */
+.project-in-progress {
+  position: relative;
+  border-top: 4px solid transparent;
+  border-image: linear-gradient(135deg, #0088ff, #00c2ff) 1;
+  transition: all 0.3s ease;
+}
+
+.project-in-progress:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.progress-badge {
+  position: absolute;
+  top: -15px;
+  right: 25px;
+  background: linear-gradient(135deg, #0088ff, #00c2ff);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 5px 15px rgba(0, 136, 255, 0.3);
+  z-index: 10;
+}
+
+.badge-pulse {
+  width: 10px;
+  height: 10px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+  0% {
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  70% {
+      box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  100% {
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+.coming-soon-title {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #0088ff;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+}
+
+.coming-soon-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(135deg, #0088ff, #00c2ff);
+  border-radius: 2px;
+}
+
+.progress-timeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2.5rem 0;
+  position: relative;
+}
+
+.timeline-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-point .point {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  border: 3px solid #ffffff;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.timeline-point span {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.timeline-line {
+  flex: 1;
+  height: 3px;
+  background-color: #e0e0e0;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-point.active .point {
+  background-color: #00c2ff;
+  box-shadow: 0 0 0 3px rgba(0, 194, 255, 0.2);
+}
+
+.timeline-point.active span {
+  color: #00c2ff;
+  font-weight: 600;
+}
+
+.timeline-point.current .point {
+  background-color: #0088ff;
+  box-shadow: 0 0 0 5px rgba(0, 136, 255, 0.2);
+  animation: pulse-point 2s infinite;
+}
+
+.timeline-point.current span {
+  color: #0088ff;
+  font-weight: 700;
+}
+
+@keyframes pulse-point {
+  0% {
+      box-shadow: 0 0 0 0 rgba(0, 136, 255, 0.4);
+  }
+  70% {
+      box-shadow: 0 0 0 10px rgba(0, 136, 255, 0);
+  }
+  100% {
+      box-shadow: 0 0 0 0 rgba(0, 136, 255, 0);
+  }
+}
+
+.countdown-badge {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(0, 136, 255, 0.1), rgba(0, 194, 255, 0.1));
+  color: #0088ff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin-top: 8px;
+  border: 1px solid rgba(0, 136, 255, 0.2);
+}
+
+.countdown-badge i {
+  margin-right: 5px;
+}
+
+#feedback-countdown {
+  font-weight: 700;
+}
+
+/* Adattamento responsive */
+@media (max-width: 768px) {
+  .progress-timeline {
+      flex-direction: column;
+      gap: 15px;
+      align-items: flex-start;
+      margin-left: 10px;
+  }
+
+  .timeline-point {
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+  }
+
+  .timeline-point .point {
+      margin-right: 10px;
+      margin-bottom: 0;
+  }
+
+  .timeline-line {
+      width: 3px;
+      height: 20px;
+      margin-left: 10px;
+  }
+
+  .progress-badge {
+      position: relative;
+      top: 0;
+      right: 0;
+      margin-bottom: 20px;
+      display: inline-flex;
+  }
+}
 
     /* Responsive styles */
     @media (max-width: 1024px) {
@@ -1987,30 +2184,62 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="testimonials">
-        <div class="container">
-            <div class="section-title" data-aos="fade-up">
-                <h2>Testimonial</h2>
-                <p class="section-description">Cosa dicono i clienti delle mie soluzioni web.</p>
-            </div>
+    <!-- Testimonials Section -->
+<section class="testimonials">
+  <div class="container">
+      <div class="section-title" data-aos="fade-up">
+          <h2>Testimonial</h2>
+          <p class="section-description">Feedback dai clienti sulle mie soluzioni web.</p>
+      </div>
 
-            <div class="testimonial-card" data-aos="fade-up">
-                <div class="testimonial-content">
-                    <p class="testimonial-text">"Il sistema di prenotazioni sviluppato da Domenico ha trasformato completamente la nostra attività. Ora possiamo gestire facilmente tutti gli appuntamenti e il nostro staff può concentrarsi sul servizio clienti anziché rispondere al telefono. Un investimento che si è ripagato in meno di tre mesi."</p>
+      <div class="testimonial-card project-in-progress" data-aos="fade-up">
+          <div class="testimonial-content">
+              <div class="progress-badge">
+                  <div class="badge-pulse"></div>
+                  <span>Progetto in corso</span>
+              </div>
 
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="images\projects\salone.webp" alt="Santiago">
-                        </div>
-                        <div class="author-info">
-                            <h4>Santiago</h4>
-                            <p>Proprietario, Supreme Barbershop</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+              <h3 class="coming-soon-title">Feedback in arrivo</h3>
+              <p class="testimonial-text">Il sistema di prenotazioni per Supreme Barber Studio è attualmente in fase di implementazione. Un feedback autentico del proprietario Santiago verrà pubblicato dopo il primo mese di utilizzo dell'applicazione.</p>
+
+              <div class="progress-timeline">
+                  <div class="timeline-point active">
+                      <div class="point"></div>
+                      <span>Sviluppo</span>
+                  </div>
+                  <div class="timeline-line"></div>
+                  <div class="timeline-point active">
+                      <div class="point"></div>
+                      <span>Implementazione</span>
+                  </div>
+                  <div class="timeline-line"></div>
+                  <div class="timeline-point current">
+                      <div class="point"></div>
+                      <span>Utilizzo</span>
+                  </div>
+                  <div class="timeline-line"></div>
+                  <div class="timeline-point">
+                      <div class="point"></div>
+                      <span>Feedback</span>
+                  </div>
+              </div>
+
+              <div class="testimonial-author">
+                  <div class="author-avatar">
+                      <img src="images\projects\salone.webp" alt="Santiago">
+                  </div>
+                  <div class="author-info">
+                      <h4>Santiago</h4>
+                      <p>Proprietario, Supreme Barber Studio</p>
+                      <div class="countdown-badge">
+                          <i class="far fa-clock"></i> Feedback tra <span id="feedback-countdown">30</span> giorni
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
 
     <!-- Contact Section -->
 <section id="contact" class="contact">
@@ -2747,7 +2976,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- JAVASCRIPT -->
 
-   
+
     <!-- JavaScript -->
      <script>
       document.addEventListener('DOMContentLoaded', function() {
@@ -3590,6 +3819,59 @@ document.addEventListener('DOMContentLoaded', function() {
   // Esegui anche subito per gestire eventuali modali già aperti
   setupAllModalButtons();
 });
+document.addEventListener('DOMContentLoaded', function() {
+  // Animazione del countdown per il feedback
+  const countdownElement = document.getElementById('feedback-countdown');
+  if (countdownElement) {
+      let daysLeft = 30; // Imposta il numero di giorni iniziale
+
+      // Aggiorna il countdown ogni giorno (in un'app reale utilizzeresti un timestamp effettivo)
+      // Per simulazione, aggiorniamo ogni 5 secondi
+      const intervalId = setInterval(function() {
+          if (daysLeft > 0) {
+              daysLeft--;
+              countdownElement.textContent = daysLeft;
+
+              // Animazione flash quando il numero cambia
+              countdownElement.classList.add('flash');
+              setTimeout(function() {
+                  countdownElement.classList.remove('flash');
+              }, 500);
+          } else {
+              clearInterval(intervalId);
+              document.querySelector('.testimonial-card').classList.remove('project-in-progress');
+              document.querySelector('.testimonial-card').classList.add('project-completed');
+              document.querySelector('.countdown-badge').innerHTML = '<i class="fas fa-check-circle"></i> Feedback pronto!';
+          }
+      }, 50000); // Questo è solo per la demo, in produzione useresti calcoli basati sulla data reale
+  }
+
+  // Effetto hover sulla timeline
+  const timelinePoints = document.querySelectorAll('.timeline-point');
+  timelinePoints.forEach(point => {
+      point.addEventListener('mouseenter', function() {
+          this.style.transform = 'scale(1.1)';
+      });
+
+      point.addEventListener('mouseleave', function() {
+          this.style.transform = 'scale(1)';
+      });
+  });
+});
+// Aggiungi questa classe per l'animazione del cambio di numero nel countdown
+document.head.insertAdjacentHTML('beforeend', `
+    <style>
+        .flash {
+            animation: number-flash 0.5s ease;
+        }
+
+        @keyframes number-flash {
+            0% { color: #0088ff; }
+            50% { color: #ffffff; }
+            100% { color: #0088ff; }
+        }
+    </style>
+`);
 </script>
 </body>
 </html>
