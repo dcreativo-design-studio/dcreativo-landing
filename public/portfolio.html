@@ -1192,11 +1192,13 @@
     transition: transform 0.3s ease;
     }
     /* Stile testimonial "progetto in corso" */
+    /* Stile testimonial "progetto in corso" */
 .project-in-progress {
   position: relative;
   border-top: 4px solid transparent;
   border-image: linear-gradient(135deg, #0088ff, #00c2ff) 1;
   transition: all 0.3s ease;
+  overflow: hidden; /* Previene overflow su schermi piccoli */
 }
 
 .project-in-progress:hover {
@@ -1267,6 +1269,7 @@
   justify-content: space-between;
   margin: 2.5rem 0;
   position: relative;
+  flex-wrap: nowrap; /* Assicura che i punti rimangano in linea */
 }
 
 .timeline-point {
@@ -1275,6 +1278,7 @@
   align-items: center;
   position: relative;
   z-index: 2;
+  transition: transform 0.2s ease;
 }
 
 .timeline-point .point {
@@ -1291,6 +1295,7 @@
   font-size: 0.8rem;
   color: #64748b;
   font-weight: 500;
+  text-align: center; /* Centra il testo per schermi piccoli */
 }
 
 .timeline-line {
@@ -1354,13 +1359,51 @@
   font-weight: 700;
 }
 
-/* Adattamento responsive */
+/* Responsive designs - Multiple breakpoints per adattamenti più graduali */
+@media (max-width: 992px) {
+  .coming-soon-title {
+      font-size: 1.6rem;
+  }
+
+  .timeline-point span {
+      font-size: 0.75rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .progress-badge {
+      top: 15px;
+      right: 15px;
+      font-size: 0.8rem;
+      padding: 6px 12px;
+  }
+
+  .coming-soon-title {
+      font-size: 1.4rem;
+      margin-top: 1.5rem; /* Spazio aggiuntivo per il badge */
+  }
+
+  .testimonial-text {
+      font-size: 0.95rem;
+  }
+
+  .testimonial-author {
+      flex-wrap: wrap; /* Permette il wrap dei contenuti su schermi piccoli */
+  }
+
+  .countdown-badge {
+      margin-top: 5px;
+      font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Layout a step verticale della timeline per schermi molto piccoli */
   .progress-timeline {
       flex-direction: column;
-      gap: 15px;
       align-items: flex-start;
       margin-left: 10px;
+      gap: 15px;
   }
 
   .timeline-point {
@@ -1376,19 +1419,144 @@
 
   .timeline-line {
       width: 3px;
-      height: 20px;
+      height: 25px;
       margin-left: 10px;
   }
 
+  /* Autore e avatar più compatti */
+  .testimonial-author {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+  }
+
+  .author-avatar {
+      margin-bottom: 15px;
+      margin-right: 0;
+  }
+
+  .coming-soon-title {
+      font-size: 1.2rem;
+      text-align: center;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  .testimonial-text {
+      text-align: center;
+      font-size: 0.9rem;
+  }
+
+  /* Badge adattato per schermi molto piccoli */
   .progress-badge {
       position: relative;
       top: 0;
       right: 0;
-      margin-bottom: 20px;
+      margin: 0 auto 20px auto;
       display: inline-flex;
+      justify-content: center;
+  }
+
+  .testimonial-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
   }
 }
 
+/* Fix per dispositivi molto piccoli */
+@media (max-width: 360px) {
+  .testimonial-card {
+      padding: 1.5rem 1rem; /* Padding ridotto per schermi molto piccoli */
+  }
+
+  .coming-soon-title {
+      font-size: 1.1rem;
+  }
+
+  .timeline-point span {
+      font-size: 0.7rem;
+  }
+}
+
+/* Aggiunta: adattamento specifico per tablet in portrait */
+@media (min-width: 577px) and (max-width: 768px) {
+  .progress-timeline {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px 10px;
+  }
+
+  .timeline-point {
+      width: 40%;
+  }
+
+  .timeline-line {
+      width: 10%;
+      height: 2px;
+  }
+
+  /* Per mantenere l'ordine visivo corretto */
+  .timeline-line:nth-of-type(2) {
+      order: 1;
+  }
+
+  .timeline-point:nth-of-type(3) {
+      order: 2;
+  }
+
+  .timeline-line:nth-of-type(4) {
+      order: 3;
+  }
+
+  .timeline-point:nth-of-type(5) {
+      order: 4;
+  }
+}
+
+/* Stile per il touch-friendly su dispositivi mobile */
+@media (hover: none) {
+  .project-in-progress:hover {
+      transform: none; /* Disabilita l'effetto hover su dispositivi touch */
+      box-shadow: var(--shadow); /* Usa l'ombra standard */
+  }
+
+  .timeline-point {
+      padding: 8px 5px; /* Aumenta l'area di tocco */
+  }
+
+  .timeline-point .point {
+      width: 24px; /* Punto più grande per essere facilmente toccabile */
+      height: 24px;
+  }
+}
+
+/* Gestione dell'orientamento per migliorare l'esperienza su mobile */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .testimonials {
+      padding: 3rem 0; /* Riduci il padding in modalità landscape su schermi bassi */
+  }
+
+  .testimonial-card {
+      margin-bottom: 2rem; /* Riduci il margine inferiore */
+  }
+
+  .progress-timeline {
+      margin: 1.5rem 0; /* Timeline più compatta */
+  }
+}
+
+/* Migliora le animazioni per dispositivi con prestazioni limitate */
+@media (prefers-reduced-motion: reduce) {
+  .badge-pulse,
+  .timeline-point.current .point,
+  .project-in-progress:hover {
+      animation: none;
+      transition: none;
+      transform: none;
+  }
+}
     /* Responsive styles */
     @media (max-width: 1024px) {
         .hero-title {
@@ -2185,6 +2353,7 @@
 
     <!-- Testimonials Section -->
     <!-- Testimonials Section -->
+<!-- Testimonials Section -->
 <section class="testimonials">
   <div class="container">
       <div class="section-title" data-aos="fade-up">
@@ -2202,7 +2371,31 @@
               <h3 class="coming-soon-title">Feedback in arrivo</h3>
               <p class="testimonial-text">Il sistema di prenotazioni per Supreme Barber Studio è attualmente in fase di implementazione. Un feedback autentico del proprietario Santiago verrà pubblicato dopo il primo mese di utilizzo dell'applicazione.</p>
 
-              <div class="progress-timeline">
+              <!-- Versione desktop della timeline -->
+              <div class="progress-timeline d-none d-sm-flex">
+                  <div class="timeline-point active">
+                      <div class="point"></div>
+                      <span>Sviluppo</span>
+                  </div>
+                  <div class="timeline-line"></div>
+                  <div class="timeline-point active">
+                      <div class="point"></div>
+                      <span>Implementazione</span>
+                  </div>
+                  <div class="timeline-line"></div>
+                  <div class="timeline-point current">
+                      <div class="point"></div>
+                      <span>Utilizzo</span>
+                  </div>
+                  <div class="timeline-line"></div>
+                  <div class="timeline-point">
+                      <div class="point"></div>
+                      <span>Feedback</span>
+                  </div>
+              </div>
+
+              <!-- Versione mobile della timeline (ottimizzata) -->
+              <div class="progress-timeline d-sm-none">
                   <div class="timeline-point active">
                       <div class="point"></div>
                       <span>Sviluppo</span>
@@ -3819,44 +4012,157 @@ document.addEventListener('DOMContentLoaded', function() {
   // Esegui anche subito per gestire eventuali modali già aperti
   setupAllModalButtons();
 });
+// Countdown in tempo reale per il feedback
 document.addEventListener('DOMContentLoaded', function() {
-  // Animazione del countdown per il feedback
   const countdownElement = document.getElementById('feedback-countdown');
   if (countdownElement) {
-      let daysLeft = 30; // Imposta il numero di giorni iniziale
+      // Imposta una data specifica per quando il feedback sarà disponibile
+      // Esempio: 10 giugno 2025 (o qualsiasi data futura appropriata)
+      const feedbackDate = new Date('2025-08-01T23:59:59');
 
-      // Aggiorna il countdown ogni giorno (in un'app reale utilizzeresti un timestamp effettivo)
-      // Per simulazione, aggiorniamo ogni 5 secondi
-      const intervalId = setInterval(function() {
-          if (daysLeft > 0) {
-              daysLeft--;
-              countdownElement.textContent = daysLeft;
+      // Controlla se abbiamo una data salvata in localStorage
+      const savedDateString = localStorage.getItem('feedbackDeadline');
+      const targetDate = savedDateString ? new Date(savedDateString) : feedbackDate;
 
-              // Animazione flash quando il numero cambia
-              countdownElement.classList.add('flash');
-              setTimeout(function() {
-                  countdownElement.classList.remove('flash');
-              }, 500);
-          } else {
-              clearInterval(intervalId);
+      // Funzione per aggiornare il countdown in tempo reale
+      function updateCountdown() {
+          const currentDate = new Date();
+          const timeDifference = targetDate - currentDate;
+
+          if (timeDifference <= 0) {
+              // Countdown terminato
+              countdownElement.textContent = "0";
               document.querySelector('.testimonial-card').classList.remove('project-in-progress');
               document.querySelector('.testimonial-card').classList.add('project-completed');
               document.querySelector('.countdown-badge').innerHTML = '<i class="fas fa-check-circle"></i> Feedback pronto!';
+
+              // Aggiornamento anche dell'aspetto della timeline
+              document.querySelectorAll('.timeline-point').forEach(point => {
+                  point.classList.add('active');
+              });
+
+              // Ferma l'intervallo
+              clearInterval(countdownInterval);
+              return;
           }
-      }, 50000); // Questo è solo per la demo, in produzione useresti calcoli basati sulla data reale
+
+          // Calcola giorni, ore, minuti e secondi rimanenti
+          const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+          // Per un display più dettagliato, potresti mostrare una tooltip con ore/minuti/secondi
+          if (days !== parseInt(countdownElement.textContent)) {
+              // Aggiorna il testo solo se il valore dei giorni è cambiato
+              countdownElement.textContent = days;
+
+              // Animazione quando cambia il numero
+              countdownElement.classList.add('flash');
+              setTimeout(() => {
+                  countdownElement.classList.remove('flash');
+              }, 500);
+
+              // Se volessimo mostrare un countdown più dettagliato nel tooltip
+              countdownElement.setAttribute('title', `${days}g ${hours}h ${minutes}m ${seconds}s rimanenti`);
+          }
+      }
+
+      // Aggiorna immediatamente e poi imposta l'intervallo (ogni minuto per equilibrare precisione e prestazioni)
+      updateCountdown();
+
+      // Aggiorna ogni minuto per una visualizzazione efficiente
+      const countdownInterval = setInterval(updateCountdown, 60000);
+
+      // Implementiamo anche una visualizzazione dettagliata al passaggio del mouse
+      if (countdownElement) {
+          const countdownBadge = document.querySelector('.countdown-badge');
+
+          countdownBadge.addEventListener('mouseenter', function() {
+              // Crea un elemento per il countdown dettagliato
+              if (!document.querySelector('.detailed-countdown')) {
+                  const detailedCountdown = document.createElement('div');
+                  detailedCountdown.className = 'detailed-countdown';
+                  detailedCountdown.style.cssText = `
+                      position: absolute;
+                      bottom: 100%;
+                      left: 50%;
+                      transform: translateX(-50%);
+                      background: white;
+                      padding: 8px 12px;
+                      border-radius: 8px;
+                      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                      font-size: 0.8rem;
+                      margin-bottom: 10px;
+                      z-index: 10;
+                      white-space: nowrap;
+                      opacity: 0;
+                      transition: opacity 0.3s ease;
+                  `;
+                  countdownBadge.style.position = 'relative';
+                  countdownBadge.appendChild(detailedCountdown);
+
+                  // Mostra con animazione
+                  setTimeout(() => {
+                      detailedCountdown.style.opacity = '1';
+                  }, 50);
+
+                  // Aggiorna il contenuto dettagliato
+                  function updateDetailedCountdown() {
+                      const now = new Date();
+                      const diff = targetDate - now;
+
+                      if (diff <= 0) {
+                          detailedCountdown.innerHTML = "Feedback disponibile ora!";
+                          return;
+                      }
+
+                      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                      detailedCountdown.innerHTML = `
+                          <div style="text-align: center; font-weight: bold; margin-bottom: 5px;">Tempo rimanente:</div>
+                          <div style="display: flex; justify-content: space-between; gap: 10px;">
+                              <div style="text-align: center;">
+                                  <div style="font-weight: bold;">${d}</div>
+                                  <div>giorni</div>
+                              </div>
+                              <div style="text-align: center;">
+                                  <div style="font-weight: bold;">${h}</div>
+                                  <div>ore</div>
+                              </div>
+                              <div style="text-align: center;">
+                                  <div style="font-weight: bold;">${m}</div>
+                                  <div>min</div>
+                              </div>
+                              <div style="text-align: center;">
+                                  <div style="font-weight: bold;">${s}</div>
+                                  <div>sec</div>
+                              </div>
+                          </div>
+                      `;
+                  }
+
+                  updateDetailedCountdown();
+                  const detailedInterval = setInterval(updateDetailedCountdown, 1000);
+
+                  // Cleanup quando il mouse esce
+                  countdownBadge.addEventListener('mouseleave', function() {
+                      const detailedElement = document.querySelector('.detailed-countdown');
+                      if (detailedElement) {
+                          detailedElement.style.opacity = '0';
+                          setTimeout(() => {
+                              detailedElement.remove();
+                              clearInterval(detailedInterval);
+                          }, 300);
+                      }
+                  });
+              }
+          });
+      }
   }
-
-  // Effetto hover sulla timeline
-  const timelinePoints = document.querySelectorAll('.timeline-point');
-  timelinePoints.forEach(point => {
-      point.addEventListener('mouseenter', function() {
-          this.style.transform = 'scale(1.1)';
-      });
-
-      point.addEventListener('mouseleave', function() {
-          this.style.transform = 'scale(1)';
-      });
-  });
 });
 // Aggiungi questa classe per l'animazione del cambio di numero nel countdown
 document.head.insertAdjacentHTML('beforeend', `
@@ -3870,8 +4176,16 @@ document.head.insertAdjacentHTML('beforeend', `
             50% { color: #ffffff; }
             100% { color: #0088ff; }
         }
+
+        /* Ottimizzazione per ridurre l'impatto delle animazioni sui dispositivi a basse prestazioni */
+        @media (prefers-reduced-motion: reduce) {
+            .flash {
+                animation: none;
+            }
+        }
     </style>
 `);
+
 </script>
 </body>
 </html>
