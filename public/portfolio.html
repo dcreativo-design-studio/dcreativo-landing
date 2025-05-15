@@ -1358,6 +1358,60 @@
 #feedback-countdown {
   font-weight: 700;
 }
+.hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+.value-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.value-item:hover {
+    transform: translateX(10px);
+}
+
+.value-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0095ff, #0059ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 89, 255, 0.2);
+}
+
+.value-content h3 {
+    margin: 0 0 0.3rem 0;
+    font-size: 1.2rem;
+    color: #1e293b;
+}
+
+.value-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+@media (max-width: 768px) {
+    .hero-stats {
+        align-items: center;
+    }
+
+    .value-item {
+        width: 100%;
+        max-width: 350px;
+    }
+}
 
 /* Responsive designs - Multiple breakpoints per adattamenti più graduali */
 @media (max-width: 992px) {
@@ -2029,21 +2083,36 @@
                         <a href="#contact" class="btn btn-outline">Contattami</a>
                     </div>
 
-                    <div class="hero-stats">
-                        <div class="stat-item">
-                            <h3>5+</h3>
-                            <p>Anni di esperienza</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3>5+</h3>
-                            <p>Progetti completati</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3>100%</h3>
-                            <p>Clienti soddisfatti</p>
-                        </div>
-                    </div>
-                </div>
+                  <!-- Opzione 4: Valori/Approccio -->
+<div class="hero-stats">
+    <div class="value-item">
+        <div class="value-icon">
+            <i class="fas fa-lightbulb"></i>
+        </div>
+        <div class="value-content">
+            <h3>Innovazione</h3>
+            <p>Soluzioni creative per problemi complessi</p>
+        </div>
+    </div>
+    <div class="value-item">
+        <div class="value-icon">
+            <i class="fas fa-bolt"></i>
+        </div>
+        <div class="value-content">
+            <h3>Efficienza</h3>
+            <p>Codice ottimizzato per prestazioni elevate</p>
+        </div>
+    </div>
+    <div class="value-item">
+        <div class="value-icon">
+            <i class="fas fa-user-shield"></i>
+        </div>
+        <div class="value-content">
+            <h3>Affidabilità</h3>
+            <p>Architetture solide e sicure</p>
+        </div>
+    </div>
+</div>
 
                 <div class="hero-image" data-aos="fade-left" data-aos-duration="1000">
                     <img src="images\hero-image.jpg" alt="Domenico Riccio - Full-Stack Developer">
