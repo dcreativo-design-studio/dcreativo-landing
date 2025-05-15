@@ -1358,10 +1358,11 @@
 #feedback-countdown {
   font-weight: 700;
 }
+/* Stile ottimizzato per l'area valori */
 .hero-stats {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.2rem;
     margin-top: 2.5rem;
 }
 
@@ -1369,40 +1370,116 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    padding: 0.5rem;
+    border-radius: 12px;
+}
+
+.value-item::before {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.05), transparent);
+    transition: all 0.5s ease;
+    z-index: -1;
 }
 
 .value-item:hover {
     transform: translateX(10px);
 }
 
+.value-item:hover::before {
+    left: 0;
+}
+
 .value-icon {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #0095ff, #0059ff);
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
     color: white;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 10px rgba(0, 89, 255, 0.2);
+    font-size: 1.4rem;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.value-icon::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
+    top: -100%;
+    left: -100%;
+    transition: all 0.5s ease;
+}
+
+.value-item:hover .value-icon::after {
+    top: 0;
+    left: 0;
 }
 
 .value-content h3 {
     margin: 0 0 0.3rem 0;
     font-size: 1.2rem;
-    color: #1e293b;
+    color: var(--dark);
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 .value-content p {
     margin: 0;
     font-size: 0.9rem;
-    color: #64748b;
+    color: var(--gray);
+    transition: all 0.3s ease;
+}
+
+.value-item:hover .value-content h3 {
+    color: var(--primary);
+}
+
+/* Media queries per garantire la responsività */
+@media (max-width: 1024px) {
+    .hero-content {
+        gap: 2rem;
+    }
+
+    .value-item {
+        padding: 0.4rem;
+    }
+
+    .value-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.2rem;
+    }
+
+    .value-content h3 {
+        font-size: 1.1rem;
+    }
+
+    .value-content p {
+        font-size: 0.85rem;
+    }
 }
 
 @media (max-width: 768px) {
+    .hero-content {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+
     .hero-stats {
         align-items: center;
     }
@@ -1410,18 +1487,29 @@
     .value-item {
         width: 100%;
         max-width: 350px;
+        justify-content: flex-start;
+        text-align: left;
+    }
+
+    .hero-btns {
+        justify-content: center;
     }
 }
 
-/* Responsive designs - Multiple breakpoints per adattamenti più graduali */
-@media (max-width: 992px) {
-  .coming-soon-title {
-      font-size: 1.6rem;
-  }
+@media (max-width: 576px) {
+    .value-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
 
-  .timeline-point span {
-      font-size: 0.75rem;
-  }
+    .value-content h3 {
+        font-size: 1rem;
+    }
+
+    .value-content p {
+        font-size: 0.8rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -2070,56 +2158,59 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="hero" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text" data-aos="fade-right" data-aos-duration="1000">
-                    <div class="hero-subtitle">Full-Stack Developer</div>
-                    <h1 class="hero-title">Creo soluzioni web <span class="text-gradient">innovative</span> e su misura</h1>
-                    <p class="hero-description">Specializzato nello sviluppo di applicazioni web complete con React, Next.js e Node.js. Trasformo le idee in esperienze digitali straordinarie.</p>
+   <!-- Hero Section -->
+<section id="hero" class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text" data-aos="fade-right" data-aos-duration="1000">
+                <div class="hero-subtitle">Full-Stack Developer</div>
+                <h1 class="hero-title">Creo soluzioni web <span class="text-gradient">innovative</span> e su misura</h1>
+                <p class="hero-description">Specializzato nello sviluppo di applicazioni web complete con React, Next.js e Node.js. Trasformo le idee in esperienze digitali straordinarie.</p>
 
-                    <div class="hero-btns">
-                        <a href="#projects" class="btn btn-primary">Scopri i miei progetti</a>
-                        <a href="#contact" class="btn btn-outline">Contattami</a>
+                <div class="hero-btns">
+                    <a href="#projects" class="btn btn-primary">Scopri i miei progetti</a>
+                    <a href="#contact" class="btn btn-outline">Contattami</a>
+                </div>
+
+                <!-- Opzione 4: Valori/Approccio -->
+                <div class="hero-stats">
+                    <div class="value-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="value-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="value-content">
+                            <h3>Innovazione</h3>
+                            <p>Soluzioni creative per problemi complessi</p>
+                        </div>
                     </div>
-
-                  <!-- Opzione 4: Valori/Approccio -->
-<div class="hero-stats">
-    <div class="value-item">
-        <div class="value-icon">
-            <i class="fas fa-lightbulb"></i>
-        </div>
-        <div class="value-content">
-            <h3>Innovazione</h3>
-            <p>Soluzioni creative per problemi complessi</p>
-        </div>
-    </div>
-    <div class="value-item">
-        <div class="value-icon">
-            <i class="fas fa-bolt"></i>
-        </div>
-        <div class="value-content">
-            <h3>Efficienza</h3>
-            <p>Codice ottimizzato per prestazioni elevate</p>
-        </div>
-    </div>
-    <div class="value-item">
-        <div class="value-icon">
-            <i class="fas fa-user-shield"></i>
-        </div>
-        <div class="value-content">
-            <h3>Affidabilità</h3>
-            <p>Architetture solide e sicure</p>
-        </div>
-    </div>
-</div>
-
-                <div class="hero-image" data-aos="fade-left" data-aos-duration="1000">
-                    <img src="images\hero-image.jpg" alt="Domenico Riccio - Full-Stack Developer">
+                    <div class="value-item" data-aos="fade-up" data-aos-delay="200">
+                        <div class="value-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="value-content">
+                            <h3>Efficienza</h3>
+                            <p>Codice ottimizzato per prestazioni elevate</p>
+                        </div>
+                    </div>
+                    <div class="value-item" data-aos="fade-up" data-aos-delay="300">
+                        <div class="value-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="value-content">
+                            <h3>Affidabilità</h3>
+                            <p>Architetture solide e sicure</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="hero-image" data-aos="fade-left" data-aos-duration="1000">
+                <img src="images/hero-image.jpg" alt="Domenico Riccio - Full-Stack Developer">
+            </div>
         </div>
-    </section>
+    </div>
+</section>
+
 
     <!-- About Section -->
     <section id="about" class="about">
@@ -4254,6 +4345,44 @@ document.head.insertAdjacentHTML('beforeend', `
         }
     </style>
 `);
+// Script per animazioni interattive aggiuntive
+document.addEventListener('DOMContentLoaded', function() {
+    // Animazione delle icone al passaggio del mouse
+    const valueItems = document.querySelectorAll('.value-item');
+
+    valueItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            const icon = this.querySelector('.value-icon i');
+            icon.style.transform = 'scale(1.2)';
+            icon.style.transition = 'transform 0.3s ease';
+        });
+
+        item.addEventListener('mouseleave', function() {
+            const icon = this.querySelector('.value-icon i');
+            icon.style.transform = 'scale(1)';
+        });
+    });
+
+    // Aggiungi animazione di comparsa progressiva al caricamento
+    function animateValues() {
+        valueItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            }, 300 * (index + 1));
+        });
+    }
+
+    // Inizializza gli elementi con opacità 0 e spostati
+    valueItems.forEach(item => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(-20px)';
+        item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    });
+
+    // Esegui l'animazione dopo un breve ritardo
+    setTimeout(animateValues, 500);
+});
 
 </script>
 </body>
