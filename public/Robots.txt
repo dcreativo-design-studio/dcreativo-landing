@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Permetti a tutti i crawler di accedere a tutti i contenuti
+Disallow:
+
+# Indica dove trovare il sitemap
+Sitemap: https://www.dcreativo.ch/sitemap.xml

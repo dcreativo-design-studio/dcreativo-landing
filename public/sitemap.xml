@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
   <url>
-    <loc>https://www.dcreativo.ch/</loc>
-    <lastmod>2025-03-27T20:13:25+00:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0000</priority>
+       <loc>https://www.dcreativo.ch/</loc>
+       <lastmod>2025-05-20T12:00:00+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>1.0000</priority>
+  </url>
+
+  <url>
+       <loc>https://www.dcreativo.ch/portfolio/</loc>
+       <lastmod>2025-05-20T12:00:00+00:00</lastmod>
+       <changefreq>weekly</changefreq>
+       <priority>0.9000</priority>
+  </url>
+
+  <url>
+       <loc>https://www.dcreativo.ch/googlea8a9ddd7850a325e.html</loc>
+       <lastmod>2025-05-20T12:00:00+00:00</lastmod>
+       <changefreq>yearly</changefreq>
+       <priority>0.1000</priority>
+  </url>
+
+  <!-- Sezioni principali del portfolio come URL separati per migliorare l'indicizzazione -->
+  <url>
+       <loc>https://www.dcreativo.ch/portfolio/#about</loc>
+       <lastmod>2025-05-20T12:00:00+00:00</lastmod>
+       <changefreq>monthly</changefreq>
+       <priority>0.8000</priority>
+  </url>
+
+  <url>
+       <loc>https://www.dcreativo.ch/portfolio/#projects</loc>
+       <lastmod>2025-05-20T12:00:00+00:00</lastmod>
+       <changefreq>monthly</changefreq>
+       <priority>0.8000</priority>
+  </url>
+
+  <url>
+       <loc>https://www.dcreativo.ch/portfolio/#case-study</loc>
+       <lastmod>2025-05-20T12:00:00+00:00</lastmod>
+       <changefreq>monthly</changefreq>
+       <priority>0.8000</priority>
+  </url>
+
+  <url>
+       <loc>https://www.dcreativo.ch/portfolio/#contact</loc>
+       <lastmod>2025-05-20T12:00:00+00:00</lastmod>
+       <changefreq>monthly</changefreq>
+       <priority>0.7000</priority>
   </url>
 </urlset>
