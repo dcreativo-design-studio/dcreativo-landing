@@ -37,6 +37,13 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/api/placeholder/32/32" />
+    
+    <!-- Critical Resource Preloads for Performance -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="images/hero-image.jpg" as="image">
+    
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -46,10 +53,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts Optimized -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
 
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -230,6 +238,47 @@
       ]
     }
     </script>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID', {
+        page_title: 'Portfolio - Domenico Riccio',
+        page_location: window.location.href
+      });
+      
+      // Custom events for tracking
+      function trackEvent(eventName, parameters = {}) {
+        gtag('event', eventName, parameters);
+      }
+    </script>
+
+    <!-- Content Security Policy recommendation (implement as HTTP header) -->
+    <!-- 
+    Content-Security-Policy: 
+    default-src 'self'; 
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' 
+      https://cdn.jsdelivr.net 
+      https://cdnjs.cloudflare.com 
+      https://www.googletagmanager.com 
+      https://cdn.emailjs.com; 
+    style-src 'self' 'unsafe-inline' 
+      https://cdn.jsdelivr.net 
+      https://cdnjs.cloudflare.com 
+      https://fonts.googleapis.com; 
+    font-src 'self' 
+      https://fonts.gstatic.com 
+      https://cdnjs.cloudflare.com; 
+    img-src 'self' data: 
+      https://www.googletagmanager.com; 
+    connect-src 'self' 
+      https://api.emailjs.com 
+      https://www.google-analytics.com;
+    -->
+
     <style>
       :root {
         --primary: #2563eb;
@@ -2698,12 +2747,12 @@
 
     <!-- Hero Section -->
     <!-- Hero Section -->
-<section id="hero" class="hero">
+<section id="hero" class="hero" aria-labelledby="hero-title" role="banner">
     <div class="container">
         <div class="hero-content">
             <div class="hero-text" data-aos="fade-right" data-aos-duration="1000">
                 <div class="hero-subtitle">Full-Stack Developer</div>
-                <h1 class="hero-title">Creo soluzioni web <span class="text-gradient">innovative</span> e su misura</h1>
+                <h1 id="hero-title" class="hero-title">Creo soluzioni web <span class="text-gradient">innovative</span> e su misura</h1>
                 <p class="hero-description">Specializzato nello sviluppo di applicazioni web complete con React, Next.js e Node.js. Trasformo le idee in esperienze digitali straordinarie.</p>
 
                 <div class="hero-btns">
@@ -2748,17 +2797,21 @@
 <img src="images/hero-image.jpg"
      alt="Domenico Riccio - Full-Stack Developer in Ticino, Svizzera"
      title="Sviluppatore Web professionista in Ticino, specializzato in soluzioni web innovative"
-     loading="eager">
+     width="800" 
+     height="600"
+     loading="eager" 
+     fetchpriority="high"
+     decoding="async">
             </div>
         </div>
     </div>
 </section>
 
     <!-- About Section -->
-    <section id="about" class="about">
+    <section id="about" class="about" aria-labelledby="about-title">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
-                <h2>Chi Sono</h2>
+                <h2 id="about-title">Chi Sono</h2>
                 <p class="section-description">Full-stack developer con passione per la creazione di esperienze web eccezionali e soluzioni personalizzate per le esigenze dei clienti.</p>
             </div>
 
@@ -2801,10 +2854,10 @@
 
     <!-- Projects Section -->
     <!-- Projects Section -->
-<section id="projects" class="projects">
+<section id="projects" class="projects" aria-labelledby="projects-title">
   <div class="container">
       <div class="section-title" data-aos="fade-up">
-          <h2>I Miei Progetti</h2>
+          <h2 id="projects-title">I Miei Progetti</h2>
           <p class="section-description">Esplora le mie soluzioni web personalizzate per diversi settori e casi d'uso.</p>
       </div>
 
@@ -2866,7 +2919,11 @@
                      <!-- Project Cards Images -->
 <img src="images/projects/landing-page.png"
      alt="Landing Page professionale per Brand creata da Web Developer in Ticino"
-     title="Landing Page moderna realizzata con TypeScript e Tailwind da sviluppatore web in Lugano">
+     title="Landing Page moderna realizzata con TypeScript e Tailwind da sviluppatore web in Lugano"
+     width="400"
+     height="300"
+     loading="lazy"
+     decoding="async">
                   </div>
                   <div class="project-content">
                       <div class="project-tags">
@@ -2888,7 +2945,11 @@
                   <div class="project-image">
                       <img src="images/services/woocommerce.svg"
      alt="Sviluppo E-Commerce professionali in Svizzera e Nord Italia"
-     title="Servizi di creazione E-Commerce con WooCommerce e Shopify in Ticino">
+     title="Servizi di creazione E-Commerce con WooCommerce e Shopify in Ticino"
+     width="80"
+     height="80"
+     loading="lazy"
+     decoding="async">
 
                   </div>
                   <div class="project-content">
@@ -2911,7 +2972,11 @@
                   <div class="project-image">
                      <img src="images/services/ui-ux.svg"
      alt="UI/UX Design professionale per siti web in Ticino e Svizzera"
-     title="Servizi di User Interface e User Experience Design per aziende in Ticino">
+     title="Servizi di User Interface e User Experience Design per aziende in Ticino"
+     width="80"
+     height="80"
+     loading="lazy"
+     decoding="async">
                   </div>
                   <div class="project-content">
                       <div class="project-tags">
@@ -2933,7 +2998,11 @@
                   <div class="project-image">
                      <img src="images/services/back-end.svg"
      alt="Sviluppo Back-End e API RESTful in Svizzera e Lugano"
-     title="Servizi professionali di sviluppo Back-End con Next.js e Node.js in Ticino">
+     title="Servizi professionali di sviluppo Back-End con Next.js e Node.js in Ticino"
+     width="80"
+     height="80"
+     loading="lazy"
+     decoding="async">
                   </div>
                   <div class="project-content">
                       <div class="project-tags">
@@ -3048,33 +3117,33 @@
             <div class="screenshots-grid">
                 <div class="screenshot-item" data-aos="fade-up">
                   <!-- Screenshots Section Images -->
-<img src="images/projects/screen-1.webp"
+<img src="images/projects/screen-1.jpg"
      alt="Homepage del Sistema di Prenotazioni Online sviluppato in Ticino"
      title="Screenshot dell'interfaccia utente del sistema di prenotazioni sviluppato in Svizzera">
 
                 </div>
                 <div class="screenshot-item" data-aos="fade-up" data-aos-delay="100">
-                    <img src="images/projects/screen-2.webp"
+                    <img src="images/projects/screen-2.jpg"
      alt="Calendario di Prenotazione sviluppato da programmatore web in Ticino"
      title="Interfaccia del calendario di prenotazione creata con React.js">
                 </div>
                 <div class="screenshot-item" data-aos="fade-up" data-aos-delay="200">
-                    <img src="images/projects/screen-6.webp"
+                    <img src="images/projects/screen-6.jpg"
      alt="Dettaglio Servizi sistema prenotazioni sviluppato in Lugano, Svizzera"
      title="Pagina dettaglio servizi del sistema di prenotazioni online">
                 </div>
                 <div class="screenshot-item" data-aos="fade-up" data-aos-delay="300">
-                    <img src="images/projects/screen-12.webp"
+                    <img src="images/projects/screen-12.jpg"
      alt="Dashboard Amministrativa sviluppata da Full-Stack Developer in Ticino"
      title="Pannello amministrativo avanzato con analisi in tempo reale">
                 </div>
                 <div class="screenshot-item" data-aos="fade-up" data-aos-delay="400">
-                    <img src="images/projects/screen-7.webp"
+                    <img src="images/projects/screen-7.jpg"
      alt="Gestione Utenti sistema web sviluppato in Svizzera da programmatore professionista"
      title="Interfaccia di gestione utenti con autenticazione multi-livello">
                 </div>
                 <div class="screenshot-item" data-aos="fade-up" data-aos-delay="500">
-                    <img src="images/projects/screen-8.webp"
+                    <img src="images/projects/screen-8.jpg"
      alt="Report Analitici sviluppati da Full-Stack Developer in Ticino"
      title="Dashboard di reporting avanzata per analisi dati clienti">
 
@@ -3171,10 +3240,10 @@
 </section>
 
     <!-- Contact Section -->
-<section id="contact" class="contact">
+<section id="contact" class="contact" aria-labelledby="contact-title">
     <div class="container">
         <div class="section-title" data-aos="fade-up">
-            <h2>Contattami</h2>
+            <h2 id="contact-title">Contattami</h2>
             <p class="section-description">Hai un progetto in mente? Parliamone insieme!</p>
         </div>
 
@@ -3818,7 +3887,11 @@
                 <img src="images/projects/landing-page.png"
      alt="Landing Page sviluppata da web designer in Ticino"
      title="Landing Page professionale con TypeScript e Tailwind CSS"
-     class="img-fluid rounded">
+     class="img-fluid rounded"
+     width="600"
+     height="400"
+     loading="lazy"
+     decoding="async">
               </div>
               <div class="col-md-6">
                 <h5>Landing Page per il Brand dCreativo</h5>
@@ -3851,7 +3924,11 @@
 <img src="images/services/back-end.svg"
      alt="Sviluppo Back-End professionale in Svizzera e Ticino"
      title="Servizi di Back-End Development con Node.js, Next.js e database MongoDB"
-     class="img-fluid mb-3">
+     class="img-fluid mb-3"
+     width="300"
+     height="300"
+     loading="lazy"
+     decoding="async">
             </div>
             <div class="col-md-8">
               <h2>La Potenza Dietro le Quinte</h2>
@@ -4234,6 +4311,8 @@
       }
     });
     </script>
+
+<!-- Performance Optimized JavaScript -->
 <script>
     // Initialize AOS Animation Library
     document.addEventListener('DOMContentLoaded', function() {
@@ -4257,27 +4336,60 @@
             }
         });
 
-        // Header scroll effect
+        // Debounce function for performance optimization
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Optimized scroll handler with debounce
         const header = document.getElementById('header');
-
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Back to top button
         const backToTopBtn = document.getElementById('back-to-top');
 
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 300) {
-                backToTopBtn.classList.add('show');
-            } else {
-                backToTopBtn.classList.remove('show');
+        const handleScroll = debounce(() => {
+            const scrollY = window.scrollY;
+            
+            // Header scroll effect
+            if (header) {
+                if (scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
             }
-        });
+
+            // Back to top button
+            if (backToTopBtn) {
+                if (scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            }
+            
+            // GA4 scroll depth tracking
+            if (typeof trackEvent === 'function') {
+                if (scrollY > window.innerHeight * 0.25) {
+                    trackEvent('scroll_depth', { depth: '25%' });
+                }
+                if (scrollY > window.innerHeight * 0.50) {
+                    trackEvent('scroll_depth', { depth: '50%' });
+                }
+                if (scrollY > window.innerHeight * 0.75) {
+                    trackEvent('scroll_depth', { depth: '75%' });
+                }
+            }
+        }, 16); // ~60fps
+
+        // Add optimized scroll listener
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         backToTopBtn.addEventListener('click', function() {
             window.scrollTo({
@@ -4323,10 +4435,26 @@
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Invio in corso...';
 
-                // Invia il form usando EmailJS
+                // Track form submission attempt
+                if (typeof trackEvent === 'function') {
+                    trackEvent('form_submit_attempt', {
+                        form_name: 'contact_form',
+                        page_title: 'Portfolio'
+                    });
+                }
+
+                // Invia il form usando EmailJS con error handling migliorato
                 emailjs.sendForm('service_7sg8059', 'template_ucecbvs', this)
                     .then(function() {
                         console.log('Email inviata con successo!');
+                        
+                        // Track successful form submission
+                        if (typeof trackEvent === 'function') {
+                            trackEvent('form_submit_success', {
+                                form_name: 'contact_form',
+                                page_title: 'Portfolio'
+                            });
+                        }
 
                         // Nascondi il form
                         contactForm.style.opacity = '0';
@@ -4350,14 +4478,31 @@
                         }, 300);
 
                     }, function(error) {
-                        console.log('ERRORE:', error);
+                        console.error('EmailJS Error:', error);
 
-                        // Mostra messaggio di errore
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Si è verificato un errore. Per favore, riprova più tardi.',
-                        });
+                        // Track form submission error
+                        if (typeof trackEvent === 'function') {
+                            trackEvent('form_submit_error', {
+                                form_name: 'contact_form',
+                                error_message: error.text || 'Unknown error',
+                                page_title: 'Portfolio'
+                            });
+                        }
+
+                        // Enhanced error handling with fallback
+                        const errorMessage = error.text || 'Si è verificato un errore di rete. Per favore, riprova più tardi.';
+                        
+                        if (typeof Swal !== 'undefined') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Errore di invio',
+                                text: errorMessage,
+                                footer: 'Puoi anche contattarmi direttamente via email o telefono'
+                            });
+                        } else {
+                            // Fallback per browser senza SweetAlert
+                            alert('Errore: ' + errorMessage);
+                        }
 
                         // Ripristina il pulsante
                         submitBtn.disabled = false;
@@ -4372,6 +4517,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const modals = document.querySelectorAll('.modal');
 
     modals.forEach(function(modal) {
+        // Track modal opens
+        modal.addEventListener('show.bs.modal', function() {
+            const modalId = this.getAttribute('id');
+            if (typeof trackEvent === 'function') {
+                trackEvent('modal_open', {
+                    modal_name: modalId,
+                    page_title: 'Portfolio'
+                });
+            }
+        });
+
         modal.addEventListener('hidden.bs.modal', function() {
             // Rimuovi manualmente il backdrop se esiste
             const backdrop = document.querySelector('.modal-backdrop');
@@ -4462,11 +4618,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Aggiungi l'evento scroll per aggiornare i link attivi
-    window.addEventListener('scroll', function() {
+    // Optimize navigation scroll tracking with debounce
+    const optimizedNavScroll = debounce(() => {
         updateActiveLink();
         updateMobileMenu();
-    });
+    }, 16);
+    
+    window.addEventListener('scroll', optimizedNavScroll, { passive: true });
 
     // Esegui subito per impostare il link attivo corretto al caricamento della pagina
     updateActiveLink();
