@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+
+  <!-- SEO Meta Tags -->
+  <title>🚀 Trasforma il Tuo Business Digitale - DCreativo Solutions | Barber System & Web Development</title>
+  <meta name="description" content="Soluzioni digitali complete per barbershop e aziende in Ticino: sistema prenotazioni automatizzato, sviluppo web React/Node.js, e-commerce. +25% prenotazioni, -80% no-show garantiti.">
+  <meta name="keywords" content="sistema prenotazioni barbershop, sviluppo web Ticino, React Node.js, e-commerce, web app, DCreativo, barber booking system">
+  <meta name="author" content="DCreativo Web & App Solutions">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="🚀 Trasforma il Tuo Business Digitale - DCreativo Solutions">
+  <meta property="og:description" content="Sistema prenotazioni automatizzato per barbershop + sviluppo web professionale. Risultati garantiti: +25% prenotazioni, -80% no-show.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dcreativo.ch">
+  <meta property="og:image" content="https://yourstyle.dcreativo.ch/assets/logo-white.png">
+  <meta property="og:site_name" content="DCreativo Solutions">
+  <meta property="og:locale" content="it_CH">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="🚀 Trasforma il Tuo Business Digitale - DCreativo">
+  <meta name="twitter:description" content="Soluzioni complete: sistema prenotazioni barbershop + sviluppo web. +25% prenotazioni garantite.">
+  <meta name="twitter:image" content="https://yourstyle.dcreativo.ch/assets/logo-white.png">
+
+  <!-- Structured Data Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "DCreativo Web & App Solutions",
+    "description": "Sviluppo web professionale e sistemi di prenotazione per aziende in Ticino",
+    "url": "https://dcreativo.ch",
+    "logo": "https://yourstyle.dcreativo.ch/assets/logo-white.png",
+    "email": "info@dcreativo.ch",
+    "telephone": "+41767810194",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "ol Mött 6",
+      "postalCode": "6703",
+      "addressLocality": "Riviera",
+      "addressRegion": "TI",
+      "addressCountry": "CH"
+    },
+    "sameAs": [
+      "https://github.com/dcreativo-design-studio",
+      "https://www.linkedin.com/in/design-creativo-digitale/",
+      "https://wa.me/41767810194"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "name": "Sistema Prenotazioni Barbershop",
+      "description": "Sistema automatizzato per gestione appuntamenti"
+    }
+  }
+  </script>
+
+  <!--[if mso]>
+  <xml>
+    <o:OfficeDocumentSettings>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+  </xml>
+  <style>
+    table {border-collapse: collapse;}
+    td,th,div,p,a {font-family: "Segoe UI", sans-serif; mso-line-height-rule: exactly;}
+  </style>
+  <![endif]-->
+
+  <style>
+    /* Reset e Base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      word-break: break-word;
+      -webkit-font-smoothing: antialiased;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      color: #1c1e21;
+      line-height: 1.6;
+      background: linear-gradient(135deg, #f0f2f5 0%, #e3f2fd 100%);
+    }
+
+    /* Meta Colors Palette */
+    :root {
+      --fb-blue: #1877f2;
+      --fb-blue-hover: #166fe5;
+      --fb-light-blue: #42a5f5;
+      --whatsapp-green: #25d366;
+      --whatsapp-dark: #128c7e;
+      --meta-gray: #65676b;
+      --meta-light-gray: #f0f2f5;
+      --meta-dark: #1c1e21;
+      --gradient-primary: linear-gradient(135deg, #1877f2 0%, #42a5f5 50%, #0866ff 100%);
+      --gradient-whatsapp: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      --shadow-soft: 0 8px 32px rgba(24, 119, 242, 0.15);
+      --shadow-hover: 0 12px 40px rgba(24, 119, 242, 0.25);
+    }
+
+    /* Animazioni CSS */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200px 0; }
+      100% { background-position: calc(200px + 100%) 0; }
+    }
+
+    /* Componenti Animati */
+    .animate-fade-in { animation: fadeInUp 0.8s ease-out forwards; }
+    .animate-slide-right { animation: slideInRight 0.6s ease-out forwards; }
+    .animate-bounce { animation: bounce 2s infinite; }
+    .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+
+    /* Hover Effects per Desktop */
+    @media (hover: hover) {
+      .hover-lift {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .hover-lift:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
+      }
+
+      .hover-scale {
+        transition: transform 0.2s ease;
+      }
+      .hover-scale:hover {
+        transform: scale(1.02);
+      }
+    }
+
+    /* Touch Effects per Mobile */
+    @media (hover: none) and (pointer: coarse) {
+      .touch-feedback {
+        transition: all 0.1s ease;
+      }
+      .touch-feedback:active {
+        transform: scale(0.98);
+        opacity: 0.8;
+      }
+
+      .touch-bounce:active {
+        animation: none;
+        transform: scale(0.95);
+      }
+    }
+
+    /* Responsive Design */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    /* Header Ottimizzato */
+    .header {
+      background: var(--gradient-primary);
+      padding: 40px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    .logo {
+      max-width: 180px;
+      height: auto;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    }
+
+    .header h1 {
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 700;
+      margin: 10px 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      color: rgba(255,255,255,0.95);
+      font-size: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Cards Moderne */
+    .feature-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(24, 119, 242, 0.08);
+      border: 1px solid rgba(24, 119, 242, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .feature-icon {
+      background: var(--gradient-primary);
+      color: white;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+    }
+
+    .feature-title {
+      color: var(--meta-dark);
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      color: var(--meta-gray);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* CTA Buttons Migliorati */
+    .cta-primary {
+      background: var(--gradient-primary);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      display: inline-block;
+      box-shadow: var(--shadow-soft);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .cta-primary:hover::before {
+      left: 100%;
+    }
+
+    .cta-whatsapp {
+      background: var(--gradient-whatsapp);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 16px;
+      display: inline-block;
+      box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+    }
+
+    /* Stats Section */
+    .stats-container {
+      background: var(--gradient-primary);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .stat-item {
+      display: inline-block;
+      text-align: center;
+      margin: 0 12px;
+    }
+
+    .stat-number {
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: bold;
+      display: block;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .stat-label {
+      color: rgba(255,255,255,0.9);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    /* Contact Info Ottimizzata */
+    .contact-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(24, 119, 242, 0.1);
+    }
+
+    .contact-item:last-child {
+      border-bottom: none;
+    }
+
+    .contact-icon {
+      background: var(--gradient-primary);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      font-size: 18px;
+      box-shadow: 0 2px 8px rgba(24, 119, 242, 0.2);
+    }
+
+    .contact-link {
+      color: var(--fb-blue);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: color 0.2s ease;
+    }
+
+    .contact-link:hover {
+      color: var(--fb-blue-hover);
+    }
+
+    /* Social Icons Ridisegnati */
+    .social-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 8px;
+      text-decoration: none;
+      font-size: 20px;
+      color: white;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .social-github { background: linear-gradient(135deg, #333 0%, #24292e 100%); }
+    .social-linkedin { background: linear-gradient(135deg, #0077b5 0%, #005885 100%); }
+    .social-whatsapp { background: var(--gradient-whatsapp); }
+    .social-portfolio { background: linear-gradient(135deg, #6c63ff 0%, #5a52d5 100%); }
+
+    /* Responsive Breakpoints */
+    @media screen and (max-width: 600px) {
+      .container {
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .header {
+        padding: 30px 20px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .header p {
+        font-size: 15px;
+      }
+
+      .feature-card {
+        margin: 0 16px 16px;
+        padding: 20px;
+      }
+
+      .cta-primary, .cta-whatsapp {
+        padding: 14px 24px;
+        font-size: 15px;
+        width: calc(100% - 32px);
+        margin: 8px 16px;
+        text-align: center;
+      }
+
+      .stats-container {
+        margin: 16px;
+        padding: 20px;
+      }
+
+      .stat-item {
+        margin: 0 8px;
+      }
+
+      .stat-number {
+        font-size: 24px;
+      }
+
+      .social-icon {
+        width: 44px;
+        height: 44px;
+        margin: 0 6px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .header h1 { font-size: 22px; }
+      .header p { font-size: 14px; }
+      .feature-title { font-size: 16px; }
+      .feature-desc { font-size: 14px; }
+      .stat-number { font-size: 20px; }
+      .stat-label { font-size: 11px; }
+    }
+
+    /* Dark Mode Support */
+    @media (prefers-color-scheme: dark) {
+      .feature-card {
+        background: #2d3748;
+        border-color: rgba(24, 119, 242, 0.2);
+      }
+
+      .feature-title {
+        color: #e2e8f0;
+      }
+
+      .feature-desc {
+        color: #a0aec0;
+      }
+    }
+
+    /* Accessibilità */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Print Styles */
+    @media print {
+      .header {
+        background: #1877f2 !important;
+        color: white !important;
+      }
+      .social-icon, .cta-primary, .cta-whatsapp {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Preheader nascosto -->
+  <div style="display: none; font-size: 0; line-height: 0; max-height: 0; overflow: hidden;">
+    🚀 Sistema prenotazioni automatizzato per barbershop + sviluppo web professionale. +25% prenotazioni, -80% no-show garantiti! Scopri le soluzioni DCreativo per Ticino e Svizzera.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-spacing: 0; border-collapse: collapse; background: linear-gradient(135deg, #f0f2f5 0%, #e3f2fd 100%); min-height: 100vh;">
+    <tr>
+      <td align="center" style="padding: 20px 10px;">
+
+        <!-- Container Principale -->
+        <div class="container animate-fade-in">
+
+          <!-- Header Migliorato -->
+          <div class="header">
+            <img src="https://yourstyle.dcreativo.ch/assets/logo-white.png" alt="DCreativo Solutions Logo" class="logo animate-bounce" width="180" height="auto">
+            <h1 class="animate-slide-right">🚀 Trasforma il Tuo Business Digitale</h1>
+            <p>Soluzioni complete per barbershop e aziende: sistema prenotazioni automatizzato + sviluppo web professionale in Ticino</p>
+          </div>
+
+          <!-- Spacer -->
+          <div style="padding: 20px 0;"></div>
+
+          <!-- Sezione Barber System Rinnovata -->
+          <div style="padding: 0 20px;">
+            <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%); border-radius: 20px; padding: 30px; margin-bottom: 30px; border-left: 6px solid var(--fb-blue); position: relative; overflow: hidden;" class="hover-lift touch-feedback">
+
+              <div style="text-align: center; margin-bottom: 30px;">
+                <div class="feature-icon animate-pulse" style="width: 60px; height: 60px; font-size: 24px; margin: 0 auto 16px;">📅</div>
+                <h2 style="color: var(--fb-blue); font-size: 26px; margin: 0; font-weight: 700;">Sistema Prenotazioni Barbershop</h2>
+                <p style="color: var(--meta-dark); font-size: 18px; margin: 10px 0 0; font-weight: 500;">Automatizza completamente la gestione degli appuntamenti</p>
+              </div>
+
+              <!-- Features Grid -->
+              <div style="display: grid; gap: 16px; margin-bottom: 24px;">
+
+                <div class="feature-card hover-scale touch-feedback animate-slide-right" style="animation-delay: 0.1s;">
+                  <div class="feature-icon">🔄</div>
+                  <h3 class="feature-title">Prenotazioni Automatiche 24/7</h3>
+                  <p class="feature-desc">Calcolo intelligente slot, gestione pause e orari personalizzati con AI</p>
+                </div>
+
+                <div class="feature-card hover-scale touch-feedback animate-slide-right" style="animation-delay: 0.2s;">
+                  <div class="feature-icon">📱</div>
+                  <h3 class="feature-title">Notifiche Multi-Canale</h3>
+                  <p class="feature-desc">Email, SMS e WhatsApp automatici riducono i no-show dell'80%</p>
+                </div>
+
+                <div class="feature-card hover-scale touch-feedback animate-slide-right" style="animation-delay: 0.3s;">
+                  <div class="feature-icon">📊</div>
+                  <h3 class="feature-title">Analytics Avanzate</h3>
+                  <p class="feature-desc">Dashboard real-time per ottimizzare performance e aumentare ricavi</p>
+                </div>
+
+              </div>
+
+              <!-- ROI Section Migliorata -->
+              <div class="stats-container animate-fade-in">
+                <h3 style="color: #ffffff; font-size: 20px; font-weight: 600; margin: 0 0 20px;">🎯 Risultati Garantiti</h3>
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+                  <div class="stat-item">
+                    <span class="stat-number animate-pulse">+25%</span>
+                    <span class="stat-label">Prenotazioni</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-number animate-pulse" style="animation-delay: 0.2s;">-80%</span>
+                    <span class="stat-label">No-show</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-number animate-pulse" style="animation-delay: 0.4s;">20h</span>
+                    <span class="stat-label">Risparmiate/mese</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sezione Web Development Rinnovata -->
+          <div style="padding: 0 20px;">
+            <div style="background: linear-gradient(135deg, #f3e5f5 0%, #e8f5e8 100%); border-radius: 20px; padding: 30px; margin-bottom: 30px; border-left: 6px solid var(--fb-light-blue);" class="hover-lift touch-feedback">
+
+              <div style="text-align: center; margin-bottom: 30px;">
+                <div class="feature-icon animate-pulse" style="width: 60px; height: 60px; font-size: 24px; margin: 0 auto 16px; background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);">💻</div>
+                <h2 style="color: var(--fb-light-blue); font-size: 26px; margin: 0; font-weight: 700;">Sviluppo Web & App Professionali</h2>
+                <p style="color: var(--meta-dark); font-size: 18px; margin: 10px 0 0; font-weight: 500;">Soluzioni digitali complete per far crescere la tua azienda online</p>
+              </div>
+
+              <!-- Services Grid -->
+              <div style="display: grid; gap: 16px; margin-bottom: 24px;">
+
+                <div class="feature-card hover-scale touch-feedback animate-slide-right" style="animation-delay: 0.1s;">
+                  <div class="feature-icon" style="background: var(--gradient-primary);">🌐</div>
+                  <h3 class="feature-title">Siti Web Aziendali</h3>
+                  <p class="feature-desc">Design moderno, responsive e ottimizzato SEO per convertire visitatori in clienti</p>
+                </div>
+
+                <div class="feature-card hover-scale touch-feedback animate-slide-right" style="animation-delay: 0.2s;">
+                  <div class="feature-icon" style="background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);">🛒</div>
+                  <h3 class="feature-title">E-commerce Completi</h3>
+                  <p class="feature-desc">Negozi online con pagamenti sicuri e gestione ordini automatizzata</p>
+                </div>
+
+                <div class="feature-card hover-scale touch-feedback animate-slide-right" style="animation-delay: 0.3s;">
+                  <div class="feature-icon" style="background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);">⚛️</div>
+                  <h3 class="feature-title">App Web React</h3>
+                  <p class="feature-desc">Applicazioni moderne con React e Node.js per performance ottimali</p>
+                </div>
+
+                <div class="feature-card hover-scale touch-feedback animate-slide-right" style="animation-delay: 0.4s;">
+                  <div class="feature-icon" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">🔧</div>
+                  <h3 class="feature-title">Soluzioni Custom</h3>
+                  <p class="feature-desc">Sviluppo su misura per le specifiche esigenze del tuo business</p>
+                </div>
+
+              </div>
+
+              <!-- Tech Stack -->
+              <div class="feature-card" style="text-align: center; background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%); border: 2px solid rgba(24, 119, 242, 0.1);">
+                <h3 style="color: var(--fb-light-blue); font-size: 18px; font-weight: 600; margin: 0 0 16px;">⚡ Stack Tecnologico Avanzato</h3>
+                <p style="color: var(--meta-gray); font-size: 15px; margin: 0; line-height: 1.8;">
+                  <strong>Frontend:</strong> HTML5 • CSS3 • JavaScript ES6+ • TypeScript • React • Next.js<br>
+                  <strong>Backend:</strong> Node.js • PHP • Python • Express.js • REST API<br>
+                  <strong>Database:</strong> MySQL • MongoDB • PostgreSQL • Firebase
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sezione Geografica Migliorata -->
+          <div style="padding: 0 20px;">
+            <div style="background: linear-gradient(135deg, #fff3e0 0%, #f1f8e9 100%); border-radius: 20px; padding: 30px; text-align: center; border: 3px solid #ff9800; margin-bottom: 30px;" class="hover-lift touch-feedback">
+              <div class="feature-icon animate-bounce" style="width: 60px; height: 60px; font-size: 24px; margin: 0 auto 16px; background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">🌍</div>
+              <h2 style="color: #e65100; font-size: 24px; margin: 0 0 20px; font-weight: 700;">Serviamo Tutta la Svizzera e Nord Italia</h2>
+              <div style="display: grid; gap: 12px; text-align: left; max-width: 500px; margin: 0 auto;">
+                <p style="color: var(--meta-dark); font-size: 16px; margin: 0;">
+                  <strong style="color: #e65100;">🇨🇭 Ticino:</strong> Bellinzona • Lugano • Locarno • Mendrisio • Chiasso • Bellinzona
+                </p>
+                <p style="color: var(--meta-dark); font-size: 16px; margin: 0;">
+                  <strong style="color: #e65100;">🏔️ Svizzera:</strong> Zurigo • Basilea • Berna • Ginevra • Losanna • St. Gallen
+                </p>
+                <p style="color: var(--meta-dark); font-size: 16px; margin: 0;">
+                  <strong style="color: #e65100;">🇮🇹 Nord Italia:</strong> Milano • Como • Varese • Novara • Bergamo
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA Section Principale Rinnovata -->
+         <!-- CTA Section Principale Rinnovata -->
+          <div style="padding: 0 20px;">
+            <div style="background: var(--gradient-primary); border-radius: 20px; padding: 40px 30px; text-align: center; margin-bottom: 30px; position: relative; overflow: hidden; box-shadow: var(--shadow-hover);" class="hover-lift touch-feedback">
+
+              <!-- Elemento decorativo animato -->
+              <div style="position: absolute; top: -10px; right: -10px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: pulse 3s infinite;"></div>
+              <div style="position: absolute; bottom: -20px; left: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.05); border-radius: 50%; animation: bounce 4s infinite;"></div>
+
+              <div class="feature-icon animate-bounce" style="width: 70px; height: 70px; font-size: 28px; margin: 0 auto 20px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px);">🚀</div>
+
+              <h2 style="margin: 0 0 16px; font-size: 32px; color: #ffffff; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Inizia la Tua Trasformazione Digitale</h2>
+              <p style="margin: 0 0 30px; font-size: 18px; color: rgba(255,255,255,0.95); max-width: 500px; margin-left: auto; margin-right: auto;">Contattaci oggi per una <strong>consulenza gratuita</strong> e scopri come possiamo portare il tuo business al livello successivo</p>
+
+              <!-- CTA Buttons Container -->
+              <div style="display: flex; flex-direction: column; gap: 16px; align-items: center; max-width: 400px; margin: 0 auto;">
+
+                <!-- Primary CTA -->
+                <a href="https://dcreativo.ch" class="cta-primary hover-lift touch-feedback" style="width: 100%; text-align: center; background: #ffffff; color: var(--fb-blue); box-shadow: 0 8px 24px rgba(0,0,0,0.2); font-size: 18px; padding: 18px 32px;">
+                  🌟 Scopri Tutti i Servizi
+                </a>
+
+                <!-- Secondary CTA -->
+                <a href="https://dcreativo.ch/portfolio" class="cta-primary hover-lift touch-feedback" style="width: 100%; text-align: center; background: rgba(255,255,255,0.15); color: #ffffff; border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px); font-size: 16px; padding: 16px 32px;">
+                  🎨 Vedi Portfolio
+                </a>
+
+                <!-- WhatsApp CTA -->
+                <a href="https://wa.me/41767810194?text=Ciao%21%20Sono%20interessato%20alle%20vostre%20soluzioni%20digitali%20per%20il%20mio%20business.%20Vorrei%20una%20consulenza%20gratuita." class="cta-whatsapp hover-lift touch-feedback" style="width: 100%; text-align: center; font-size: 18px; padding: 18px 32px; box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);">
+                  💬 WhatsApp Diretto
+                </a>
+
+              </div>
+
+              <!-- Urgency Element -->
+              <div style="margin-top: 24px; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">
+                <p style="color: #ffffff; font-size: 14px; margin: 0; font-weight: 600;">⏰ <strong>Offerta Limitata:</strong> Consulenza gratuita + 20% sconto sul primo progetto</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sezione Garanzie e Benefit -->
+          <div style="padding: 0 20px;">
+            <div style="background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%); border-radius: 16px; padding: 30px; text-align: center; margin-bottom: 30px; border: 2px solid rgba(76, 175, 80, 0.2);" class="hover-lift touch-feedback">
+
+              <div class="feature-icon animate-pulse" style="width: 60px; height: 60px; font-size: 24px; margin: 0 auto 20px; background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);">✅</div>
+
+              <h2 style="color: #2e7d32; font-size: 22px; margin: 0 0 24px; font-weight: 700;">Perché Scegliere DCreativo Solutions</h2>
+
+              <!-- Benefits Grid -->
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
+
+                <div class="feature-card hover-scale touch-feedback" style="background: #ffffff; border: 2px solid rgba(76, 175, 80, 0.1); text-align: center;">
+                  <div style="font-size: 32px; margin-bottom: 12px;">🆓</div>
+                  <h3 style="color: #2e7d32; font-size: 16px; font-weight: 600; margin: 0 0 8px;">Consulenza Gratuita</h3>
+                  <p style="color: #4caf50; font-size: 14px; margin: 0;">Analisi personalizzata del tuo business</p>
+                </div>
+
+                <div class="feature-card hover-scale touch-feedback" style="background: #ffffff; border: 2px solid rgba(76, 175, 80, 0.1); text-align: center;">
+                  <div style="font-size: 32px; margin-bottom: 12px;">🛡️</div>
+                  <h3 style="color: #2e7d32; font-size: 16px; font-weight: 600; margin: 0 0 8px;">Supporto 12 Mesi</h3>
+                  <p style="color: #4caf50; font-size: 14px; margin: 0;">Assistenza tecnica inclusa</p>
+                </div>
+
+                <div class="feature-card hover-scale touch-feedback" style="background: #ffffff; border: 2px solid rgba(76, 175, 80, 0.1); text-align: center;">
+                  <div style="font-size: 32px; margin-bottom: 12px;">🎯</div>
+                  <h3 style="color: #2e7d32; font-size: 16px; font-weight: 600; margin: 0 0 8px;">ROI Garantito</h3>
+                  <p style="color: #4caf50; font-size: 14px; margin: 0;">Risultati misurabili entro 30 giorni</p>
+                </div>
+
+              </div>
+
+              <!-- Social Proof -->
+              <div style="background: rgba(76, 175, 80, 0.1); border-radius: 12px; padding: 20px; margin-top: 20px;">
+                <p style="color: #2e7d32; font-size: 16px; font-weight: 600; margin: 0 0 8px;">⭐⭐⭐⭐⭐</p>
+                <p style="color: #4caf50; font-size: 14px; margin: 0;"><strong>50+ clienti soddisfatti</strong> in Ticino e Svizzera</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Separator -->
+          <div style="padding: 0 20px;">
+            <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(24, 119, 242, 0.3), transparent); margin: 20px 0;"></div>
+          </div>
+
+          <!-- Sezione Contatti Ottimizzata -->
+          <div style="padding: 20px;">
+            <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--meta-dark); text-align: center;">📞 Contattaci Subito</h2>
+
+            <!-- Contact Items -->
+            <div style="max-width: 500px; margin: 0 auto;">
+
+              <!-- Email -->
+              <div class="contact-item hover-scale touch-feedback">
+                <div class="contact-icon">📧</div>
+                <div>
+                  <a href="mailto:info@dcreativo.ch?subject=Richiesta%20Consulenza%20Gratuita&body=Ciao%21%20Sono%20interessato%20alle%20vostre%20soluzioni%20digitali.%20Vorrei%20maggiori%20informazioni%20su%3A%0A%0A-%20Sistema%20prenotazioni%20barbershop%0A-%20Sviluppo%20sito%20web%0A-%20E-commerce%0A-%20App%20web%20React%0A%0AGrazie%21" class="contact-link">info@dcreativo.ch</a>
+                  <p style="color: var(--meta-gray); font-size: 14px; margin: 4px 0 0;">Risposta entro 2 ore lavorative</p>
+                </div>
+              </div>
+
+              <!-- WhatsApp -->
+              <div class="contact-item hover-scale touch-feedback">
+                <div class="contact-icon" style="background: var(--gradient-whatsapp);">📱</div>
+                <div>
+                  <a href="https://wa.me/41767810194?text=Ciao%21%20Sono%20interessato%20alle%20vostre%20soluzioni%20digitali%20per%20il%20mio%20business.%20Vorrei%20una%20consulenza%20gratuita." class="contact-link" style="color: var(--whatsapp-green);">+41 76 781 01 94</a>
+                  <p style="color: var(--meta-gray); font-size: 14px; margin: 4px 0 0;">Disponibile 7 giorni su 7</p>
+                </div>
+              </div>
+
+              <!-- Telefono -->
+              <div class="contact-item hover-scale touch-feedback">
+                <div class="contact-icon" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">📞</div>
+                <div>
+                  <a href="tel:+41767810194" class="contact-link" style="color: #ff9800;">+41 76 781 01 94</a>
+                  <p style="color: var(--meta-gray); font-size: 14px; margin: 4px 0 0;">Lun-Ven 8:00-18:00</p>
+                </div>
+              </div>
+
+              <!-- Indirizzo -->
+              <div class="contact-item hover-scale touch-feedback">
+                <div class="contact-icon" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">📍</div>
+                <div>
+                  <a href="https://www.google.ch/maps/place/DCreativo+Web+%26+App+Solutions+-+Freelance+Web+Developer/@46.3129195,8.9838417,17z/data=!3m1!4b1!4m6!3m5!1s0x8710daa5879b85bf:0x23d2b9b57fd22460!8m2!3d46.3129158!4d8.9864166!16s%2Fg%2F11wxljvhg0?hl=it&entry=ttu" target="_blank" rel="noopener noreferrer" class="contact-link" style="color: #f44336;">ol Mött 6, 6703 Riviera (TI)</a>
+                  <p style="color: var(--meta-gray); font-size: 14px; margin: 4px 0 0;">Ticino, Svizzera</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Footer con Social Icons Ottimizzato -->
+          <div style="background: var(--meta-dark); padding: 40px 30px; text-align: center; border-radius: 0;">
+
+            <!-- Social Icons -->
+            <div style="margin-bottom: 30px;">
+              <h3 style="color: #ffffff; font-size: 18px; font-weight: 600; margin: 0 0 20px;">🌐 Seguici sui Social</h3>
+
+              <!-- GitHub -->
+              <a href="https://github.com/dcreativo-design-studio" target="_blank" rel="noopener noreferrer" class="social-icon social-github hover-lift touch-bounce">
+                <span style="font-size: 20px;">⚡</span>
+              </a>
+
+              <!-- LinkedIn -->
+              <a href="https://www.linkedin.com/in/design-creativo-digitale/" target="_blank" rel="noopener noreferrer" class="social-icon social-linkedin hover-lift touch-bounce">
+                <span style="font-size: 20px;">💼</span>
+              </a>
+
+              <!-- WhatsApp -->
+              <a href="https://wa.me/41767810194?text=Ciao%21%20Vorrei%20maggiori%20informazioni%20sui%20vostri%20servizi." target="_blank" rel="noopener noreferrer" class="social-icon social-whatsapp hover-lift touch-bounce">
+                <span style="font-size: 20px;">💬</span>
+              </a>
+
+              <!-- Portfolio -->
+              <a href="https://www.dcreativo.ch/portfolio" target="_blank" rel="noopener noreferrer" class="social-icon social-portfolio hover-lift touch-bounce">
+                <span style="font-size: 20px;">🎨</span>
+              </a>
+            </div>
+
+            <!-- Newsletter Signup -->
+            <div style="background: rgba(255,255,255,0.05); border-radius: 16px; padding: 24px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.1);">
+              <h3 style="color: #ffffff; font-size: 18px; font-weight: 600; margin: 0 0 12px;">📧 Newsletter Esclusiva</h3>
+              <p style="color: rgba(255,255,255,0.8); font-size: 14px; margin: 0 0 16px;">Ricevi tips, case studies e offerte speciali ogni settimana</p>
+              <a href="mailto:info@dcreativo.ch?subject=Iscrizione%20Newsletter&body=Ciao%21%20Vorrei%20iscrivermi%20alla%20newsletter%20di%20DCreativo%20Solutions." class="cta-primary" style="background: var(--gradient-primary); font-size: 14px; padding: 12px 24px;">
+                ✉️ Iscriviti Gratis
+              </a>
+            </div>
+
+            <!-- Company Info -->
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px;">
+              <p style="font-size: 16px; color: #ffffff; margin: 0 0 12px; font-weight: 600;">
+                &copy; 2025 DCreativo Web & App Solutions
+              </p>
+              <p style="font-size: 14px; color: rgba(255,255,255,0.7); margin: 0 0 16px;">
+                Tutti i diritti riservati. | P.IVA: [NUMERO_PARTITA_IVA]
+              </p>
+
+              <!-- Legal Links -->
+              <div style="margin-bottom: 20px;">
+                <a href="https://dcreativo.ch/privacy" style="color: var(--fb-light-blue); text-decoration: none; font-size: 12px; margin: 0 8px;">Privacy Policy</a>
+                <span style="color: rgba(255,255,255,0.3);">|</span>
+                <a href="https://dcreativo.ch/terms" style="color: var(--fb-light-blue); text-decoration: none; font-size: 12px; margin: 0 8px;">Termini di Servizio</a>
+                <span style="color: rgba(255,255,255,0.3);">|</span>
+                <a href="https://dcreativo.ch/cookies" style="color: var(--fb-light-blue); text-decoration: none; font-size: 12px; margin: 0 8px;">Cookie Policy</a>
+              </div>
+
+              <!-- Unsubscribe -->
+              <p style="font-size: 12px; color: rgba(255,255,255,0.6); margin: 0; line-height: 1.6;">
+                Hai ricevuto questa email perché la tua attività è stata selezionata per le nostre soluzioni digitali innovative.<br>
+                <a href="https://www.dcreativo.ch/unsubscribe?email={{email}}" style="color: var(--fb-light-blue); text-decoration: underline; font-weight: 500;">Cancella iscrizione</a> se non desideri ricevere ulteriori comunicazioni.
+              </p>
+            </div>
+
+            <!-- Trust Badges -->
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+              <p style="color: rgba(255,255,255,0.8); font-size: 12px; margin: 0;">
+                🔒 Email sicura | 🇨🇭 Made in Switzerland | ⚡ Powered by Innovation
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+        <!-- Fine Container Principale -->
+
+      </td>
+    </tr>
+  </table>
+
+  <!-- JavaScript per Interazioni Avanzate -->
+  <script>
+    // Gestione animazioni scroll per email client che supportano JS
+    document.addEventListener('DOMContentLoaded', function() {
+      // Intersection Observer per animazioni on-scroll
+      if ('IntersectionObserver' in window) {
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translateY(0)';
+            }
+          });
+        }, observerOptions);
+
+        // Applica l'observer a tutti gli elementi con classe animate
+        document.querySelectorAll('[class*="animate-"]').forEach(el => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(20px)';
+          el.style.transition = 'all 0.6s ease-out';
+          observer.observe(el);
+        });
+      }
+
+      // Touch feedback per dispositivi mobili
+      if ('ontouchstart' in window) {
+        document.querySelectorAll('.touch-feedback, .touch-bounce').forEach(element => {
+          element.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.95)';
+            this.style.transition = 'transform 0.1s ease';
+          });
+
+          element.addEventListener('touchend', function() {
+            this.style.transform = 'scale(1)';
+            setTimeout(() => {
+              this.style.transition = '';
+            }, 100);
+          });
+        });
+      }
+
+      // Precarica le immagini critiche
+      const criticalImages = [
+        'https://yourstyle.dcreativo.ch/assets/logo-white.png'
+      ];
+
+      criticalImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+      });
+
+      // Analytics tracking (se disponibile)
+      if (typeof gtag !== 'undefined') {
+        // Track email open
+        gtag('event', 'email_open', {
+          'email_campaign': 'marketing_template_2025',
+          'email_type': 'promotional'
+        });
+
+        // Track CTA clicks
+        document.querySelectorAll('a[href*="dcreativo.ch"], a[href*="wa.me"]').forEach(link => {
+          link.addEventListener('click', function() {
+            const linkType = this.href.includes('wa.me') ? 'whatsapp' : 'website';
+            gtag('event', 'email_cta_click', {
+              'link_type': linkType,
+              'link_url': this.href
+            });
+          });
+        });
+      }
+    });
+
+    // Gestione errori graceful
+    window.addEventListener('error', function(e) {
+      console.log('Email template error handled gracefully:', e.message);
+    }, true);
+  </script>
+
+  <!-- Fallback per client email senza supporto CSS -->
+  <noscript>
+    <style>
+      .animate-fade-in, .animate-slide-right, .animate-bounce, .animate-pulse {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    </style>
+  </noscript>
+
+</body>
+</html><!-- Fine del template email -->
