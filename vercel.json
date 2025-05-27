@@ -12,19 +12,47 @@
     { "source": "/Promo2", "destination": "/Promo2.html" },
     { "source": "/Promo1", "destination": "/Promo1.html" },
     { "source": "/portfolio1", "destination": "/portfolio1.html" },
-     {
-      "source": "/privacy",
-      "destination": "/cookie-system.html#privacy"
+    { "source": "/privacy", "destination": "/cookie-system.html" },
+    { "source": "/cookies", "destination": "/cookie-system.html" },
+    { "source": "/terms", "destination": "/cookie-system.html" },
+    { "source": "/cookie-policy", "destination": "/cookie-system.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
     },
     {
-      "source": "/cookies",
-      "destination": "/cookie-system.html#cookies"
+      "source": "/cookie-system.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/brand.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
     }
-
-
-
-
-
   ],
   "trailingSlash": false,
   "cleanUrls": true

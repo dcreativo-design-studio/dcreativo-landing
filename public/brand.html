@@ -29,26 +29,16 @@
   <meta name="twitter:image" content="https://yourstyle.dcreativo.ch/assets/logo-white.png">
   <!-- Google Tag Manager with Cookie Consent -->
 <script>
-  // Configurazione Consent Mode PRIMA di GTM
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
 
-  // Set default consent to denied
+  // Default: tutti i cookie NEGATI tranne necessari
   gtag('consent', 'default', {
     'analytics_storage': 'denied',
     'ad_storage': 'denied',
     'functionality_storage': 'denied',
     'personalization_storage': 'denied',
-    'security_storage': 'granted',
-    'wait_for_update': 500
-  });
-
-  // Inizializza dataLayer per comunicare con GTM
-  window.dataLayer.push({
-    'cookie_consent_necessary': true,
-    'cookie_consent_analytics': false,
-    'cookie_consent_marketing': false,
-    'cookie_consent_functional': false
+    'security_storage': 'granted'
   });
 </script>
 
@@ -59,6 +49,172 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-PXR7CTV2');</script>
 <!-- End Google Tag Manager -->
+
+<!-- CSS per Cookie Banner -->
+<style>
+  /* Cookie Banner Styles */
+  .dcreativo-cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-top: 3px solid #1877f2;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    z-index: 9999;
+    transform: translateY(100%);
+    transition: transform 0.4s ease-out;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .dcreativo-cookie-banner.show {
+    transform: translateY(0);
+  }
+
+  .dcreativo-cookie-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .dcreativo-cookie-content {
+    flex: 1;
+    min-width: 300px;
+  }
+
+  .dcreativo-cookie-content h3 {
+    color: #1c1e21;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+
+  .dcreativo-cookie-content p {
+    color: #65676b;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 12px 0;
+  }
+
+  .dcreativo-cookie-links {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .dcreativo-cookie-links a {
+    color: #1877f2;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .dcreativo-cookie-links a:hover {
+    text-decoration: underline;
+  }
+
+  .dcreativo-cookie-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .dcreativo-cookie-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .dcreativo-cookie-btn-primary {
+    background: #1877f2;
+    color: white;
+    box-shadow: 0 2px 8px rgba(24, 119, 242, 0.3);
+  }
+
+  .dcreativo-cookie-btn-primary:hover {
+    background: #166fe5;
+    transform: translateY(-1px);
+  }
+
+  .dcreativo-cookie-btn-secondary {
+    background: white;
+    color: #65676b;
+    border: 2px solid #e0e0e0;
+  }
+
+  .dcreativo-cookie-btn-secondary:hover {
+    border-color: #1877f2;
+    color: #1877f2;
+  }
+
+  .dcreativo-cookie-btn-settings {
+    background: #ff9800;
+    color: white;
+  }
+
+  .dcreativo-cookie-btn-settings:hover {
+    background: #f57c00;
+    transform: translateY(-1px);
+  }
+
+  /* Notifiche */
+  .dcreativo-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    z-index: 10000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .dcreativo-notification.show {
+    transform: translateX(0);
+  }
+
+  .dcreativo-notification.success {
+    background: #4caf50;
+  }
+
+  .dcreativo-notification.info {
+    background: #2196f3;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .dcreativo-cookie-banner {
+      padding: 16px;
+    }
+
+    .dcreativo-cookie-container {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .dcreativo-cookie-actions {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .dcreativo-cookie-btn {
+      flex: 1;
+      min-width: 100px;
+    }
+  }
+</style>
   <!-- Structured Data Schema -->
   <script type="application/ld+json">
   {
@@ -537,14 +693,43 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 
 <body>
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PXR7CTV2"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+
   <!-- Preheader nascosto -->
   <div style="display: none; font-size: 0; line-height: 0; max-height: 0; overflow: hidden;">
     🚀 Sistema prenotazioni automatizzato per barbershop + sviluppo web professionale. +25% prenotazioni, -80% no-show garantiti! Scopri le soluzioni DCreativo per Ticino e Svizzera.
   </div>
+   <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PXR7CTV2"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- Cookie Banner -->
+<div id="dcreativamente-cookie-banner" class="dcreativo-cookie-banner">
+  <div class="dcreativo-cookie-container">
+    <div class="dcreativo-cookie-content">
+      <h3>🍪 Gestione Cookie - DCreativo</h3>
+      <p>
+        Utilizziamo cookie per migliorare la tua esperienza e analizzare il traffico del sito.
+        Puoi scegliere quali cookie accettare.
+      </p>
+      <div class="dcreativo-cookie-links">
+        <a href="mailto:privacy@dcreativo.ch">Privacy Policy</a>
+        <a href="mailto:info@dcreativo.ch">Contatti</a>
+      </div>
+    </div>
+    <div class="dcreativo-cookie-actions">
+      <button class="dcreativo-cookie-btn dcreativo-cookie-btn-secondary" onclick="dcreativamente_acceptNecessary()">
+        Solo Necessari
+      </button>
+      <button class="dcreativo-cookie-btn dcreativo-cookie-btn-settings" onclick="dcreativamente_showSettings()">
+        ⚙️ Personalizza
+      </button>
+      <button class="dcreativo-cookie-btn dcreativo-cookie-btn-primary" onclick="dcreativamente_acceptAll()">
+        ✅ Accetta Tutti
+      </button>
+    </div>
+  </div>
+</div>
 
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-spacing: 0; border-collapse: collapse; background: linear-gradient(135deg, #f0f2f5 0%, #e3f2fd 100%); min-height: 100vh;">
     <tr>
@@ -899,231 +1084,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </td>
     </tr>
   </table>
-  <script>
-// Cookie Manager modificato per GTM
-class GTMCookieManager {
-  constructor() {
-    this.cookieSettings = {
-      necessary: true,
-      analytics: false,
-      marketing: false,
-      functional: false
-    };
 
-    this.initializeSystem();
-  }
-
-  initializeSystem() {
-    const existingConsent = this.getCookie('dcreativo_cookie_consent');
-
-    if (!existingConsent) {
-      this.showCookieBanner();
-    } else {
-      try {
-        this.cookieSettings = JSON.parse(existingConsent);
-        this.applyCookieSettings();
-      } catch (e) {
-        this.showCookieBanner();
-      }
-    }
-  }
-
-  showCookieBanner() {
-    setTimeout(() => {
-      const banner = document.getElementById('cookieBanner');
-      if (banner) {
-        banner.classList.add('show');
-      }
-    }, 2000);
-  }
-
-  hideCookieBanner() {
-    const banner = document.getElementById('cookieBanner');
-    if (banner) {
-      banner.classList.remove('show');
-    }
-  }
-
-  acceptAllCookies() {
-    this.cookieSettings = {
-      necessary: true,
-      analytics: true,
-      marketing: true,
-      functional: true
-    };
-
-    this.saveConsentAndApply();
-    this.hideCookieBanner();
-    this.showNotification('✅ Tutti i cookie sono stati accettati', 'success');
-  }
-
-  acceptOnlyNecessary() {
-    this.cookieSettings = {
-      necessary: true,
-      analytics: false,
-      marketing: false,
-      functional: false
-    };
-
-    this.saveConsentAndApply();
-    this.hideCookieBanner();
-    this.showNotification('✅ Solo i cookie necessari sono stati accettati', 'info');
-  }
-
-  saveConsentAndApply() {
-    this.setCookie('dcreativo_cookie_consent', JSON.stringify(this.cookieSettings), 365);
-    this.applyCookieSettings();
-    this.logConsent();
-  }
-
-  applyCookieSettings() {
-    // Aggiorna Google Consent Mode
-    if (typeof gtag !== 'undefined') {
-      gtag('consent', 'update', {
-        'analytics_storage': this.cookieSettings.analytics ? 'granted' : 'denied',
-        'ad_storage': this.cookieSettings.marketing ? 'granted' : 'denied',
-        'functionality_storage': this.cookieSettings.functional ? 'granted' : 'denied',
-        'personalization_storage': this.cookieSettings.marketing ? 'granted' : 'denied'
-      });
-    }
-
-    // Invia eventi a Google Tag Manager
-    if (typeof window.dataLayer !== 'undefined') {
-      window.dataLayer.push({
-        'event': 'cookie_consent_update',
-        'cookie_consent_necessary': this.cookieSettings.necessary,
-        'cookie_consent_analytics': this.cookieSettings.analytics,
-        'cookie_consent_marketing': this.cookieSettings.marketing,
-        'cookie_consent_functional': this.cookieSettings.functional,
-        'consent_timestamp': new Date().toISOString()
-      });
-    }
-
-    // Gestione diretta dei cookie se necessario
-    if (!this.cookieSettings.analytics) {
-      this.deleteCookie('_ga');
-      this.deleteCookie('_gid');
-      this.deleteCookie('_ga_*');
-    }
-
-    if (!this.cookieSettings.marketing) {
-      this.deleteCookie('_fbp');
-      this.deleteCookie('_gcl_au');
-      this.deleteCookie('test_cookie');
-    }
-
-    console.log('🏷️ GTM Cookie settings updated:', this.cookieSettings);
-  }
-
-  logConsent() {
-    const consentData = {
-      timestamp: new Date().toISOString(),
-      settings: this.cookieSettings,
-      page: 'brand-landing',
-      gtm_container: 'GTM-PXR7CTV2',
-      userAgent: navigator.userAgent,
-      url: window.location.href
-    };
-
-    console.log('📝 GTM Consenso cookie registrato:', consentData);
-
-    // Invia anche a GTM per tracking compliance
-    if (typeof window.dataLayer !== 'undefined') {
-      window.dataLayer.push({
-        'event': 'cookie_consent_logged',
-        'consent_data': consentData
-      });
-    }
-  }
-
-  showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: ${type === 'success' ? '#4caf50' : '#2196f3'};
-      color: white;
-      padding: 16px 24px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      z-index: 10000;
-      font-weight: 600;
-      max-width: 350px;
-      animation: slideInRight 0.3s ease-out;
-    `;
-    notification.textContent = message;
-
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-      notification.style.animation = 'slideInRight 0.3s ease-out reverse';
-      setTimeout(() => {
-        if (document.body.contains(notification)) {
-          document.body.removeChild(notification);
-        }
-      }, 300);
-    }, 3000);
-  }
-
-  // Cookie utilities (rimangono uguali)
-  setCookie(name, value, days) {
-    const expires = new Date();
-    expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
-  }
-
-  getCookie(name) {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
-  }
-
-  deleteCookie(name) {
-    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
-    const domain = window.location.hostname;
-    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;domain=${domain}`;
-    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;domain=.${domain}`;
-  }
-}
-
-// Initialize GTM Cookie Manager
-let cookieManager;
-
-document.addEventListener('DOMContentLoaded', function() {
-  cookieManager = new GTMCookieManager();
-});
-
-// Global functions (rimangono uguali)
-function acceptAllCookies() {
-  cookieManager.acceptAllCookies();
-}
-
-function acceptOnlyNecessary() {
-  cookieManager.acceptOnlyNecessary();
-}
-
-function openCookieSettings() {
-  window.open('/cookie-system.html', '_blank');
-}
-
-function openCookiePrivacy() {
-  window.open('/cookie-system.html#privacy', '_blank');
-}
-
-function openCookieTerms() {
-  window.open('/cookie-system.html#terms', '_blank');
-}
-
-function openCookiePolicy() {
-  window.open('/cookie-system.html#cookies', '_blank');
-}
-</script>
   <!-- JavaScript per Interazioni Avanzate -->
   <script>
     // Gestione animazioni scroll per email client che supportano JS
@@ -1218,5 +1179,206 @@ function openCookiePolicy() {
   </noscript>
 
 <script src="cookie-system.html"></script>
+<script>
+// ===== SISTEMA COOKIE DCREATIVO =====
+(function() {
+  'use strict';
+
+  // Configurazione
+  const COOKIE_NAME = 'dcreativo_cookie_consent';
+  const COOKIE_DURATION = 365; // giorni
+
+  // Stato cookie
+  let cookieConsent = {
+    necessary: true,
+    analytics: false,
+    marketing: false,
+    timestamp: null
+  };
+
+  // Inizializzazione
+  function init() {
+    const savedConsent = getCookie(COOKIE_NAME);
+
+    if (savedConsent) {
+      try {
+        cookieConsent = JSON.parse(savedConsent);
+        applyCookieSettings(false); // Non mostrare notifiche all'avvio
+      } catch (e) {
+        showBanner();
+      }
+    } else {
+      showBanner();
+    }
+  }
+
+  // Mostra banner cookie
+  function showBanner() {
+    setTimeout(() => {
+      const banner = document.getElementById('dcreativamente-cookie-banner');
+      if (banner) {
+        banner.classList.add('show');
+      }
+    }, 2000); // Mostra dopo 2 secondi
+  }
+
+  // Nascondi banner
+  function hideBanner() {
+    const banner = document.getElementById('dcreativamente-cookie-banner');
+    if (banner) {
+      banner.classList.remove('show');
+    }
+  }
+
+  // Accetta tutti i cookie
+  function acceptAll() {
+    cookieConsent = {
+      necessary: true,
+      analytics: true,
+      marketing: true,
+      timestamp: new Date().toISOString()
+    };
+
+    saveAndApply();
+    hideBanner();
+    showNotification('✅ Tutti i cookie accettati', 'success');
+
+    // Log per debug
+    console.log('🍪 DCreativo: Tutti i cookie accettati');
+  }
+
+  // Accetta solo necessari
+  function acceptNecessary() {
+    cookieConsent = {
+      necessary: true,
+      analytics: false,
+      marketing: false,
+      timestamp: new Date().toISOString()
+    };
+
+    saveAndApply();
+    hideBanner();
+    showNotification('ℹ️ Solo cookie necessari attivi', 'info');
+
+    console.log('🍪 DCreativo: Solo cookie necessari');
+  }
+
+  // Mostra impostazioni (semplificato)
+  function showSettings() {
+    const choice = confirm(
+      '🍪 IMPOSTAZIONI COOKIE\n\n' +
+      '✅ Cookie Necessari: Sempre attivi\n' +
+      '📊 Cookie Analytics: Per statistiche sito\n' +
+      '🎯 Cookie Marketing: Per pubblicità personalizzata\n\n' +
+      'Clicca OK per accettare Analytics + Marketing\n' +
+      'Clicca Annulla per solo Necessari'
+    );
+
+    if (choice) {
+      acceptAll();
+    } else {
+      acceptNecessary();
+    }
+  }
+
+  // Salva e applica impostazioni
+  function saveAndApply() {
+    setCookie(COOKIE_NAME, JSON.stringify(cookieConsent), COOKIE_DURATION);
+    applyCookieSettings(true);
+  }
+
+  // Applica impostazioni cookie
+  function applyCookieSettings(showLogs = true) {
+    // Aggiorna Google Consent Mode (se GTM è presente)
+    if (typeof gtag !== 'undefined') {
+      gtag('consent', 'update', {
+        'analytics_storage': cookieConsent.analytics ? 'granted' : 'denied',
+        'ad_storage': cookieConsent.marketing ? 'granted' : 'denied'
+      });
+
+      if (showLogs) {
+        console.log('🏷️ GTM Consent aggiornato:', cookieConsent);
+      }
+    }
+
+    // Invia dati a GTM DataLayer (se presente)
+    if (typeof window.dataLayer !== 'undefined') {
+      window.dataLayer.push({
+        'event': 'cookie_consent_update',
+        'cookie_necessary': cookieConsent.necessary,
+        'cookie_analytics': cookieConsent.analytics,
+        'cookie_marketing': cookieConsent.marketing,
+        'consent_timestamp': cookieConsent.timestamp
+      });
+    }
+
+    // Pulisci cookie se negati
+    if (!cookieConsent.analytics) {
+      deleteCookie('_ga');
+      deleteCookie('_gid');
+    }
+
+    if (!cookieConsent.marketing) {
+      deleteCookie('_fbp');
+      deleteCookie('_gcl_au');
+    }
+  }
+
+  // Mostra notifica
+  function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `dcreativo-notification ${type}`;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => notification.classList.add('show'), 100);
+
+    setTimeout(() => {
+      notification.classList.remove('show');
+      setTimeout(() => {
+        if (document.body.contains(notification)) {
+          document.body.removeChild(notification);
+        }
+      }, 300);
+    }, 3000);
+  }
+
+  // Utility cookie
+  function setCookie(name, value, days) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+  }
+
+  function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
+  function deleteCookie(name) {
+    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
+  }
+
+  // Funzioni globali per i pulsanti
+  window.dcreativamente_acceptAll = acceptAll;
+  window.dcreativamente_acceptNecessary = acceptNecessary;
+  window.dcreativamente_showSettings = showSettings;
+
+  // Inizializza quando il DOM è pronto
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
 </body>
 </html><!-- Fine del template email -->
