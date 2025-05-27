@@ -11,7 +11,15 @@
     { "source": "/brand", "destination": "/brand.html" },
     { "source": "/Promo2", "destination": "/Promo2.html" },
     { "source": "/Promo1", "destination": "/Promo1.html" },
-    { "source": "/portfolio1", "destination": "/portfolio1.html" }
+    { "source": "/portfolio1", "destination": "/portfolio1.html" },
+     {
+      "source": "/privacy",
+      "destination": "/cookie-system.html#privacy"
+    },
+    {
+      "source": "/cookies",
+      "destination": "/cookie-system.html#cookies"
+    }
 
 
 

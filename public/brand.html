@@ -27,219 +27,7 @@
   <meta name="twitter:title" content="🚀 Trasforma il Tuo Business Digitale - DCreativo">
   <meta name="twitter:description" content="Soluzioni complete: sistema prenotazioni barbershop + sviluppo web. +25% prenotazioni garantite.">
   <meta name="twitter:image" content="https://yourstyle.dcreativo.ch/assets/logo-white.png">
-  <style>
-    /* CSS Variables per Cookie System */
-    :root {
-      --cookie-primary: #1877f2;
-      --cookie-primary-hover: #166fe5;
-      --cookie-secondary: #42a5f5;
-      --cookie-success: #4caf50;
-      --cookie-warning: #ff9800;
-      --cookie-danger: #f44336;
-      --cookie-dark: #1c1e21;
-      --cookie-gray: #65676b;
-      --cookie-light: #f0f2f5;
-      --cookie-white: #ffffff;
-      --cookie-shadow: 0 8px 32px rgba(24, 119, 242, 0.15);
-      --cookie-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --cookie-z-banner: 1000;
-      --cookie-z-modal: 1050;
-      --cookie-z-backdrop: 1040;
-    }
-
-    /* Cookie Banner Styles */
-    .cookie-banner {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(135deg, var(--cookie-white) 0%, #f8f9fa 100%);
-      border-top: 3px solid var(--cookie-primary);
-      box-shadow: var(--cookie-shadow);
-      padding: 20px;
-      z-index: var(--cookie-z-banner);
-      transform: translateY(100%);
-      transition: var(--cookie-transition);
-      backdrop-filter: blur(10px);
-    }
-
-    .cookie-banner.show {
-      transform: translateY(0);
-      animation: cookieSlideUp 0.5s ease-out;
-    }
-
-    @keyframes cookieSlideUp {
-      from { transform: translateY(100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .cookie-banner-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .cookie-banner-content {
-      flex: 1;
-      min-width: 300px;
-    }
-
-    .cookie-banner h3 {
-      color: var(--cookie-dark);
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .cookie-banner p {
-      color: var(--cookie-gray);
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 12px;
-    }
-
-    .cookie-banner-links {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .cookie-banner-links a {
-      color: var(--cookie-primary);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      transition: var(--cookie-transition);
-      border-bottom: 1px solid transparent;
-    }
-
-    .cookie-banner-links a:hover {
-      color: var(--cookie-primary-hover);
-      border-bottom-color: var(--cookie-primary-hover);
-    }
-
-    .cookie-banner-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    /* Cookie Buttons */
-    .cookie-btn {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--cookie-transition);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      justify-content: center;
-      min-width: 120px;
-      position: relative;
-      overflow: hidden;
-      font-family: inherit;
-    }
-
-    .cookie-btn-primary {
-      background: linear-gradient(135deg, var(--cookie-primary) 0%, var(--cookie-secondary) 100%);
-      color: var(--cookie-white);
-      box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
-    }
-
-    .cookie-btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(24, 119, 242, 0.4);
-    }
-
-    .cookie-btn-secondary {
-      background: var(--cookie-white);
-      color: var(--cookie-gray);
-      border: 2px solid #e0e0e0;
-    }
-
-    .cookie-btn-secondary:hover {
-      background: var(--cookie-light);
-      border-color: var(--cookie-primary);
-      color: var(--cookie-primary);
-    }
-
-    .cookie-btn-settings {
-      background: linear-gradient(135deg, var(--cookie-warning) 0%, #f57c00 100%);
-      color: var(--cookie-white);
-    }
-
-    .cookie-btn-settings:hover {
-      transform: translateY(-2px);
-      animation: cookiePulse 1s infinite;
-    }
-
-    @keyframes cookiePulse {
-      0%, 100% { transform: translateY(-2px) scale(1); }
-      50% { transform: translateY(-2px) scale(1.05); }
-    }
-
-    /* Responsive Cookie Banner */
-    @media (max-width: 768px) {
-      .cookie-banner {
-        padding: 16px;
-      }
-
-      .cookie-banner-container {
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      .cookie-banner-actions {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .cookie-btn {
-        flex: 1;
-        min-width: auto;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .cookie-banner h3 {
-        font-size: 16px;
-      }
-
-      .cookie-banner p {
-        font-size: 13px;
-      }
-    }
-
-    /* Dark mode support per cookie banner */
-    @media (prefers-color-scheme: dark) {
-      .cookie-banner {
-        background: linear-gradient(135deg, #242526 0%, #18191a 100%);
-        border-top-color: var(--cookie-secondary);
-      }
-
-      .cookie-banner h3 {
-        color: #e4e6ea;
-      }
-
-      .cookie-banner p {
-        color: #b0b3b8;
-      }
-    }
-  </style>
-
-  <!-- Google Analytics with Consent Mode -->
- <!-- Google Tag Manager with Cookie Consent -->
+  <!-- Google Tag Manager with Cookie Consent -->
 <script>
   // Configurazione Consent Mode PRIMA di GTM
   window.dataLayer = window.dataLayer || [];
@@ -271,25 +59,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-PXR7CTV2');</script>
 <!-- End Google Tag Manager -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-
-    // Set default consent to denied
-    gtag('consent', 'default', {
-      'analytics_storage': 'denied',
-      'ad_storage': 'denied',
-      'functionality_storage': 'denied',
-      'personalization_storage': 'denied',
-      'security_storage': 'granted'
-    });
-
-    gtag('js', new Date());
-    gtag('config', 'GTM-PXR7CTV2', {
-      'anonymize_ip': true,
-      'cookie_flags': 'SameSite=Lax'
-    });
-  </script>
   <!-- Structured Data Schema -->
   <script type="application/ld+json">
   {
@@ -348,9 +117,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       line-height: 1.6;
       background: linear-gradient(135deg, #f0f2f5 0%, #e3f2fd 100%);
     }
+    /* Personalizza i colori per DCreativo */
 
+
+/* Logo personalizzato nel banner */
+.cookie-banner h3::before {
+  content: url('logo/dcreativo-icon.svg');
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
     /* Meta Colors Palette */
     :root {
+      --dcreativo-primary: #1877f2;
+      --dcreativo-secondary: #42a5f5;
+      --dcreativo-accent: #ff9800;
       --fb-blue: #1877f2;
       --fb-blue-hover: #166fe5;
       --fb-light-blue: #42a5f5;
@@ -756,42 +537,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 
 <body>
-  <!-- Preheader nascosto -->
-  <div style="display: none; font-size: 0; line-height: 0; max-height: 0; overflow: hidden;">
-    🚀 Sistema prenotazioni automatizzato per barbershop + sviluppo web professionale. +25% prenotazioni, -80% no-show garantiti! Scopri le soluzioni DCreativo per Ticino e Svizzera.
-  </div>
   <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PXR7CTV2"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-   <!-- 🍪  COOKIE BANNER HTML -->
-  <!-- ======================== -->
-  <div id="cookieBanner" class="cookie-banner">
-    <div class="cookie-banner-container">
-      <div class="cookie-banner-content">
-        <h3>🍪 Gestione Cookie</h3>
-        <p>
-          Utilizziamo cookie per migliorare la tua esperienza sul nostro sito web.
-          I cookie necessari sono sempre attivi per garantire il funzionamento del sito.
-        </p>
-        <div class="cookie-banner-links">
-          <a href="javascript:void(0)" onclick="openCookiePrivacy()">Privacy Policy</a>
-          <a href="javascript:void(0)" onclick="openCookieTerms()">Terms of Service</a>
-          <a href="javascript:void(0)" onclick="openCookiePolicy()">Cookie Policy</a>
-        </div>
-      </div>
-      <div class="cookie-banner-actions">
-        <button class="cookie-btn cookie-btn-secondary" onclick="acceptOnlyNecessary()">
-          Solo Necessari
-        </button>
-        <button class="cookie-btn cookie-btn-settings" onclick="openCookieSettings()">
-          ⚙️ Personalizza
-        </button>
-        <button class="cookie-btn cookie-btn-primary" onclick="acceptAllCookies()">
-          ✅ Accetta Tutti
-        </button>
-      </div>
-    </div>
+  <!-- Preheader nascosto -->
+  <div style="display: none; font-size: 0; line-height: 0; max-height: 0; overflow: hidden;">
+    🚀 Sistema prenotazioni automatizzato per barbershop + sviluppo web professionale. +25% prenotazioni, -80% no-show garantiti! Scopri le soluzioni DCreativo per Ticino e Svizzera.
   </div>
 
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-spacing: 0; border-collapse: collapse; background: linear-gradient(135deg, #f0f2f5 0%, #e3f2fd 100%); min-height: 100vh;">
@@ -1372,20 +1124,6 @@ function openCookiePolicy() {
   window.open('/cookie-system.html#cookies', '_blank');
 }
 </script>
-<script>
-  // Per compliance aziendale, puoi loggare i consensi
-sendConsentToServer(consentData) {
- fetch('/api/cookie-consent', {
-   method: 'POST',
-   headers: {
-     'Content-Type': 'application/json',
-   },
-   body: JSON.stringify(consentData)
- }).catch(error => {
-   console.error('Failed to log consent:', error);
- });
-}
-</script>
   <!-- JavaScript per Interazioni Avanzate -->
   <script>
     // Gestione animazioni scroll per email client che supportano JS
@@ -1478,6 +1216,7 @@ sendConsentToServer(consentData) {
       }
     </style>
   </noscript>
-  <script src="cookie-system.html"></script>
+
+<script src="cookie-system.html"></script>
 </body>
 </html><!-- Fine del template email -->
