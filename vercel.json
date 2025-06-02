@@ -17,7 +17,7 @@
     { "source": "/terms", "destination": "/cookie-system.html" },
     { "source": "/cookie-policy", "destination": "/cookie-system.html" },
     { "source": "/ebook", "destination": "/ebook.html" },
-    { "source": "/e-book", "destination": "/ebook2.html" }
+    { "source": "/ebook2", "destination": "/ebook2.html" }
 
   ],
   "headers": [
