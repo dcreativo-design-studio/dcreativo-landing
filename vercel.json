@@ -15,7 +15,9 @@
     { "source": "/privacy", "destination": "/cookie-system.html" },
     { "source": "/cookies", "destination": "/cookie-system.html" },
     { "source": "/terms", "destination": "/cookie-system.html" },
-    { "source": "/cookie-policy", "destination": "/cookie-system.html" }
+    { "source": "/cookie-policy", "destination": "/cookie-system.html" },
+    { "source": "/ebook", "destination": "/ebook.html" }
+
   ],
   "headers": [
     {
