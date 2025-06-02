@@ -1,0 +1,2249 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 StudyHub - Socio-Psico-Pedagogico</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary-color: #06b6d4;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+            --border-radius-sm: 0.375rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            --border-radius-2xl: 1.5rem;
+
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .dark-theme {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Header migliorato */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .dark-theme .header {
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            height: 70px;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+
+        .action-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .action-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Navigation migliorata */
+        .nav-container {
+            padding: 1rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-subjects {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 0.5rem;
+        }
+
+        .nav-subjects::-webkit-scrollbar {
+            display: none;
+        }
+
+        .subject-btn {
+            flex-shrink: 0;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: var(--border-radius-xl);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .subject-btn:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .subject-btn.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Main content */
+        .main-container {
+            margin-top: 140px;
+            min-height: calc(100vh - 140px);
+        }
+
+        .content-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar TOC */
+        .sidebar {
+            position: sticky;
+            top: 160px;
+            height: fit-content;
+            max-height: calc(100vh - 180px);
+            overflow-y: auto;
+            background: var(--bg-card);
+            border-radius: var(--border-radius-2xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toc-item {
+            display: block;
+            padding: 0.75rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius-lg);
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-item:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-left-color: var(--primary-color);
+            transform: translateX(4px);
+        }
+
+        .toc-item.active {
+            background: var(--primary-color);
+            color: white;
+            border-left-color: var(--primary-dark);
+        }
+
+        .toc-item.completed {
+            color: var(--success-color);
+        }
+
+        .toc-item.completed::before {
+            content: "✓ ";
+            font-weight: bold;
+        }
+
+        /* Content area */
+        .content-area {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-2xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            min-height: 600px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .lesson-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .lesson-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Cards modernizzate */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-highlight {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .dark-theme .card-highlight {
+            background: linear-gradient(135deg, #451a03, #78350f);
+        }
+
+        .card-important {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid var(--error-color);
+        }
+
+        .dark-theme .card-important {
+            background: linear-gradient(135deg, #450a0a, #7f1d1d);
+        }
+
+        .card-tip {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .dark-theme .card-tip {
+            background: linear-gradient(135deg, #0c4a6e, #075985);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Floating Audio Controls */
+        .floating-controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .audio-player {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-2xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            min-width: 280px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .audio-player.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .audio-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .audio-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .close-audio {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .play-btn {
+            width: 50px;
+            height: 50px;
+            border: none;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.2rem;
+        }
+
+        .play-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .secondary-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .speed-indicator {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        /* Quick Actions FAB */
+        .fab-container {
+            position: relative;
+        }
+
+        .fab-main {
+            width: 60px;
+            height: 60px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-xl);
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+        }
+
+        .fab-main:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .fab-menu {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+
+        .fab-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .fab-item {
+            width: 50px;
+            height: 50px;
+            border: none;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .fab-item:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Progress indicator */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.3s ease;
+            z-index: 1001;
+        }
+
+        /* Status notifications */
+        .status-notification {
+            position: fixed;
+            top: 90px;
+            right: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-xl);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-lg);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 998;
+            max-width: 300px;
+        }
+
+        .status-notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .status-notification.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .status-notification.warning {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .status-notification.error {
+            border-left: 4px solid var(--error-color);
+        }
+
+        /* Index grid modernizzato */
+        .index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .subject-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-2xl);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .subject-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .subject-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .subject-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--border-radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .subject-card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .lesson-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius-lg);
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .lesson-link:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-left-color: var(--primary-color);
+            transform: translateX(8px);
+        }
+
+        /* Responsive design migliorato */
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .sidebar {
+                position: relative;
+                top: auto;
+                max-height: none;
+                margin-bottom: 2rem;
+            }
+
+            .floating-controls {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .audio-player {
+                min-width: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-top {
+                height: 60px;
+            }
+
+            .nav-container {
+                padding: 0.75rem 0;
+            }
+
+            .main-container {
+                margin-top: 120px;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .lesson-title {
+                font-size: 2rem;
+            }
+
+            .content-area {
+                padding: 1.5rem;
+            }
+
+            .floating-controls {
+                bottom: 0.5rem;
+                right: 0.5rem;
+            }
+
+            .audio-player {
+                min-width: 200px;
+                padding: 1rem;
+            }
+
+            .index-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .subject-card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 0 0.75rem;
+            }
+
+            .content-wrapper {
+                padding: 0.75rem;
+            }
+
+            .action-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .subject-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .fab-main {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Focus states per accessibilità */
+        .action-btn:focus,
+        .subject-btn:focus,
+        .control-btn:focus,
+        .play-btn:focus,
+        .fab-main:focus,
+        .fab-item:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            :root {
+                --border-color: #000000;
+                --text-muted: #333333;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-top">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <span>StudyHub</span>
+                </a>
+
+                <div class="header-actions">
+                    <button class="action-btn" id="searchBtn" title="Cerca">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="action-btn" id="bookmarkBtn" title="Bookmark">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                    <button class="action-btn" id="themeBtn" title="Cambia tema">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="action-btn" id="fullscreenBtn" title="Schermo intero">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button class="action-btn" id="menuBtn" title="Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <nav class="nav-container">
+                <div class="nav-subjects">
+                    <button class="subject-btn active" data-section="index">
+                        <i class="fas fa-home"></i>
+                        <span>Indice</span>
+                    </button>
+                    <button class="subject-btn" data-section="italiano">
+                        <i class="fas fa-book"></i>
+                        <span>Italiano</span>
+                    </button>
+                    <button class="subject-btn" data-section="storia">
+                        <i class="fas fa-landmark"></i>
+                        <span>Storia</span>
+                    </button>
+                    <button class="subject-btn" data-section="matematica">
+                        <i class="fas fa-calculator"></i>
+                        <span>Matematica</span>
+                    </button>
+                    <button class="subject-btn" data-section="inglese">
+                        <i class="fas fa-language"></i>
+                        <span>Inglese</span>
+                    </button>
+                    <button class="subject-btn" data-section="psicologia">
+                        <i class="fas fa-brain"></i>
+                        <span>Psicologia</span>
+                    </button>
+                    <button class="subject-btn" data-section="pedagogia">
+                        <i class="fas fa-users"></i>
+                        <span>Pedagogia</span>
+                    </button>
+                    <button class="subject-btn" data-section="sociologia">
+                        <i class="fas fa-globe"></i>
+                        <span>Sociologia</span>
+                    </button>
+                    <button class="subject-btn" data-section="filosofia">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Filosofia</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <div class="content-wrapper">
+            <!-- Sidebar TOC -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <i class="fas fa-list"></i>
+                    <span>Contenuti</span>
+                </div>
+                <div id="tocContainer">
+                    <!-- TOC items will be generated dynamically -->
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Sezione Indice -->
+                <section id="index" class="section active">
+                    <div class="lesson-header">
+                        <h1 class="lesson-title">📚 Benvenuto in StudyHub</h1>
+                        <p class="lesson-subtitle">La tua guida completa per l'esame socio-psico-pedagogico</p>
+                    </div>
+
+                    <div class="card card-highlight">
+                        <h3 class="card-title">🎯 Il tuo percorso di studio</h3>
+                        <p>Questo ebook interattivo ti accompagnerà attraverso tutte le materie essenziali per l'esame di stato. Ogni sezione è progettata per offrirti contenuti chiari, esempi pratici e strumenti di studio avanzati.</p>
+                    </div>
+
+                    <div class="index-grid">
+                        <div class="subject-card">
+                            <div class="subject-card-header">
+                                <div class="subject-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <h3 class="subject-card-title">Italiano</h3>
+                            </div>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione1">📚 Fondamenti della Letteratura Italiana</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione2">👤 Dante Alighieri - Divina Commedia</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione3">🌹 Petrarca - Il Canzoniere</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione4">📚 Boccaccio - Il Decameron</a>
+          <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione5">🏛️ Rinascimento - Machiavelli e Ariosto</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione6">🎭 Settecento - Goldoni, Parini, Alfieri</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione7">🌅 Romanticismo - Foscolo e Manzoni</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione8">🌙 Leopardi e Verismo - Verga</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione9">🌸 Decadentismo - Pascoli e D'Annunzio</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione10">🚀 Novecento - Pirandello e Svevo</a>
+                        </div>
+
+                        <div class="subject-card">
+                            <div class="subject-card-header">
+                                <div class="subject-icon">
+                                    <i class="fas fa-landmark"></i>
+                                </div>
+                                <h3 class="subject-card-title">Storia</h3>
+                            </div>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione1">🏛️ Alto Medioevo</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione2">🌱 Basso Medioevo</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione3">💀 Crisi del XIV Secolo</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione4">🎨 Rinascimento</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione5">👑 Seicento - Assolutismo</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione6">💡 Settecento - Illuminismo</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione7">🏰 Rivoluzione Francese</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione8">🎖️ Napoleone Bonaparte</a>
+                        </div>
+
+                        <div class="subject-card">
+                            <div class="subject-card-header">
+                                <div class="subject-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <h3 class="subject-card-title">Psicologia</h3>
+                            </div>
+                            <a href="#" class="lesson-link" data-section="psicologia">🧠 Psicologia Generale</a>
+                            <a href="#" class="lesson-link" data-section="psicologia">👶 Psicologia dello Sviluppo</a>
+                            <a href="#" class="lesson-link" data-section="psicologia">👥 Psicologia Sociale</a>
+                            <a href="#" class="lesson-link" data-section="psicologia">⚕️ Psicologia Applicata</a>
+                        </div>
+
+                        <div class="subject-card">
+                            <div class="subject-card-header">
+                                <div class="subject-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h3 class="subject-card-title">Pedagogia</h3>
+                            </div>
+                            <a href="#" class="lesson-link" data-section="pedagogia">📚 Storia della Pedagogia</a>
+                            <a href="#" class="lesson-link" data-section="pedagogia">🌟 Pedagogia Contemporanea</a>
+                            <a href="#" class="lesson-link" data-section="pedagogia">♿ Pedagogia Speciale</a>
+                            <a href="#" class="lesson-link" data-section="pedagogia">🌍 Pedagogia Interculturale</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sezione Italiano -->
+                <section id="italiano" class="section">
+                    <div class="lesson-header">
+                        <h1 class="lesson-title">📖 Letteratura Italiana</h1>
+                        <p class="lesson-subtitle">Dalle origini al Novecento - Guida completa per l'esame</p>
+                    </div>
+
+                    <div id="lezione1" class="lesson-content">
+                        <h2>📚 LEZIONE 1: I Fondamenti della Letteratura Italiana</h2>
+
+                        <div class="card card-tip">
+                            <h3 class="card-title">🎯 Obiettivi della lezione</h3>
+                            <ul>
+                                <li>Comprendere cos'è la letteratura e la sua importanza</li>
+                                <li>Conoscere le periodizzazioni della letteratura italiana</li>
+                                <li>Imparare come analizzare un testo letterario</li>
+                                <li>Identificare i generi letterari principali</li>
+                            </ul>
+                        </div>
+
+                        <h3>📚 Che cos'è la Letteratura?</h3>
+                        <p>La <strong>letteratura</strong> è l'insieme delle opere scritte che hanno valore artistico e culturale. Non è solo "bella scrittura", ma è:</p>
+
+                        <div class="card">
+                            <ul>
+                                <li><strong>Testimonianza storica:</strong> ci racconta come vivevano, pensavano e sentivano le persone del passato</li>
+                                <li><strong>Arte del linguaggio:</strong> usa le parole per creare bellezza ed emozioni</li>
+                                <li><strong>Riflessione sull'uomo:</strong> esplora i grandi temi universali (amore, morte, giustizia, senso della vita)</li>
+                            </ul>
+                        </div>
+
+                        <div class="card card-important">
+                            <h3 class="card-title">Perché studiare letteratura italiana?</h3>
+                            <ul>
+                                <li>Per capire la nostra identità culturale</li>
+                                <li>Per sviluppare il pensiero critico</li>
+                                <li>Per migliorare le capacità espressive</li>
+                                <li>Per prepararsi all'esame con competenza!</li>
+                            </ul>
+                        </div>
+
+                        <h3>🗓️ Le Grandi Epoche della Letteratura Italiana</h3>
+
+                        <div class="card card-highlight">
+                            <h4><strong>1. MEDIOEVO (1200-1400)</strong></h4>
+                            <p><strong>Caratteristiche:</strong> religiosità, mondo feudale, latino e volgare</p>
+                            <p><strong>Autori chiave:</strong> Dante, Petrarca, Boccaccio</p>
+                            <p><strong>Perché è importante:</strong> nascono l'italiano letterario e i grandi modelli</p>
+                        </div>
+
+                        <div class="card card-highlight">
+                            <h4><strong>2. RINASCIMENTO (1400-1600)</strong></h4>
+                            <p><strong>Caratteristiche:</strong> riscoperta dei classici, corti signorili, umanesimo</p>
+                            <p><strong>Autori chiave:</strong> Ariosto, Machiavelli, Tasso</p>
+                            <p><strong>Perché è importante:</strong> l'italiano diventa lingua letteraria matura</p>
+                        </div>
+                    </div>
+
+                    <div id="lezione2" class="lesson-content">
+                        <h2>👤 LEZIONE 2: Dante Alighieri - Il Padre della Letteratura Italiana</h2>
+
+                        <div class="card card-tip">
+                            <h3 class="card-title">La Vita di Dante (1265-1321)</h3>
+                            <ul>
+                                <li><strong>Firenze 1265:</strong> nasce in una famiglia della piccola nobiltà guelfa</li>
+                                <li><strong>1274:</strong> incontra Beatrice (Bice Portinari) - amore della sua vita</li>
+                                <li><strong>1290:</strong> muore Beatrice - svolta nella sua poetica</li>
+                                <li><strong>1300:</strong> priore di Firenze, si oppone al papa Bonifacio VIII</li>
+                                <li><strong>1302:</strong> esilio da Firenze per sempre</li>
+                                <li><strong>1321:</strong> muore a Ravenna, ancora in esilio</li>
+                            </ul>
+                        </div>
+
+                        <h3>📖 La Divina Commedia</h3>
+
+                        <div class="card card-important">
+                            <h3 class="card-title">STRUTTURA MATEMATICA</h3>
+                            <ul>
+                                <li><strong>3 cantiche:</strong> Inferno, Purgatorio, Paradiso</li>
+                                <li><strong>33 canti</strong> per cantica + 1 di introduzione = 100 canti totali</li>
+                                <li><strong>Terzine</strong> di endecasillabi (ABA BCB CDC...)</li>
+                                <li><strong>Numero 3:</strong> simbolo della Trinità, perfezione divina</li>
+                            </ul>
+                        </div>
+
+                        <h4>📚 Analisi: Canto I - "Nel mezzo del cammin"</h4>
+
+                        <div class="card card-highlight">
+                            <blockquote>
+                                <em>"Nel mezzo del cammin di nostra vita<br>
+                                mi ritrovai per una selva oscura,<br>
+                                ché la diritta via era smarrita."</em>
+                            </blockquote>
+
+                            <h4>ANALISI:</h4>
+                            <ul>
+                                <li><strong>"Nel mezzo del cammin":</strong> 35 anni, crisi esistenziale universale</li>
+                                <li><strong>"nostra vita":</strong> coinvolge tutti noi lettori</li>
+                                <li><strong>"selva oscura":</strong> simbolo del peccato, smarrimento morale</li>
+                                <li><strong>"diritta via":</strong> la strada della virtù, la via di Dio</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sezione Storia -->
+                <section id="storia" class="section">
+                    <div class="lesson-header">
+                        <h1 class="lesson-title">🏛️ Storia</h1>
+                        <p class="lesson-subtitle">Dal Medioevo ai nostri giorni - Percorso completo</p>
+                    </div>
+
+                    <div id="storia-lezione1" class="lesson-content">
+                        <h2>🏛️ LEZIONE 1: L'Alto Medioevo</h2>
+
+                        <div class="card card-tip">
+                            <h3 class="card-title">🎯 Obiettivi della lezione</h3>
+                            <ul>
+                                <li>Il crollo dell'Impero Romano d'Occidente</li>
+                                <li>Le invasioni barbariche e i regni romano-barbarici</li>
+                                <li>L'ascesa del Cristianesimo e del Papato</li>
+                                <li>L'Impero Carolingio e Carlo Magno</li>
+                            </ul>
+                        </div>
+
+                        <h3>🏛️ LA FINE DELL'IMPERO ROMANO D'OCCIDENTE (476 d.C.)</h3>
+
+                        <div class="card card-important">
+                            <h3 class="card-title">LE CAUSE DELLA CRISI</h3>
+                            <h4>CRISI ECONOMICA</h4>
+                            <ul>
+                                <li><strong>Inflazione:</strong> svalutazione della moneta</li>
+                                <li><strong>Crisi agricola:</strong> abbandono delle campagne</li>
+                                <li><strong>Crisi commerciale:</strong> insicurezza delle strade</li>
+                                <li><strong>Tasse:</strong> sempre più pesanti per mantenere l'esercito</li>
+                            </ul>
+
+                            <h4>CRISI POLITICA</h4>
+                            <ul>
+                                <li><strong>Anarchia militare:</strong> imperatori nominati dalle legioni</li>
+                                <li><strong>Divisione dell'Impero</strong> (395): Occidente e Oriente</li>
+                                <li><strong>Capitale:</strong> spostata da Roma a Ravenna</li>
+                            </ul>
+                        </div>
+
+                        <h3>👑 L'IMPERO CAROLINGIO</h3>
+
+                        <div class="card card-highlight">
+                            <h3 class="card-title">CARLO MAGNO (768-814)</h3>
+                            <h4>LE CONQUISTE</h4>
+                            <ul>
+                                <li><strong>Longobardi</strong> (774): conquista del regno italico</li>
+                                <li><strong>Sassoni</strong> (772-804): evangelizzazione forzata</li>
+                                <li><strong>Avari</strong> (791-796): distruzione del regno</li>
+                                <li><strong>Spagna:</strong> Marca Hispanica contro gli Arabi</li>
+                            </ul>
+
+                            <h4>L'INCORONAZIONE (25 dicembre 800)</h4>
+                            <ul>
+                                <li><strong>Luogo:</strong> San Pietro in Roma</li>
+                                <li><strong>Protagonisti:</strong> Papa Leone III e Carlo Magno</li>
+                                <li><strong>Significato:</strong> Rinascita dell'Impero in Occidente</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sezione Psicologia -->
+                <section id="psicologia" class="section">
+                    <div class="lesson-header">
+                        <h1 class="lesson-title">🧠 Psicologia</h1>
+                        <p class="lesson-subtitle">Scienza del comportamento e dei processi mentali</p>
+                    </div>
+
+                    <div class="card card-tip">
+                        <h3 class="card-title">🎯 Cos'è la Psicologia?</h3>
+                        <p>La psicologia è la scienza che studia il comportamento umano e i processi mentali. Si occupa di comprendere come pensiamo, sentiamo, apprendiamo e ci relazioniamo con gli altri.</p>
+                    </div>
+
+                    <h3>📚 Storia e Metodi della Psicologia</h3>
+
+                    <div class="card card-highlight">
+                        <h3 class="card-title">Principali Scuole Psicologiche</h3>
+                        <ul>
+                            <li><strong>Strutturalismo (Wundt, Titchener):</strong> analisi degli elementi base della coscienza</li>
+                            <li><strong>Funzionalismo (James, Dewey):</strong> studio della funzione dei processi mentali</li>
+                            <li><strong>Comportamentismo (Watson, Skinner):</strong> focus sui comportamenti osservabili</li>
+                            <li><strong>Gestalt (Wertheimer, Köhler):</strong> percezione come insieme organizzato</li>
+                            <li><strong>Psicoanalisi (Freud):</strong> ruolo dell'inconscio</li>
+                            <li><strong>Cognitivismo:</strong> studio dei processi di elaborazione dell'informazione</li>
+                        </ul>
+                    </div>
+
+                    <h3>🧠 Processi Cognitivi</h3>
+
+                    <div class="card">
+                        <h3 class="card-title">Principali Processi Cognitivi</h3>
+                        <ul>
+                            <li><strong>Attenzione:</strong> selezione delle informazioni rilevanti</li>
+                            <li><strong>Percezione:</strong> interpretazione degli stimoli sensoriali</li>
+                            <li><strong>Memoria:</strong> codifica, immagazzinamento e recupero</li>
+                            <li><strong>Apprendimento:</strong> acquisizione di nuove conoscenze</li>
+                            <li><strong>Pensiero:</strong> elaborazione e organizzazione delle informazioni</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Controls -->
+    <div class="floating-controls">
+        <!-- Audio Player -->
+        <div class="audio-player" id="audioPlayer">
+            <div class="audio-header">
+                <span class="audio-title">🎧 Lettura Audio</span>
+                <button class="close-audio" id="closeAudio">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="audio-controls">
+                <button class="play-btn" id="playBtn">
+                    <i class="fas fa-play"></i>
+                </button>
+
+                <div class="secondary-controls">
+                    <button class="control-btn" id="pauseBtn">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button class="control-btn" id="stopBtn">
+                        <i class="fas fa-stop"></i>
+                    </button>
+                    <button class="control-btn" id="speedBtn">1x</button>
+                </div>
+            </div>
+
+            <div class="speed-indicator">
+                Velocità di lettura regolabile
+            </div>
+        </div>
+
+        <!-- FAB Menu -->
+        <div class="fab-container">
+            <div class="fab-menu" id="fabMenu">
+                <button class="fab-item" id="pomodoroBtn" title="Timer Pomodoro">
+                    <i class="fas fa-clock"></i>
+                </button>
+                <button class="fab-item" id="statsBtn" title="Statistiche">
+                    <i class="fas fa-chart-bar"></i>
+                </button>
+                <button class="fab-item" id="exportBtn" title="Esporta Note">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="fab-item" id="audioToggleBtn" title="Lettura Audio">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+            </div>
+
+            <button class="fab-main" id="fabMain">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Status Notification -->
+    <div class="status-notification" id="statusNotification">
+        <div id="statusMessage"></div>
+    </div>
+
+    <script>
+        // Enhanced Modern Ebook Manager
+        class ModernEbookManager {
+            constructor() {
+                this.currentSection = 'index';
+                this.sections = ['index', 'italiano', 'storia', 'matematica', 'inglese', 'psicologia', 'pedagogia', 'sociologia', 'filosofia'];
+                this.speechSynthesis = window.speechSynthesis;
+                this.currentUtterance = null;
+                this.isReading = false;
+                this.readingSpeed = 1;
+                this.speedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
+                this.isDarkTheme = false;
+                this.isAudioPlayerVisible = false;
+                this.isFabMenuOpen = false;
+                this.pomodoroTimer = null;
+                this.touchStartY = 0;
+                this.touchEndY = 0;
+
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.setupKeyboardShortcuts();
+                this.setupTouchGestures();
+                this.generateTOC();
+                this.loadUserPreferences();
+                this.updateProgressBar();
+                this.showWelcomeNotification();
+            }
+
+            setupEventListeners() {
+                // Navigation buttons
+                document.querySelectorAll('.subject-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const section = e.currentTarget.getAttribute('data-section');
+                        this.showSection(section);
+                    });
+                });
+
+                // Lesson links
+                document.querySelectorAll('.lesson-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const section = e.currentTarget.getAttribute('data-section');
+                        const anchor = e.currentTarget.getAttribute('data-anchor');
+                        this.showSection(section, anchor);
+                    });
+                });
+
+                // Header actions
+                document.getElementById('themeBtn').addEventListener('click', () => this.toggleTheme());
+                document.getElementById('fullscreenBtn').addEventListener('click', () => this.toggleFullscreen());
+                document.getElementById('bookmarkBtn').addEventListener('click', () => this.addBookmark());
+                document.getElementById('searchBtn').addEventListener('click', () => this.showSearch());
+                document.getElementById('menuBtn').addEventListener('click', () => this.toggleMobileMenu());
+
+                // Audio controls
+                document.getElementById('playBtn').addEventListener('click', () => this.startReading());
+                document.getElementById('pauseBtn').addEventListener('click', () => this.pauseReading());
+                document.getElementById('stopBtn').addEventListener('click', () => this.stopReading());
+                document.getElementById('speedBtn').addEventListener('click', () => this.adjustSpeed());
+                document.getElementById('closeAudio').addEventListener('click', () => this.hideAudioPlayer());
+
+                // FAB controls
+                document.getElementById('fabMain').addEventListener('click', () => this.toggleFabMenu());
+                document.getElementById('audioToggleBtn').addEventListener('click', () => this.toggleAudioPlayer());
+                document.getElementById('pomodoroBtn').addEventListener('click', () => this.startPomodoro());
+                document.getElementById('statsBtn').addEventListener('click', () => this.showStats());
+                document.getElementById('exportBtn').addEventListener('click', () => this.exportNotes());
+
+                // TOC clicks
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('toc-item')) {
+                        e.preventDefault();
+                        const section = e.target.getAttribute('data-section');
+                        const anchor = e.target.getAttribute('data-anchor');
+                        this.showSection(section, anchor);
+                    }
+                });
+
+                // Smooth scroll for anchor links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const target = document.querySelector(e.target.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    });
+                });
+            }
+
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl + Space: Toggle reading
+                    if (e.ctrlKey && e.code === 'Space') {
+                        e.preventDefault();
+                        this.isReading ? this.stopReading() : this.startReading();
+                    }
+
+                    // Ctrl + B: Add bookmark
+                    if (e.ctrlKey && e.key === 'b') {
+                        e.preventDefault();
+                        this.addBookmark();
+                    }
+
+                    // Ctrl + T: Toggle theme
+                    if (e.ctrlKey && e.key === 't') {
+                        e.preventDefault();
+                        this.toggleTheme();
+                    }
+
+                    // Ctrl + F: Toggle fullscreen
+                    if (e.ctrlKey && e.key === 'f') {
+                        e.preventDefault();
+                        this.toggleFullscreen();
+                    }
+
+                    // Arrow keys for navigation
+                    if (e.altKey) {
+                        const currentIndex = this.sections.indexOf(this.currentSection);
+
+                        if (e.key === 'ArrowRight' && currentIndex < this.sections.length - 1) {
+                            e.preventDefault();
+                            this.showSection(this.sections[currentIndex + 1]);
+                        }
+
+                        if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                            e.preventDefault();
+                            this.showSection(this.sections[currentIndex - 1]);
+                        }
+                    }
+
+                    // Escape: Close menus
+                    if (e.key === 'Escape') {
+                        this.closeFabMenu();
+                        this.hideAudioPlayer();
+                    }
+                });
+            }
+
+            setupTouchGestures() {
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                document.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                    this.touchStartY = e.changedTouches[0].screenY;
+                });
+
+                document.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    this.touchEndY = e.changedTouches[0].screenY;
+                    this.handleGesture(touchStartX, touchEndX);
+                });
+            }
+
+            handleGesture(startX, endX) {
+                const threshold = 100;
+                const diff = startX - endX;
+
+                if (Math.abs(diff) > threshold) {
+                    const currentIndex = this.sections.indexOf(this.currentSection);
+
+                    if (diff > 0 && currentIndex < this.sections.length - 1) {
+                        // Swipe left - next section
+                        this.showSection(this.sections[currentIndex + 1]);
+                    } else if (diff < 0 && currentIndex > 0) {
+                        // Swipe right - previous section
+                        this.showSection(this.sections[currentIndex - 1]);
+                    }
+                }
+            }
+
+            showSection(sectionId, anchorId = null) {
+                // Hide all sections
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // Show target section
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    this.currentSection = sectionId;
+                }
+
+                // Update navigation
+                document.querySelectorAll('.subject-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-section') === sectionId) {
+                        btn.classList.add('active');
+                    }
+                });
+
+                // Handle anchor scrolling
+                if (anchorId) {
+                    setTimeout(() => {
+                        const anchorElement = document.getElementById(anchorId);
+                        if (anchorElement) {
+                            anchorElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                            this.highlightElement(anchorElement);
+                        }
+                    }, 300);
+                }
+
+                this.updateProgressBar();
+                this.updateTOC();
+                this.saveProgress(sectionId, anchorId);
+            }
+
+            highlightElement(element) {
+                element.style.transition = 'all 0.5s ease';
+                element.style.backgroundColor = 'var(--primary-color)';
+                element.style.color = 'white';
+                element.style.borderRadius = 'var(--border-radius-lg)';
+                element.style.padding = '1rem';
+
+                setTimeout(() => {
+                    element.style.backgroundColor = '';
+                    element.style.color = '';
+                    element.style.padding = '';
+                }, 2000);
+            }
+
+            generateTOC() {
+                const tocContainer = document.getElementById('tocContainer');
+                const currentSectionElement = document.getElementById(this.currentSection);
+
+                if (!currentSectionElement) return;
+
+                const headings = currentSectionElement.querySelectorAll('h2, h3[id]');
+                tocContainer.innerHTML = '';
+
+                headings.forEach(heading => {
+                    const tocItem = document.createElement('a');
+                    tocItem.href = '#';
+                    tocItem.className = 'toc-item';
+                    tocItem.setAttribute('data-section', this.currentSection);
+
+                    if (heading.id) {
+                        tocItem.setAttribute('data-anchor', heading.id);
+                    }
+
+                    tocItem.textContent = heading.textContent;
+                    tocContainer.appendChild(tocItem);
+                });
+            }
+
+            updateTOC() {
+                this.generateTOC();
+            }
+
+            startReading() {
+                if (!this.speechSynthesis) {
+                    this.showNotification('Sintesi vocale non supportata', 'error');
+                    return;
+                }
+
+                const activeSection = document.querySelector('.section.active');
+                if (!activeSection) {
+                    this.showNotification('Nessuna sezione da leggere', 'warning');
+                    return;
+                }
+
+                const textContent = this.extractTextContent(activeSection);
+
+                if (!textContent.trim()) {
+                    this.showNotification('Nessun testo da leggere', 'warning');
+                    return;
+                }
+
+                this.speechSynthesis.cancel();
+                this.currentUtterance = new SpeechSynthesisUtterance(textContent);
+                this.currentUtterance.lang = 'it-IT';
+                this.currentUtterance.rate = this.readingSpeed;
+                this.currentUtterance.pitch = 1;
+                this.currentUtterance.volume = 0.8;
+
+                this.currentUtterance.onstart = () => {
+                    this.isReading = true;
+                    this.updateAudioButtons();
+                    this.showAudioPlayer();
+                this.showNotification('🔊 Lettura in corso...', 'success');
+                };
+
+                this.currentUtterance.onend = () => {
+                    this.isReading = false;
+                    this.updateAudioButtons();
+                    this.showNotification('✅ Lettura completata', 'success');
+                };
+
+                this.currentUtterance.onerror = () => {
+                    this.isReading = false;
+                    this.updateAudioButtons();
+                    this.showNotification('❌ Errore durante la lettura', 'error');
+                };
+
+                this.speechSynthesis.speak(this.currentUtterance);
+            }
+
+            pauseReading() {
+                if (!this.speechSynthesis.speaking) {
+                    this.showNotification('Nessuna lettura in corso', 'warning');
+                    return;
+                }
+
+                if (this.speechSynthesis.paused) {
+                    this.speechSynthesis.resume();
+                    this.showNotification('▶️ Lettura ripresa', 'success');
+                } else {
+                    this.speechSynthesis.pause();
+                    this.showNotification('⏸️ Lettura in pausa', 'success');
+                }
+            }
+
+            stopReading() {
+                this.speechSynthesis.cancel();
+                this.isReading = false;
+                this.currentUtterance = null;
+                this.updateAudioButtons();
+                this.showNotification('⏹️ Lettura fermata', 'success');
+            }
+
+            adjustSpeed() {
+                const currentIndex = this.speedOptions.indexOf(this.readingSpeed);
+                const nextIndex = (currentIndex + 1) % this.speedOptions.length;
+                this.readingSpeed = this.speedOptions[nextIndex];
+
+                const speedBtn = document.getElementById('speedBtn');
+                speedBtn.textContent = `${this.readingSpeed}x`;
+
+                this.showNotification(`🎚️ Velocità: ${this.readingSpeed}x`, 'success');
+
+                if (this.isReading) {
+                    this.stopReading();
+                    setTimeout(() => this.startReading(), 100);
+                }
+            }
+
+            updateAudioButtons() {
+                const playBtn = document.getElementById('playBtn');
+                const playIcon = playBtn.querySelector('i');
+
+                if (this.isReading) {
+                    playIcon.className = 'fas fa-volume-up pulse';
+                    playBtn.classList.add('reading');
+                } else {
+                    playIcon.className = 'fas fa-play';
+                    playBtn.classList.remove('reading');
+                }
+            }
+
+            extractTextContent(element) {
+                return element.innerText
+                    .replace(/•/g, '')
+                    .replace(/\s+/g, ' ')
+                    .replace(/\n+/g, '. ')
+                    .replace(/[📚📖👤🌹🏛️🎭🌅🌙🌸🚀⚙️📅🔢🇬🇧🧠👥🌍💭]/g, '')
+                    .trim();
+            }
+
+            toggleTheme() {
+                this.isDarkTheme = !this.isDarkTheme;
+                document.body.classList.toggle('dark-theme', this.isDarkTheme);
+
+                const themeIcon = document.querySelector('#themeBtn i');
+                themeIcon.className = this.isDarkTheme ? 'fas fa-sun' : 'fas fa-moon';
+
+                this.showNotification(
+                    this.isDarkTheme ? '🌙 Tema scuro attivato' : '☀️ Tema chiaro attivato',
+                    'success'
+                );
+
+                this.saveUserPreferences();
+            }
+
+            toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().then(() => {
+                        this.showNotification('🔲 Modalità schermo intero', 'success');
+                        document.querySelector('#fullscreenBtn i').className = 'fas fa-compress';
+                    }).catch(() => {
+                        this.showNotification('❌ Fullscreen non supportato', 'error');
+                    });
+                } else {
+                    document.exitFullscreen().then(() => {
+                        this.showNotification('🪟 Modalità normale', 'success');
+                        document.querySelector('#fullscreenBtn i').className = 'fas fa-expand';
+                    });
+                }
+            }
+
+            toggleAudioPlayer() {
+                this.isAudioPlayerVisible = !this.isAudioPlayerVisible;
+                const audioPlayer = document.getElementById('audioPlayer');
+
+                if (this.isAudioPlayerVisible) {
+                    audioPlayer.classList.add('visible');
+                    this.showNotification('🎧 Player audio aperto', 'success');
+                } else {
+                    audioPlayer.classList.remove('visible');
+                    this.showNotification('🎧 Player audio chiuso', 'success');
+                }
+            }
+
+            showAudioPlayer() {
+                this.isAudioPlayerVisible = true;
+                document.getElementById('audioPlayer').classList.add('visible');
+            }
+
+            hideAudioPlayer() {
+                this.isAudioPlayerVisible = false;
+                document.getElementById('audioPlayer').classList.remove('visible');
+            }
+
+            toggleFabMenu() {
+                this.isFabMenuOpen = !this.isFabMenuOpen;
+                const fabMenu = document.getElementById('fabMenu');
+                const fabMain = document.getElementById('fabMain');
+
+                fabMenu.classList.toggle('open', this.isFabMenuOpen);
+                fabMain.style.transform = this.isFabMenuOpen ? 'rotate(45deg)' : 'rotate(0deg)';
+            }
+
+            closeFabMenu() {
+                this.isFabMenuOpen = false;
+                document.getElementById('fabMenu').classList.remove('open');
+                document.getElementById('fabMain').style.transform = 'rotate(0deg)';
+            }
+
+            addBookmark() {
+                const bookmarks = this.getBookmarks();
+                const bookmark = {
+                    id: Date.now(),
+                    section: this.currentSection,
+                    title: this.getCurrentSectionTitle(),
+                    timestamp: new Date().toISOString()
+                };
+
+                bookmarks.push(bookmark);
+                localStorage.setItem('studyhub_bookmarks', JSON.stringify(bookmarks));
+                this.showNotification('🔖 Bookmark aggiunto!', 'success');
+            }
+
+            getBookmarks() {
+                return JSON.parse(localStorage.getItem('studyhub_bookmarks') || '[]');
+            }
+
+            getCurrentSectionTitle() {
+                const activeSection = document.querySelector('.section.active .lesson-title');
+                return activeSection ? activeSection.textContent : this.currentSection;
+            }
+
+            startPomodoro() {
+                const minutes = prompt('🍅 Timer Pomodoro\n\nInserisci i minuti (default: 25):', '25');
+                if (minutes && !isNaN(minutes) && minutes > 0) {
+                    this.startPomodoroTimer(parseInt(minutes));
+                }
+            }
+
+            startPomodoroTimer(minutes) {
+                if (this.pomodoroTimer) {
+                    clearInterval(this.pomodoroTimer);
+                }
+
+                let timeLeft = minutes * 60;
+                this.showNotification(`🍅 Timer Pomodoro: ${minutes} minuti iniziati`, 'success');
+
+                // Create timer display
+                let timerDisplay = document.getElementById('pomodoro-timer');
+                if (!timerDisplay) {
+                    timerDisplay = document.createElement('div');
+                    timerDisplay.id = 'pomodoro-timer';
+                    timerDisplay.style.cssText = `
+                        position: fixed;
+                        top: 90px;
+                        left: 2rem;
+                        background: var(--error-color);
+                        color: white;
+                        padding: 1rem 1.5rem;
+                        border-radius: var(--border-radius-xl);
+                        font-weight: 600;
+                        z-index: 1002;
+                        box-shadow: var(--shadow-xl);
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        border: 2px solid white;
+                    `;
+                    document.body.appendChild(timerDisplay);
+                }
+
+                this.pomodoroTimer = setInterval(() => {
+                    const minutesLeft = Math.floor(timeLeft / 60);
+                    const secondsLeft = timeLeft % 60;
+
+                    timerDisplay.textContent = `🍅 ${minutesLeft}:${secondsLeft.toString().padStart(2, '0')}`;
+
+                    if (timeLeft <= 0) {
+                        clearInterval(this.pomodoroTimer);
+                        timerDisplay.remove();
+                        this.showNotification('⏰ Tempo Pomodoro terminato! Pausa di 5 minuti', 'warning');
+
+                        if ('Notification' in window && Notification.permission === 'granted') {
+                            new Notification('🍅 Pomodoro terminato!', {
+                                body: 'Tempo di fare una pausa di 5 minuti',
+                                icon: '/favicon.ico'
+                            });
+                        }
+                    }
+
+                    timeLeft--;
+                }, 1000);
+
+                timerDisplay.addEventListener('click', () => {
+                    if (confirm('Vuoi fermare il timer Pomodoro?')) {
+                        clearInterval(this.pomodoroTimer);
+                        timerDisplay.remove();
+                        this.showNotification('⏹️ Timer Pomodoro fermato', 'success');
+                    }
+                });
+            }
+
+            showStats() {
+                const progress = this.getProgress();
+                const bookmarks = this.getBookmarks();
+                const stats = this.calculateStats(progress, bookmarks);
+
+                const message = `📊 Le tue Statistiche di Studio:
+
+📚 Sezioni completate: ${stats.sectionsCompleted}
+🔖 Bookmark creati: ${stats.bookmarksCreated}
+🔥 Giorni di studio consecutivi: ${stats.studyStreak}
+⭐ Sezione preferita: ${stats.favoriteSection}
+📅 Ultima sessione: ${stats.lastStudySession}
+
+${stats.studyStreak > 0 ? '🎉 Ottimo lavoro! Continua così!' : '💪 Inizia oggi la tua serie di studio!'}`;
+
+                alert(message);
+            }
+
+            calculateStats(progress, bookmarks) {
+                return {
+                    sectionsCompleted: Object.keys(progress).length,
+                    bookmarksCreated: bookmarks.length,
+                    studyStreak: this.calculateStudyStreak(progress),
+                    favoriteSection: this.getFavoriteSection(progress),
+                    lastStudySession: this.getLastStudyDate(progress)
+                };
+            }
+
+            calculateStudyStreak(progress) {
+                const dates = Object.values(progress)
+                    .map(p => new Date(p.timestamp).toDateString())
+                    .filter((date, index, array) => array.indexOf(date) === index)
+                    .sort((a, b) => new Date(b) - new Date(a));
+
+                let streak = 0;
+                for (let i = 0; i < dates.length; i++) {
+                    const currentDate = new Date(dates[i]);
+                    const expectedDate = new Date();
+                    expectedDate.setDate(expectedDate.getDate() - i);
+
+                    if (currentDate.toDateString() === expectedDate.toDateString()) {
+                        streak++;
+                    } else {
+                        break;
+                    }
+                }
+                return streak;
+            }
+
+            getFavoriteSection(progress) {
+                const sectionCounts = {};
+                Object.keys(progress).forEach(key => {
+                    const section = key.split('-')[0];
+                    sectionCounts[section] = (sectionCounts[section] || 0) + 1;
+                });
+
+                const topSection = Object.keys(sectionCounts).reduce((a, b) =>
+                    sectionCounts[a] > sectionCounts[b] ? a : b, '');
+
+                return topSection || 'Nessuna';
+            }
+
+            getLastStudyDate(progress) {
+                const dates = Object.values(progress).map(p => new Date(p.timestamp));
+                return dates.length > 0 ?
+                    new Date(Math.max(...dates)).toLocaleDateString() : 'Mai';
+            }
+
+            exportNotes() {
+                const data = {
+                    generatedAt: new Date().toISOString(),
+                    bookmarks: this.getBookmarks(),
+                    progress: this.getProgress(),
+                    preferences: this.getUserPreferences(),
+                    stats: this.calculateStats(this.getProgress(), this.getBookmarks())
+                };
+
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = `studyhub-export-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+
+                this.showNotification('📤 Note esportate con successo!', 'success');
+            }
+
+            showSearch() {
+                const searchTerm = prompt('🔍 Cerca nell\'ebook:\n\nInserisci il termine da cercare:');
+                if (searchTerm && searchTerm.trim()) {
+                    this.performSearch(searchTerm.trim());
+                }
+            }
+
+            performSearch(term) {
+                const sections = document.querySelectorAll('.section');
+                let results = [];
+
+                sections.forEach(section => {
+                    const sectionId = section.id;
+                    const content = section.innerText.toLowerCase();
+
+                    if (content.includes(term.toLowerCase())) {
+                        const title = section.querySelector('.lesson-title')?.textContent || sectionId;
+                        results.push({
+                            section: sectionId,
+                            title: title
+                        });
+                    }
+                });
+
+                if (results.length === 0) {
+                    this.showNotification(`❌ Nessun risultato per "${term}"`, 'warning');
+                } else {
+                    this.showNotification(`🔍 Trovati ${results.length} risultati per "${term}"`, 'success');
+                    // Could implement a proper search results display here
+                }
+            }
+
+            toggleMobileMenu() {
+                // Implement mobile menu toggle
+                this.showNotification('📱 Menu mobile (da implementare)', 'warning');
+            }
+
+            updateProgressBar() {
+                const currentIndex = this.sections.indexOf(this.currentSection);
+                const progress = ((currentIndex + 1) / this.sections.length) * 100;
+
+                const progressBar = document.getElementById('progressBar');
+                if (progressBar) {
+                    progressBar.style.width = progress + '%';
+                }
+            }
+
+            saveProgress(sectionId, anchorId = null) {
+                const progress = this.getProgress();
+                const key = anchorId ? `${sectionId}-${anchorId}` : sectionId;
+
+                progress[key] = {
+                    timestamp: new Date().toISOString(),
+                    completed: true
+                };
+
+                localStorage.setItem('studyhub_progress', JSON.stringify(progress));
+            }
+
+            getProgress() {
+                return JSON.parse(localStorage.getItem('studyhub_progress') || '{}');
+            }
+
+            saveUserPreferences() {
+                const preferences = {
+                    theme: this.isDarkTheme ? 'dark' : 'light',
+                    readingSpeed: this.readingSpeed,
+                    audioPlayerVisible: this.isAudioPlayerVisible
+                };
+
+                localStorage.setItem('studyhub_preferences', JSON.stringify(preferences));
+            }
+
+            loadUserPreferences() {
+                const preferences = this.getUserPreferences();
+
+                if (preferences.theme === 'dark') {
+                    this.isDarkTheme = true;
+                    document.body.classList.add('dark-theme');
+                    document.querySelector('#themeBtn i').className = 'fas fa-sun';
+                }
+
+                this.readingSpeed = preferences.readingSpeed || 1;
+                this.isAudioPlayerVisible = preferences.audioPlayerVisible || false;
+
+                if (this.isAudioPlayerVisible) {
+                    this.showAudioPlayer();
+                }
+            }
+
+            getUserPreferences() {
+                return JSON.parse(localStorage.getItem('studyhub_preferences') || '{}');
+            }
+
+            showNotification(message, type = 'success') {
+                const notification = document.getElementById('statusNotification');
+                const messageElement = document.getElementById('statusMessage');
+
+                // Remove existing type classes
+                notification.classList.remove('success', 'warning', 'error');
+
+                // Add new type class
+                notification.classList.add(type);
+
+                messageElement.textContent = message;
+                notification.classList.add('show');
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+
+            showWelcomeNotification() {
+                setTimeout(() => {
+                    this.showNotification('🚀 StudyHub caricato! Usa Ctrl+Space per la lettura audio', 'success');
+                }, 1000);
+            }
+
+            // Public methods for global access
+            goToSection(sectionId) {
+                this.showSection(sectionId);
+            }
+
+            getCurrentSection() {
+                return this.currentSection;
+            }
+
+            getStudyData() {
+                return {
+                    progress: this.getProgress(),
+                    bookmarks: this.getBookmarks(),
+                    preferences: this.getUserPreferences()
+                };
+            }
+        }
+
+        // Initialize the ebook when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            window.studyHub = new ModernEbookManager();
+
+            // Request notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            // Handle visibility change for better performance
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden && window.studyHub.isReading) {
+                    window.studyHub.pauseReading();
+                }
+            });
+
+            // Handle beforeunload for cleanup
+            window.addEventListener('beforeunload', () => {
+                if (window.studyHub.pomodoroTimer) {
+                    clearInterval(window.studyHub.pomodoroTimer);
+                }
+                if (window.studyHub.speechSynthesis) {
+                    window.studyHub.speechSynthesis.cancel();
+                }
+            });
+
+            // Add resize handler for responsive behavior
+            window.addEventListener('resize', () => {
+                // Could add responsive adjustments here
+            });
+
+            console.log(`
+🎉 STUDYHUB CARICATO CON SUCCESSO!
+
+✨ Funzionalità moderne attive:
+🎧 Lettura audio avanzata
+🔖 Sistema bookmark intelligente
+🍅 Timer Pomodoro integrato
+🌙 Tema scuro/chiaro
+📊 Statistiche di studio
+📱 Design responsive moderno
+⌨️ Scorciatoie tastiera
+👆 Gesture touch
+🔍 Ricerca integrata
+📤 Export/Import dati
+
+🚀 Buono studio con il nuovo StudyHub!
+            `);
+        });
+
+        // Global functions for backwards compatibility and console access
+        function showSection(sectionId) {
+            if (window.studyHub) {
+                window.studyHub.goToSection(sectionId);
+            }
+        }
+
+        function toggleTheme() {
+            if (window.studyHub) {
+                window.studyHub.toggleTheme();
+            }
+        }
+
+        function startReading() {
+            if (window.studyHub) {
+                window.studyHub.startReading();
+            }
+        }
+
+        function showStats() {
+            if (window.studyHub) {
+                window.studyHub.showStats();
+            }
+        }
+
+        function addBookmark() {
+            if (window.studyHub) {
+                window.studyHub.addBookmark();
+            }
+        }
+
+        function exportNotes() {
+            if (window.studyHub) {
+                window.studyHub.exportNotes();
+            }
+        }
+
+        function startPomodoro() {
+            if (window.studyHub) {
+                window.studyHub.startPomodoro();
+            }
+        }
+
+        // Additional CSS for enhanced animations and interactions
+        const additionalCSS = `
+        /* Loading animation */
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: loading-shimmer 1.5s infinite;
+        }
+
+        @keyframes loading-shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Enhanced hover effects */
+        .subject-card {
+            transform-origin: center;
+        }
+
+        .subject-card:hover {
+            animation: cardFloat 0.6s ease-in-out;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Reading progress indicator */
+        .reading-progress {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--bg-secondary);
+            z-index: 999;
+        }
+
+        .reading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Improved focus states */
+        .toc-item:focus,
+        .lesson-link:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+            background: var(--primary-light);
+            color: white;
+        }
+
+        /* Better mobile touch targets */
+        @media (max-width: 768px) {
+            .action-btn,
+            .control-btn,
+            .fab-item {
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .subject-btn {
+                min-height: 44px;
+                touch-action: manipulation;
+            }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            .subject-card:hover {
+                animation: none;
+                transform: none;
+            }
+
+            .fab-main:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .card {
+                border: 2px solid var(--text-primary);
+            }
+
+            .subject-btn:hover,
+            .action-btn:hover {
+                border: 2px solid var(--text-primary);
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .header,
+            .sidebar,
+            .floating-controls,
+            .status-notification {
+                display: none !important;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                margin-top: 0;
+            }
+
+            .content-area {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+            }
+        }
+        `;
+
+        // Append additional CSS
+        const additionalStyleSheet = document.createElement('style');
+        additionalStyleSheet.textContent = additionalCSS;
+        document.head.appendChild(additionalStyleSheet);
+    </script>
+</body>
+</html>
