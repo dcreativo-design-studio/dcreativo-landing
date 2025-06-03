@@ -191,34 +191,42 @@
             display: none;
             flex-direction: column;
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: background 0.3s ease;
+            padding: 0.75rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.2);
         }
 
         .mobile-menu-toggle:hover {
-            background: rgba(229, 231, 235, 0.5);
+            background: rgba(37, 99, 235, 0.15);
+            transform: scale(1.05);
         }
 
         .mobile-menu-toggle span {
-            width: 24px;
-            height: 2px;
-            background: var(--text-primary);
-            margin: 3px 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 1px;
+            width: 22px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 2px 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+        }
+
+        .mobile-menu-toggle.active {
+            background: rgba(37, 99, 235, 0.2);
         }
 
         .mobile-menu-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(7px, 7px);
+            transform: rotate(45deg) translate(6px, 6px);
         }
 
         .mobile-menu-toggle.active span:nth-child(2) {
             opacity: 0;
+            transform: scale(0);
         }
 
         .mobile-menu-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
+            transform: rotate(-45deg) translate(7px, -7px);
         }
 
         /* Hero Section */
@@ -281,7 +289,7 @@
             background: rgba(255,255,255,0.15);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 50px;
-            padding: 0.5rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             font-size: 0.9rem;
             font-weight: 500;
             margin-bottom: 2rem;
@@ -830,6 +838,17 @@
             }
         }
 
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
         @keyframes floatingBg {
             0%, 100% {
                 transform: translateX(0) translateY(0) scale(1);
@@ -914,13 +933,16 @@
                 left: -100%;
                 width: 100%;
                 height: calc(100vh - 80px);
-                background: rgba(255, 255, 255, 0.98);
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%);
                 backdrop-filter: blur(20px);
                 flex-direction: column;
-                padding: 2rem;
-                transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                padding: 3rem 2rem 2rem;
+                transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
                 border-top: 1px solid var(--border-color);
                 overflow-y: auto;
+                justify-content: flex-start;
+                gap: 1rem;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             }
 
             .nav-links.active {
@@ -930,12 +952,47 @@
             .nav-link {
                 width: 100%;
                 text-align: center;
-                padding: 1rem;
-                margin-bottom: 0.5rem;
+                padding: 1.25rem 2rem;
+                margin-bottom: 0.75rem;
                 background: white;
-                border: 1px solid var(--border-color);
-                border-radius: 12px;
-                box-shadow: var(--shadow-sm);
+                border: 2px solid transparent;
+                border-radius: 16px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--text-primary);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                transform: translateX(-20px);
+                opacity: 0;
+                animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            }
+
+            .nav-links.active .nav-link:nth-child(1) { animation-delay: 0.1s; }
+            .nav-links.active .nav-link:nth-child(2) { animation-delay: 0.2s; }
+            .nav-links.active .nav-link:nth-child(3) { animation-delay: 0.3s; }
+            .nav-links.active .nav-link:nth-child(4) { animation-delay: 0.4s; }
+            .nav-links.active .nav-link:nth-child(5) { animation-delay: 0.5s; }
+
+            .nav-link:hover,
+            .nav-link.active {
+                background: var(--gradient-primary);
+                color: white;
+                border-color: rgba(37, 99, 235, 0.3);
+                transform: translateY(-3px) scale(1.02);
+                box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+            }
+
+            .cta-nav {
+                background: var(--gradient-secondary) !important;
+                color: white !important;
+                border: 2px solid rgba(6, 182, 212, 0.3) !important;
+                box-shadow: 0 8px 25px rgba(6, 182, 212, 0.25);
+            }
+
+            .cta-nav:hover {
+                background: linear-gradient(135deg, #0891b2 0%, #2563eb 100%) !important;
+                transform: translateY(-3px) scale(1.02);
+                box-shadow: 0 12px 30px rgba(6, 182, 212, 0.4);
             }
 
             .container {
@@ -1011,6 +1068,14 @@
 
             .hero-content {
                 padding: 1rem;
+                margin-top: 1rem;
+            }
+
+            .hero-badge {
+                margin-top: 1.5rem;
+                margin-bottom: 1.5rem;
+                padding: 0.5rem 1.25rem;
+                font-size: 0.85rem;
             }
 
             .section-title {
@@ -1121,7 +1186,7 @@
 
             <div class="hero-buttons">
                 <a href="#contatti" class="btn btn-primary">
-                    📅 Prenota Appuntamento
+                    📞 Contattami
                 </a>
                 <a href="#servizi" class="btn btn-secondary">
                     💡 Scopri i Servizi
@@ -1352,9 +1417,9 @@
 
                     <form onsubmit="handleFormSubmit(event)" novalidate>
                         <div class="form-group">
-                            <label for="nome" class="form-label">Nome *</label>
+                            <label for="nome" class="form-label">Nome Completo *</label>
                             <input type="text" id="nome" name="nome" class="form-input" required
-                                   placeholder="Il tuo nome completo">
+                                   placeholder="Il tuo nome e cognome">
                         </div>
 
                         <div class="form-group">
@@ -1370,27 +1435,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="servizio" class="form-label">Servizio di Interesse</label>
-                            <select id="servizio" name="servizio" class="form-select">
-                                <option value="">Seleziona un servizio</option>
-                                <option value="classico">Massaggio Classico (CHF 100.- / 60 min)</option>
-                                <option value="sportivo">Massaggio Sportivo (CHF 100.- / 60 min)</option>
-                                <option value="terapeutico">Massaggio Terapeutico (CHF 100.- / 60 min)</option>
-                                <option value="cicatrici">Trattamento Cicatrici (CHF 45.- / 30 min)</option>
-                                <option value="linfatico">Drenaggio Linfatico (CHF 90.- / 45 min)</option>
-                                <option value="connettivo">Massaggio Tessuto Connettivo (CHF 80.- / 60 min)</option>
-                                <option value="riflessologia">Riflessologia Plantare (CHF 70.- / 60 min)</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
                             <label for="messaggio" class="form-label">Messaggio</label>
                             <textarea id="messaggio" name="messaggio" class="form-textarea"
-                                      placeholder="Scrivi qui la tua richiesta di appuntamento o eventuali domande sui trattamenti..."></textarea>
+                                      placeholder="Scrivi qui la tua richiesta di informazioni sui trattamenti, domande sui rimborsi assicurativi o per richiedere un appuntamento..."></textarea>
                         </div>
 
                         <button type="submit" class="submit-btn">
-                            📅 Richiedi Appuntamento
+                            💬 Invia Richiesta
                         </button>
                     </form>
                 </div>
@@ -1548,7 +1599,7 @@
             submitBtn.disabled = true;
 
             setTimeout(() => {
-                alert('Grazie per la tua richiesta di appuntamento! Ti contatterò presto per confermare la data e l\'orario.');
+                alert('Grazie per la tua richiesta di informazioni! Ti contatterò presto per rispondere alle tue domande.');
                 event.target.reset();
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
