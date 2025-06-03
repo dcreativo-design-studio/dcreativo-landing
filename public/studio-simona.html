@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio di Massaggi Medicali - Simona Pellanda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header e Navigation */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f0f8ff" width="1200" height="600"/><circle fill="%23e6f3ff" cx="200" cy="150" r="80"/><circle fill="%23ddeeff" cx="800" cy="400" r="120"/><circle fill="%23f0f8ff" cx="1000" cy="200" r="60"/></svg>');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255,107,107,0.4);
+        }
+
+        /* Sezioni */
+        section {
+            padding: 4rem 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        /* Servizi */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .service-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .service-card .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-top: 1rem;
+        }
+
+        /* Chi Sono */
+        .about {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 4rem 0;
+            border-radius: 20px;
+            padding: 4rem 2rem;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* Contatti */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #667eea;
+        }
+
+        /* Animazioni */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                flex-direction: column;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                transition: left 0.3s ease;
+                padding: 2rem;
+                justify-content: flex-start;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Scroll smooth */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Sezione nascosta inizialmente */
+        .hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#home" class="logo">🏥 Studio Simona Pellanda</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#servizi">Servizi</a></li>
+                <li><a href="#chi-sono">Chi Sono</a></li>
+                <li><a href="#contatti">Contatti</a></li>
+            </ul>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Studio di Massaggi Medicali</h1>
+            <h2 style="font-size: 2rem; margin-bottom: 1rem; font-weight: normal;">Simona Pellanda</h2>
+            <p>Massaggiatrice medicale diplomata. Trattamenti terapeutici professionali con rimborso casse malati complementari.</p>
+            <a href="#contatti" class="cta-button">Prenota Appuntamento</a>
+        </div>
+    </section>
+
+    <!-- Servizi -->
+    <section id="servizi">
+        <h2 class="section-title">I Nostri Servizi</h2>
+        <div class="services-grid">
+            <div class="service-card hidden">
+                <div class="service-icon">💪</div>
+                <h3>Massaggio Classico</h3>
+                <p>Applicato per alleviare dolori, agisce sulle contratture e rilassa la muscolatura. Riduce e previene la cronicizzazione dei dolori muscolari o articolari.</p>
+                <div class="price">CHF 100.- / 60 min</div>
+            </div>
+
+            <div class="service-card hidden">
+                <div class="service-icon">🏃</div>
+                <h3>Massaggio Sportivo</h3>
+                <p>Applicato pre e post allenamento, previene dolori muscolari e riduce gli infortuni (strappi, stiramenti).</p>
+                <div class="price">CHF 100.- / 60 min</div>
+            </div>
+
+            <div class="service-card hidden">
+                <div class="service-icon">🩺</div>
+                <h3>Massaggio Terapeutico</h3>
+                <p>Indicato per lesioni muscolari e tendinee (scarsa mobilità durante il movimento, diminuzione della forza muscolare). Migliora la funzionalità di muscoli, tendini e articolazioni.</p>
+                <div class="price">CHF 100.- / 60 min</div>
+            </div>
+
+            <div class="service-card hidden">
+                <div class="service-icon">🔄</div>
+                <h3>Trattamento Cicatrici</h3>
+                <p>Applicato soprattutto sulle cicatrici post-operatorie. Mobilizza il tessuto riducendo la formazione delle aderenze. Utile nei casi post-traumatici con lacerazione cutanea.</p>
+                <div class="price">CHF 45.- / 30 min</div>
+            </div>
+
+            <div class="service-card hidden">
+                <div class="service-icon">💧</div>
+                <h3>Drenaggio Linfatico Manuale</h3>
+                <p>Utilizzato per migliorare il riassorbimento degli edemi. Applicato in ambito post-operatorio e utile in caso di problematiche di ritenzione idrica degli arti.</p>
+                <div class="price">CHF 90.- / 45 min</div>
+            </div>
+
+            <div class="service-card hidden">
+                <div class="service-icon">🌐</div>
+                <h3>Massaggio Tessuto Connettivo</h3>
+                <p>Stimolando la cute, agisce per via riflessa sugli organi interni. Armonizza e riequilibra l'organismo aumentando il metabolismo. I bersagli del trattamento sono il tessuto connettivo e la fascia.</p>
+                <div class="price">CHF 80.- / 60 min</div>
+            </div>
+
+            <div class="service-card hidden">
+                <div class="service-icon">🦶</div>
+                <h3>Riflessologia Plantare</h3>
+                <p>Tramite la stimolazione del piede, agisce nel macro-organismo, aumenta il metabolismo e armonizza le disfunzioni organiche. Utilizzato in caso di patologie in stato acuto e cronico.</p>
+                <div class="price">CHF 70.- / 60 min</div>
+            </div>
+        </div>
+
+        <!-- Nota rimborsi -->
+        <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); padding: 2rem; border-radius: 15px; margin-top: 3rem; text-align: center; border-left: 5px solid #2196f3;">
+            <h3 style="color: #1976d2; margin-bottom: 1rem;">💳 Rimborsi Assicurativi</h3>
+            <p style="margin-bottom: 1rem;"><strong>PARTE DEI COSTI DI QUESTI TRATTAMENTI VENGONO RIMBORSATI DALLA MAGGIOR PARTE DELLE CASSE MALATI COMPLEMENTARI</strong></p>
+            <p style="font-size: 0.95rem; color: #666;">Consiglio di rivolgersi alla propria assicurazione per avere le dovute informazioni relative alla percentuale e al numero di trattamenti rimborsabili annui.</p>
+        </div>
+    </section>
+
+    <!-- Chi Sono -->
+    <section id="chi-sono" class="about hidden">
+        <div class="about-content">
+            <div class="about-image">
+                👩‍⚕️ Simona Pellanda<br>
+                <small style="font-size: 1rem;">Massaggiatrice Medicale</small>
+            </div>
+            <div>
+                <h2>Ciao, sono Simona Pellanda</h2>
+                <p><strong>Massaggiatrice Medicale Diplomata</strong></p>
+
+                <p>Ho frequentato la scuola di massaggiatrice medicale presso il <strong>Centro Professionale Sociosanitario (CPS) di Lugano</strong>, conseguendo l'<strong>Attestato Professionale Federale nell'ottobre del 2023</strong>.</p>
+
+                <p>La formazione mi ha permesso di apprendere varie tecniche per migliorare la qualità di vita delle persone attraverso l'ascolto delle problematiche e il relativo trattamento terapeutico.</p>
+
+                <p>Il mio studio ad <strong>Osogna</strong> offre trattamenti specializzati con approccio medicale, molti dei quali sono rimborsati dalle casse malati complementari.</p>
+
+                <p>Ogni trattamento è personalizzato secondo le tue esigenze specifiche, sempre nel rispetto delle migliori pratiche terapeutiche.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contatti -->
+    <section id="contatti">
+        <h2 class="section-title">Contatti & Prenotazioni</h2>
+        <div class="contact-grid">
+            <div class="contact-info hidden">
+                <h3>Informazioni di Contatto</h3>
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <strong>Indirizzo</strong><br>
+                        Via Campagna 16<br>
+                        6703 Osogna (TI)
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <strong>Telefono</strong><br>
+                        +41 79 758 53 39
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div>
+                        <strong>Email</strong><br>
+                        info@studio-simona.ch
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">🌐</div>
+                    <div>
+                        <strong>Sito web</strong><br>
+                        studio-simona.ch
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">🕐</div>
+                    <div>
+                        <strong>Orari di Apertura</strong><br>
+                        <strong>Lun-Ven:</strong> 07:30-11:30 / 14:00-18:00<br>
+                        <em>(Su appuntamento)</em><br>
+                        <strong>Sab-Dom:</strong> Chiuso
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form hidden">
+                <h3>Richiedi Informazioni</h3>
+                <form onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="nome">Nome *</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Telefono</label>
+                        <input type="tel" id="telefono" name="telefono">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="servizio">Servizio di Interesse</label>
+                        <select id="servizio" name="servizio" style="width: 100%; padding: 1rem; border: 2px solid #f0f0f0; border-radius: 10px;">
+                            <option value="">Seleziona un servizio</option>
+                            <option value="classico">Massaggio Classico (CHF 100.- / 60 min)</option>
+                            <option value="sportivo">Massaggio Sportivo (CHF 100.- / 60 min)</option>
+                            <option value="terapeutico">Massaggio Terapeutico (CHF 100.- / 60 min)</option>
+                            <option value="cicatrici">Trattamento Cicatrici (CHF 45.- / 30 min)</option>
+                            <option value="linfatico">Drenaggio Linfatico (CHF 90.- / 45 min)</option>
+                            <option value="connettivo">Massaggio Tessuto Connettivo (CHF 80.- / 60 min)</option>
+                            <option value="riflessologia">Riflessologia Plantare (CHF 70.- / 60 min)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="messaggio">Messaggio</label>
+                        <textarea id="messaggio" name="messaggio" placeholder="Scrivi qui la tua richiesta di appuntamento o eventuali domande sui trattamenti..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Richiedi Appuntamento</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div>
+            <p>&copy; 2025 Studio di Massaggi Medicali - Simona Pellanda. Tutti i diritti riservati.</p>
+            <div class="social-links">
+                <a href="#" title="Facebook">📘</a>
+                <a href="#" title="Instagram">📷</a>
+                <a href="#" title="WhatsApp">💬</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle menu mobile
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const hamburger = document.querySelector('.hamburger');
+
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Smooth scroll per i link interni
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+
+                    // Chiudi menu mobile se aperto
+                    document.querySelector('.nav-links').classList.remove('active');
+                }
+            });
+        });
+
+        // Animazione scroll reveal
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.hidden');
+
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('visible');
+                    element.classList.remove('hidden');
+                }
+            });
+        }
+
+        // Handle form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+
+            // Simula invio form
+            alert('Grazie per la tua richiesta di appuntamento! Ti contatterò presto per confermare la data e l\'orario.');
+
+            // Reset form
+            event.target.reset();
+
+            // In un'implementazione reale, qui invieresti i dati al server
+            console.log('Dati form:', data);
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        // Navbar background change on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(102, 126, 234, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                header.style.backdropFilter = 'none';
+            }
+        });
+
+        // Preload animations
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(revealOnScroll, 100);
+        });
+    </script>
+</body>
+</html>
