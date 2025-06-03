@@ -18,8 +18,7 @@
     { "source": "/cookie-policy", "destination": "/cookie-system.html" },
     { "source": "/ebook", "destination": "/ebook.html" },
     { "source": "/ebook2", "destination": "/ebook2.html" },
-    { "source": "/ebook3", "destination": "/ebook3.html" },
-    { "source": "/studio", "destination": "/studio-simona.html" }
+    { "source": "/ebook3", "destination": "/ebook3.html" }
 
   ],
   "headers": [
