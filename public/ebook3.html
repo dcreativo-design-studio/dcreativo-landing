@@ -1,0 +1,2865 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 StudyHub - Socio-Psico-Pedagogico</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary-color: #06b6d4;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+            --border-radius-sm: 0.375rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            --border-radius-2xl: 1.5rem;
+
+            --header-height: 70px;
+            --nav-height: 60px;
+            --total-header-height: 130px;
+
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .dark-theme {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Header migliorato */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            height: var(--total-header-height);
+        }
+
+        .dark-theme .header {
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: var(--header-height);
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+            min-width: 44px;
+            min-height: 44px;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .action-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Navigation migliorata */
+        .nav-container {
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .nav-subjects {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0.5rem 0;
+            width: 100%;
+        }
+
+        .nav-subjects::-webkit-scrollbar {
+            display: none;
+        }
+
+        .subject-btn {
+            flex-shrink: 0;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: var(--border-radius-xl);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            min-height: 40px;
+            font-size: 0.9rem;
+        }
+
+        .subject-btn:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .subject-btn.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Main content */
+        .main-container {
+            margin-top: var(--total-header-height);
+            min-height: calc(100vh - var(--total-header-height));
+        }
+
+        .content-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar TOC */
+        .sidebar {
+            position: sticky;
+            top: calc(var(--total-header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--total-header-height) - 4rem);
+            overflow-y: auto;
+            background: var(--bg-card);
+            border-radius: var(--border-radius-2xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toc-item {
+            display: block;
+            padding: 0.75rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius-lg);
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .toc-item:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-left-color: var(--primary-color);
+            transform: translateX(4px);
+        }
+
+        .toc-item.active {
+            background: var(--primary-color);
+            color: white;
+            border-left-color: var(--primary-dark);
+        }
+
+        .toc-item.completed {
+            color: var(--success-color);
+        }
+
+        .toc-item.completed::before {
+            content: "✓ ";
+            font-weight: bold;
+        }
+
+        .toc-item.current-reading {
+            background: var(--accent-color);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        /* Content area */
+        .content-area {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-2xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            min-height: 600px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .lesson-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .lesson-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Cards modernizzate */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-highlight {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .dark-theme .card-highlight {
+            background: linear-gradient(135deg, #451a03, #78350f);
+        }
+
+        .card-important {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid var(--error-color);
+        }
+
+        .dark-theme .card-important {
+            background: linear-gradient(135deg, #450a0a, #7f1d1d);
+        }
+
+        .card-tip {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .dark-theme .card-tip {
+            background: linear-gradient(135deg, #0c4a6e, #075985);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Enhanced Audio Player */
+        .floating-controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .audio-player {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-2xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            min-width: 320px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .audio-player.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .audio-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .audio-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .close-audio {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .close-audio:hover {
+            background: var(--error-color);
+            color: white;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .main-audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .play-btn {
+            width: 50px;
+            height: 50px;
+            border: none;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.2rem;
+            margin: 0 0.5rem;
+        }
+
+        .play-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .play-btn.reading {
+            animation: pulse 2s infinite;
+        }
+
+        .secondary-controls {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .control-btn:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .speed-indicator {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .audio-progress {
+            margin-bottom: 1rem;
+        }
+
+        .current-reading-info {
+            background: var(--bg-secondary);
+            padding: 0.75rem;
+            border-radius: var(--border-radius-lg);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        /* Quick Actions FAB */
+        .fab-container {
+            position: relative;
+        }
+
+        .fab-main {
+            width: 60px;
+            height: 60px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-xl);
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+        }
+
+        .fab-main:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .fab-menu {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+
+        .fab-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .fab-item {
+            width: 50px;
+            height: 50px;
+            border: none;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .fab-item:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Progress indicator */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.3s ease;
+            z-index: 1001;
+        }
+
+        /* Status notifications migliorati */
+        .status-notification {
+            position: fixed;
+            top: calc(var(--total-header-height) + 1rem);
+            right: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-xl);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-lg);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1002;
+            max-width: 300px;
+            min-width: 250px;
+        }
+
+        .status-notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .status-notification.success {
+            border-left: 4px solid var(--success-color);
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+        }
+
+        .dark-theme .status-notification.success {
+            background: linear-gradient(135deg, #14532d, #166534);
+        }
+
+        .status-notification.warning {
+            border-left: 4px solid var(--warning-color);
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+        }
+
+        .dark-theme .status-notification.warning {
+            background: linear-gradient(135deg, #451a03, #78350f);
+        }
+
+        .status-notification.error {
+            border-left: 4px solid var(--error-color);
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+        }
+
+        .dark-theme .status-notification.error {
+            background: linear-gradient(135deg, #450a0a, #7f1d1d);
+        }
+
+        /* Index grid modernizzato */
+        .index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .subject-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-2xl);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .subject-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .subject-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .subject-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--border-radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .subject-card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .lesson-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius-lg);
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .lesson-link:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-left-color: var(--primary-color);
+            transform: translateX(8px);
+        }
+
+        /* Responsive design migliorato */
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .sidebar {
+                position: relative;
+                top: auto;
+                max-height: 400px;
+                margin-bottom: 1rem;
+                order: -1;
+            }
+
+            .floating-controls {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .audio-player {
+                min-width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --header-height: 60px;
+                --nav-height: 50px;
+                --total-header-height: 110px;
+            }
+
+            .header-top {
+                height: var(--header-height);
+                padding: 0 0.5rem;
+            }
+
+            .nav-container {
+                height: var(--nav-height);
+                padding: 0 0.5rem;
+            }
+
+            .main-container {
+                margin-top: var(--total-header-height);
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+            }
+
+            .lesson-title {
+                font-size: 1.8rem;
+            }
+
+            .content-area {
+                padding: 1.5rem;
+                border-radius: var(--border-radius-xl);
+            }
+
+            .content-wrapper {
+                padding: 1rem 0.75rem;
+            }
+
+            .floating-controls {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+                flex-direction: column-reverse;
+            }
+
+            .audio-player {
+                min-width: auto;
+                width: 100%;
+                padding: 1rem;
+                border-radius: var(--border-radius-xl);
+            }
+
+            .audio-controls {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            .main-audio-controls {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .secondary-controls {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .index-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+
+            .subject-card {
+                padding: 1.5rem;
+            }
+
+            .fab-main {
+                width: 56px;
+                height: 56px;
+                font-size: 1.3rem;
+            }
+
+            .fab-item {
+                width: 46px;
+                height: 46px;
+            }
+
+            .status-notification {
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+                text-align: center;
+            }
+
+            .sidebar {
+                max-height: 300px;
+                padding: 1rem;
+            }
+
+            .nav-subjects {
+                gap: 0.25rem;
+            }
+
+            .subject-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+                min-height: 36px;
+            }
+
+            .action-btn {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+                min-height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 0 0.5rem;
+            }
+
+            .content-wrapper {
+                padding: 0.5rem;
+            }
+
+            .floating-controls {
+                bottom: 0.5rem;
+                right: 0.5rem;
+                left: 0.5rem;
+            }
+
+            .audio-player {
+                padding: 0.75rem;
+            }
+
+            .lesson-title {
+                font-size: 1.5rem;
+            }
+
+            .content-area {
+                padding: 1rem;
+            }
+
+            .status-notification {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Focus states per accessibilità */
+        .action-btn:focus,
+        .subject-btn:focus,
+        .control-btn:focus,
+        .nav-btn:focus,
+        .play-btn:focus,
+        .fab-main:focus,
+        .fab-item:focus,
+        .toc-item:focus,
+        .lesson-link:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            :root {
+                --border-color: #000000;
+                --text-muted: #333333;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-top">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <span>StudyHub</span>
+                </a>
+
+                <div class="header-actions">
+                    <button class="action-btn" id="searchBtn" title="Cerca">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="action-btn" id="bookmarkBtn" title="Bookmark">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                    <button class="action-btn" id="themeBtn" title="Cambia tema">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="action-btn" id="fullscreenBtn" title="Schermo intero">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button class="action-btn" id="menuBtn" title="Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <nav class="nav-container">
+                <div class="nav-subjects">
+                    <button class="subject-btn active" data-section="index">
+                        <i class="fas fa-home"></i>
+                        <span>Indice</span>
+                    </button>
+                    <button class="subject-btn" data-section="italiano">
+                        <i class="fas fa-book"></i>
+                        <span>Italiano</span>
+                    </button>
+                    <button class="subject-btn" data-section="storia">
+                        <i class="fas fa-landmark"></i>
+                        <span>Storia</span>
+                    </button>
+                    <button class="subject-btn" data-section="matematica">
+                        <i class="fas fa-calculator"></i>
+                        <span>Matematica</span>
+                    </button>
+                    <button class="subject-btn" data-section="inglese">
+                        <i class="fas fa-language"></i>
+                        <span>Inglese</span>
+                    </button>
+                    <button class="subject-btn" data-section="psicologia">
+                        <i class="fas fa-brain"></i>
+                        <span>Psicologia</span>
+                    </button>
+                    <button class="subject-btn" data-section="pedagogia">
+                        <i class="fas fa-users"></i>
+                        <span>Pedagogia</span>
+                    </button>
+                    <button class="subject-btn" data-section="sociologia">
+                        <i class="fas fa-globe"></i>
+                        <span>Sociologia</span>
+                    </button>
+                    <button class="subject-btn" data-section="filosofia">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Filosofia</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <div class="content-wrapper">
+            <!-- Sidebar TOC -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <i class="fas fa-list"></i>
+                    <span>Contenuti</span>
+                </div>
+                <div id="tocContainer">
+                    <!-- TOC items will be generated dynamically -->
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Sezione Indice -->
+                <section id="index" class="section active">
+                    <div class="lesson-header">
+                        <h1 class="lesson-title">📚 Benvenuto in StudyHub</h1>
+                        <p class="lesson-subtitle">La tua guida completa per l'esame socio-psico-pedagogico</p>
+                    </div>
+
+                    <div class="card card-highlight">
+                        <h3 class="card-title">🎯 Il tuo percorso di studio</h3>
+                        <p>Questo ebook interattivo ti accompagnerà attraverso tutte le materie essenziali per l'esame di stato. Ogni sezione è progettata per offrirti contenuti chiari, esempi pratici e strumenti di studio avanzati.</p>
+                    </div>
+
+                    <div class="index-grid">
+                        <div class="subject-card">
+                            <div class="subject-card-header">
+                                <div class="subject-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <h3 class="subject-card-title">Italiano</h3>
+                            </div>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione1">📚 Fondamenti della Letteratura Italiana</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione2">👤 Dante Alighieri - Divina Commedia</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione3">🌹 Petrarca - Il Canzoniere</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione4">📚 Boccaccio - Il Decameron</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione5">🏛️ Rinascimento - Machiavelli e Ariosto</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione6">🎭 Settecento - Goldoni, Parini, Alfieri</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione7">🌅 Romanticismo - Foscolo e Manzoni</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione8">🌙 Leopardi e Verismo - Verga</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione9">🌸 Decadentismo - Pascoli e D'Annunzio</a>
+                            <a href="#" class="lesson-link" data-section="italiano" data-anchor="lezione10">🚀 Novecento - Pirandello e Svevo</a>
+                        </div>
+
+                        <div class="subject-card">
+                            <div class="subject-card-header">
+                                <div class="subject-icon">
+                                    <i class="fas fa-landmark"></i>
+                                </div>
+                                <h3 class="subject-card-title">Storia</h3>
+                            </div>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione1">🏛️ Alto Medioevo</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione2">🌱 Basso Medioevo</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione3">💀 Crisi del XIV Secolo</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione4">🎨 Rinascimento</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione5">👑 Seicento - Assolutismo</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione6">💡 Settecento - Illuminismo</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione7">🏰 Rivoluzione Francese</a>
+                            <a href="#" class="lesson-link" data-section="storia" data-anchor="storia-lezione8">🎖️ Napoleone Bonaparte</a>
+                        </div>
+
+                        <div class="subject-card">
+                            <div class="subject-card-header">
+                                <div class="subject-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <h3 class="subject-card-title">Psicologia</h3>
+                            </div>
+                            <a href="#" class="lesson-link" data-section="psicologia">🧠 Psicologia Generale</a>
+                            <a href="#" class="lesson-link" data-section="psicologia">👶 Psicologia dello Sviluppo</a>
+                            <a href="#" class="lesson-link" data-section="psicologia">👥 Psicologia Sociale</a>
+                            <a href="#" class="lesson-link" data-section="psicologia">⚕️ Psicologia Applicata</a>
+                        </div>
+
+                        <div class="subject-card">
+                            <div class="subject-card-header">
+                                <div class="subject-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h3 class="subject-card-title">Pedagogia</h3>
+                            </div>
+                            <a href="#" class="lesson-link" data-section="pedagogia">📚 Storia della Pedagogia</a>
+                            <a href="#" class="lesson-link" data-section="pedagogia">🌟 Pedagogia Contemporanea</a>
+                            <a href="#" class="lesson-link" data-section="pedagogia">♿ Pedagogia Speciale</a>
+                            <a href="#" class="lesson-link" data-section="pedagogia">🌍 Pedagogia Interculturale</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sezione Italiano -->
+                <section id="italiano" class="section">
+                    <div class="lesson-content">
+                        <h2>📖 ITALIANO - Programma Completo per l'Esame</h2>
+
+                        <!-- LEZIONE 1: FONDAMENTI CON ANCHOR ID -->
+                        <div id="lezione1" class="lesson-content">
+                            <h2>📚 LEZIONE 1: I Fondamenti della Letteratura Italiana</h2>
+
+                            <div class="card card-tip">
+                                <h3 class="card-title">🎯 Obiettivi della lezione</h3>
+                                <p><strong>Cosa imparerai:</strong></p>
+                                <ul>
+                                    <li>Cos'è la letteratura e perché è importante</li>
+                                    <li>Le periodizzazioni della letteratura italiana</li>
+                                    <li>Come leggere e analizzare un testo letterario</li>
+                                    <li>I generi letterari principali</li>
+                                </ul>
+                            </div>
+
+                            <h3>📚 Che cos'è la Letteratura?</h3>
+                            <p>La <strong>letteratura</strong> è l'insieme delle opere scritte che hanno valore artistico e culturale. Non è solo "bella scrittura", ma è:</p>
+
+                            <div class="card">
+                                <ul>
+                                    <li><strong>Testimonianza storica:</strong> ci racconta come vivevano, pensavano e sentivano le persone del passato</li>
+                                    <li><strong>Arte del linguaggio:</strong> usa le parole per creare bellezza ed emozioni</li>
+                                    <li><strong>Riflessione sull'uomo:</strong> esplora i grandi temi universali (amore, morte, giustizia, senso della vita)</li>
+                                </ul>
+                            </div>
+
+                            <div class="card card-important">
+                                <h3 class="card-title">Perché studiare letteratura italiana?</h3>
+                                <ul>
+                                    <li>Per capire la nostra identità culturale</li>
+                                    <li>Per sviluppare il pensiero critico</li>
+                                    <li>Per migliorare le capacità espressive</li>
+                                    <li>Per l'esame!</li>
+                                </ul>
+                            </div>
+
+                            <h3>🗓️ Le Grandi Epoche della Letteratura Italiana</h3>
+
+                            <div class="card card-highlight">
+                                <h4><strong>1. MEDIOEVO (1200-1400)</strong></h4>
+                                <p><strong>Caratteristiche:</strong> religiosità, mondo feudale, latino e volgare</p>
+                                <p><strong>Autori chiave:</strong> Dante, Petrarca, Boccaccio</p>
+                                <p><strong>Perché è importante:</strong> nascono l'italiano letterario e i grandi modelli</p>
+                            </div>
+
+                            <div class="card card-highlight">
+                                <h4><strong>2. RINASCIMENTO (1400-1600)</strong></h4>
+                                <p><strong>Caratteristiche:</strong> riscoperta dei classici, corti signorili, umanesimo</p>
+                                <p><strong>Autori chiave:</strong> Ariosto, Machiavelli, Tasso</p>
+                                <p><strong>Perché è importante:</strong> l'italiano diventa lingua letteraria matura</p>
+                            </div>
+                        </div>
+
+                        <!-- LEZIONE 2: DANTE CON ANCHOR ID -->
+                        <div id="lezione2" class="lesson-content">
+                            <h2>👤 LEZIONE 2: Dante Alighieri - Il Padre della Letteratura Italiana</h2>
+
+                            <div class="card card-tip">
+                                <h3 class="card-title">🎯 Obiettivi della lezione</h3>
+                                <p><strong>Oggi imparerai:</strong></p>
+                                <ul>
+                                    <li>Chi era Dante e perché è così importante</li>
+                                    <li>La struttura e il significato della Divina Commedia</li>
+                                    <li>Come leggere e interpretare i canti più famosi</li>
+                                    <li>Il linguaggio e lo stile dantesco</li>
+                                </ul>
+                            </div>
+
+                            <h3>👤 Dante Alighieri (1265-1321): L'Uomo e il Poeta</h3>
+
+                            <div class="card card-highlight">
+                                <h4><strong>LA VITA</strong></h4>
+                                <ul>
+                                    <li><strong>Firenze 1265:</strong> nasce in una famiglia della piccola nobiltà guelfa</li>
+                                    <li><strong>1274:</strong> incontra Beatrice (Bice Portinari) - amore della sua vita</li>
+                                    <li><strong>1290:</strong> muore Beatrice - svolta nella sua poetica</li>
+                                    <li><strong>1300:</strong> priore di Firenze, si oppone al papa Bonifacio VIII</li>
+                                    <li><strong>1302:</strong> esilio da Firenze per sempre</li>
+                                    <li><strong>1321:</strong> muore a Ravenna, ancora in esilio</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Altre lezioni di italiano... -->
+                        <div id="lezione3" class="lesson-content">
+                            <h2>🌹 LEZIONE 3: Francesco Petrarca - Il Poeta dell'Io</h2>
+                            <div class="card card-important">
+                                <h4><strong>LA VITA (1304-1374)</strong></h4>
+                                <ul>
+                                    <li>Nasce ad Arezzo, studia ad Avignone</li>
+                                    <li>1327: incontra Laura in chiesa</li>
+                                    <li>Vita itinerante tra corti europee</li>
+                                    <li>1341: incoronato poeta laureato a Roma</li>
+                                    <li>Muore ad Arquà sui Colli Euganei</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sezione Storia -->
+                <section id="storia" class="section">
+                    <div class="lesson-content">
+                        <h2>🏛️ STORIA - Programma Completo per l'Esame</h2>
+
+                        <div id="storia-lezione1" class="lesson-content">
+                            <h2>🏛️ LEZIONE 1: L'Alto Medioevo</h2>
+
+                            <div class="card card-tip">
+                                <h3 class="card-title">🎯 Obiettivi della lezione</h3>
+                                <ul>
+                                    <li>Il crollo dell'Impero Romano d'Occidente</li>
+                                    <li>Le invasioni barbariche e i regni romano-barbarici</li>
+                                    <li>L'ascesa del Cristianesimo e del Papato</li>
+                                    <li>L'Impero Carolingio e Carlo Magno</li>
+                                </ul>
+                            </div>
+
+                            <h3>🏛️ LA FINE DELL'IMPERO ROMANO D'OCCIDENTE (476 d.C.)</h3>
+
+                            <div class="card card-important">
+                                <h3 class="card-title">LE CAUSE DELLA CRISI</h3>
+                                <h4>CRISI ECONOMICA</h4>
+                                <ul>
+                                    <li><strong>Inflazione:</strong> svalutazione della moneta</li>
+                                    <li><strong>Crisi agricola:</strong> abbandono delle campagne</li>
+                                    <li><strong>Crisi commerciale:</strong> insicurezza delle strade</li>
+                                    <li><strong>Tasse:</strong> sempre più pesanti per mantenere l'esercito</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div id="storia-lezione2" class="lesson-content">
+                            <h2>🌱 LEZIONE 2: Il Basso Medioevo</h2>
+                            <div class="card card-highlight">
+                                <h4><strong>LA RINASCITA DELL'ANNO MILLE</strong></h4>
+                                <p>Crescita demografica, innovazioni agricole, rinascita delle città.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sezione Psicologia -->
+                <section id="psicologia" class="section">
+                    <div class="lesson-header">
+                        <h1 class="lesson-title">🧠 Psicologia</h1>
+                        <p class="lesson-subtitle">Scienza del comportamento e dei processi mentali</p>
+                    </div>
+
+                    <div class="card card-tip">
+                        <h3 class="card-title">🎯 Cos'è la Psicologia?</h3>
+                        <p>La psicologia è la scienza che studia il comportamento umano e i processi mentali. Si occupa di comprendere come pensiamo, sentiamo, apprendiamo e ci relazioniamo con gli altri.</p>
+                    </div>
+                </section>
+
+                <!-- Altre sezioni... -->
+                <section id="matematica" class="section">
+                    <div class="lesson-header">
+                        <h1 class="lesson-title">🔢 Matematica</h1>
+                        <p class="lesson-subtitle">Fondamenti matematici per l'esame</p>
+                    </div>
+                </section>
+
+                <section id="inglese" class="section">
+                    <div class="lesson-header">
+                        <h1 class="lesson-title">🇬🇧 Inglese</h1>
+                        <p class="lesson-subtitle">English for academic purposes</p>
+                    </div>
+                </section>
+
+                <section id="pedagogia" class="section">
+                    <div class="lesson-header">
+                        <h1 class="lesson-title">👥 Pedagogia</h1>
+                        <p class="lesson-subtitle">Scienze dell'educazione e della formazione</p>
+                    </div>
+                </section>
+
+                <section id="sociologia" class="section">
+                    <div class="lesson-header">
+                        <h1 class="lesson-title">🌍 Sociologia</h1>
+                        <p class="lesson-subtitle">Studio della società e dei fenomeni sociali</p>
+                    </div>
+                </section>
+
+                <section id="filosofia" class="section">
+                    <div class="lesson-header">
+                        <h1 class="lesson-title">💭 Filosofia</h1>
+                        <p class="lesson-subtitle">Storia del pensiero occidentale</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Controls -->
+    <div class="floating-controls">
+        <!-- Enhanced Audio Player -->
+        <div class="audio-player" id="audioPlayer">
+            <div class="audio-header">
+                <span class="audio-title">🎧 Lettura Audio</span>
+                <button class="close-audio" id="closeAudio">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="current-reading-info" id="currentReadingInfo">
+                <i class="fas fa-book-open"></i>
+                <span id="currentReadingText">Seleziona un contenuto per iniziare</span>
+            </div>
+
+            <div class="audio-controls">
+                <div class="main-audio-controls">
+                    <button class="nav-btn" id="prevBtn" title="Precedente">
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+
+                    <button class="play-btn" id="playBtn">
+                        <i class="fas fa-play"></i>
+                    </button>
+
+                    <button class="nav-btn" id="nextBtn" title="Successivo">
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="secondary-controls">
+                <button class="control-btn" id="pauseBtn" title="Pausa">
+                    <i class="fas fa-pause"></i>
+                </button>
+                <button class="control-btn" id="stopBtn" title="Stop">
+                    <i class="fas fa-stop"></i>
+                </button>
+                <button class="control-btn" id="speedBtn" title="Velocità">1x</button>
+                <button class="control-btn" id="repeatBtn" title="Ripeti">
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+
+            <div class="speed-indicator">
+                Usa i pulsanti per navigare tra le lezioni
+            </div>
+        </div>
+
+        <!-- FAB Menu -->
+        <div class="fab-container">
+            <div class="fab-menu" id="fabMenu">
+                <button class="fab-item" id="pomodoroBtn" title="Timer Pomodoro">
+                    <i class="fas fa-clock"></i>
+                </button>
+                <button class="fab-item" id="statsBtn" title="Statistiche">
+                    <i class="fas fa-chart-bar"></i>
+                </button>
+                <button class="fab-item" id="exportBtn" title="Esporta Note">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="fab-item" id="audioToggleBtn" title="Lettura Audio">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+            </div>
+
+            <button class="fab-main" id="fabMain">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Status Notification -->
+    <div class="status-notification" id="statusNotification">
+        <div id="statusMessage"></div>
+    </div>
+
+    <script>
+        // Enhanced StudyHub Manager con lettura intelligente e navigazione
+        class EnhancedStudyHubManager {
+            constructor() {
+                this.currentSection = 'index';
+                this.currentAnchor = null;
+                this.sections = ['index', 'italiano', 'storia', 'matematica', 'inglese', 'psicologia', 'pedagogia', 'sociologia', 'filosofia'];
+
+                // Audio system
+                this.speechSynthesis = window.speechSynthesis;
+                this.currentUtterance = null;
+                this.isReading = false;
+                this.readingSpeed = 1;
+                this.speedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
+                this.currentReadingIndex = 0;
+                this.readableElements = [];
+                this.isRepeatMode = false;
+
+                // UI state
+                this.isDarkTheme = false;
+                this.isAudioPlayerVisible = false;
+                this.isFabMenuOpen = false;
+                this.pomodoroTimer = null;
+
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.setupKeyboardShortcuts();
+                this.setupTouchGestures();
+                this.generateTOC();
+                this.loadUserPreferences();
+                this.updateProgressBar();
+                this.showWelcomeNotification();
+                this.initializeReadableElements();
+            }
+
+            setupEventListeners() {
+                // Navigation buttons
+                document.querySelectorAll('.subject-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const section = e.currentTarget.getAttribute('data-section');
+                        this.showSection(section);
+                    });
+                });
+
+                // Lesson links
+                document.querySelectorAll('.lesson-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const section = e.currentTarget.getAttribute('data-section');
+                        const anchor = e.currentTarget.getAttribute('data-anchor');
+                        this.showSection(section, anchor);
+                    });
+                });
+
+                // Header actions
+                document.getElementById('themeBtn').addEventListener('click', () => this.toggleTheme());
+                document.getElementById('fullscreenBtn').addEventListener('click', () => this.toggleFullscreen());
+                document.getElementById('bookmarkBtn').addEventListener('click', () => this.addBookmark());
+                document.getElementById('searchBtn').addEventListener('click', () => this.showSearch());
+                document.getElementById('menuBtn').addEventListener('click', () => this.toggleMobileMenu());
+
+                // Enhanced audio controls
+                document.getElementById('playBtn').addEventListener('click', () => this.startReading());
+                document.getElementById('pauseBtn').addEventListener('click', () => this.pauseReading());
+                document.getElementById('stopBtn').addEventListener('click', () => this.stopReading());
+                document.getElementById('speedBtn').addEventListener('click', () => this.adjustSpeed());
+                document.getElementById('prevBtn').addEventListener('click', () => this.previousElement());
+                document.getElementById('nextBtn').addEventListener('click', () => this.nextElement());
+                document.getElementById('repeatBtn').addEventListener('click', () => this.toggleRepeatMode());
+                document.getElementById('closeAudio').addEventListener('click', () => this.hideAudioPlayer());
+
+                // FAB controls
+                document.getElementById('fabMain').addEventListener('click', () => this.toggleFabMenu());
+                document.getElementById('audioToggleBtn').addEventListener('click', () => this.toggleAudioPlayer());
+                document.getElementById('pomodoroBtn').addEventListener('click', () => this.startPomodoro());
+                document.getElementById('statsBtn').addEventListener('click', () => this.showStats());
+                document.getElementById('exportBtn').addEventListener('click', () => this.exportNotes());
+
+                // TOC clicks
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('toc-item')) {
+                        e.preventDefault();
+                        const section = e.target.getAttribute('data-section');
+                        const anchor = e.target.getAttribute('data-anchor');
+                        this.showSection(section, anchor);
+                    }
+                });
+            }
+
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl + Space: Toggle reading
+                    if (e.ctrlKey && e.code === 'Space') {
+                        e.preventDefault();
+                        this.isReading ? this.pauseReading() : this.startReading();
+                    }
+
+                    // Arrow keys for navigation during reading
+                    if (this.isReading) {
+                        if (e.key === 'ArrowRight') {
+                            e.preventDefault();
+                            this.nextElement();
+                        }
+                        if (e.key === 'ArrowLeft') {
+                            e.preventDefault();
+                            this.previousElement();
+                        }
+                    }
+
+                    // Ctrl + B: Add bookmark
+                    if (e.ctrlKey && e.key === 'b') {
+                        e.preventDefault();
+                        this.addBookmark();
+                    }
+
+                    // Ctrl + T: Toggle theme
+                    if (e.ctrlKey && e.key === 't') {
+                        e.preventDefault();
+                        this.toggleTheme();
+                    }
+
+                    // Escape: Stop reading and close menus
+                    if (e.key === 'Escape') {
+                        this.stopReading();
+                        this.closeFabMenu();
+                        this.hideAudioPlayer();
+                    }
+                });
+            }
+
+            setupTouchGestures() {
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                document.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                });
+
+                document.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    this.handleSwipeGesture(touchStartX, touchEndX);
+                });
+            }
+
+            handleSwipeGesture(startX, endX) {
+                const threshold = 100;
+                const diff = startX - endX;
+
+                if (Math.abs(diff) > threshold) {
+                    if (this.isReading) {
+                        if (diff > 0) {
+                            this.nextElement(); // Swipe left - next
+                        } else {
+                            this.previousElement();// Swipe right - previous
+                        }
+                    } else {
+                        const currentIndex = this.sections.indexOf(this.currentSection);
+                        if (diff > 0 && currentIndex < this.sections.length - 1) {
+                            this.showSection(this.sections[currentIndex + 1]);
+                        } else if (diff < 0 && currentIndex > 0) {
+                            this.showSection(this.sections[currentIndex - 1]);
+                        }
+                    }
+                }
+            }
+
+            showSection(sectionId, anchorId = null) {
+                // Hide all sections
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // Show target section
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    this.currentSection = sectionId;
+                    this.currentAnchor = anchorId;
+                }
+
+                // Update navigation
+                document.querySelectorAll('.subject-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-section') === sectionId) {
+                        btn.classList.add('active');
+                    }
+                });
+
+                // Handle anchor scrolling and setup reading
+                if (anchorId) {
+                    setTimeout(() => {
+                        const anchorElement = document.getElementById(anchorId);
+                        if (anchorElement) {
+                            anchorElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                            this.highlightElement(anchorElement);
+                            // Set up reading from this specific anchor
+                            this.initializeReadableElements(anchorElement);
+                        }
+                    }, 300);
+                } else {
+                    // Initialize readable elements for the entire section
+                    this.initializeReadableElements();
+                }
+
+                this.updateProgressBar();
+                this.updateTOC();
+                this.updateCurrentReadingInfo();
+                this.saveProgress(sectionId, anchorId);
+            }
+
+            initializeReadableElements(startElement = null) {
+                const activeSection = document.querySelector('.section.active');
+                if (!activeSection) return;
+
+                let elementsToRead = [];
+
+                if (startElement) {
+                    // Start from specific anchor
+                    const allElements = Array.from(activeSection.querySelectorAll('h2, h3, p, li, blockquote, .card-title'));
+                    const startIndex = allElements.findIndex(el =>
+                        startElement.contains(el) || el.contains(startElement) || el === startElement
+                    );
+                    elementsToRead = allElements.slice(startIndex >= 0 ? startIndex : 0);
+                } else {
+                    // Read entire section
+                    elementsToRead = Array.from(activeSection.querySelectorAll('h2, h3, p, li, blockquote, .card-title'));
+                }
+
+                this.readableElements = elementsToRead.filter(el => {
+                    const text = el.textContent.trim();
+                    return text.length > 0 && !text.match(/^[📚📖👤🌹🏛️🎭🌅🌙🌸🚀⚙️📅🔢🇬🇧🧠👥🌍💭✅❌⚡🔥💡]+$/);
+                });
+
+                this.currentReadingIndex = 0;
+                this.updateNavigationButtons();
+                this.updateCurrentReadingInfo();
+            }
+
+            startReading() {
+                if (!this.speechSynthesis) {
+                    this.showNotification('❌ Sintesi vocale non supportata su questo dispositivo', 'error');
+                    return;
+                }
+
+                if (this.readableElements.length === 0) {
+                    this.initializeReadableElements();
+                    if (this.readableElements.length === 0) {
+                        this.showNotification('⚠️ Nessun contenuto da leggere', 'warning');
+                        return;
+                    }
+                }
+
+                // Stop any current reading
+                this.speechSynthesis.cancel();
+
+                const currentElement = this.readableElements[this.currentReadingIndex];
+                if (!currentElement) {
+                    this.showNotification('⚠️ Nessun elemento da leggere', 'warning');
+                    return;
+                }
+
+                const textContent = this.extractTextContent(currentElement);
+                if (!textContent.trim()) {
+                    this.nextElement();
+                    return;
+                }
+
+                // Highlight current element
+                this.highlightCurrentReading(currentElement);
+
+                this.currentUtterance = new SpeechSynthesisUtterance(textContent);
+                this.currentUtterance.lang = 'it-IT';
+                this.currentUtterance.rate = this.readingSpeed;
+                this.currentUtterance.pitch = 1;
+                this.currentUtterance.volume = 0.8;
+
+                this.currentUtterance.onstart = () => {
+                    this.isReading = true;
+                    this.updateAudioButtons();
+                    this.showAudioPlayer();
+                    this.showNotification('🔊 Lettura in corso...', 'success');
+                };
+
+                this.currentUtterance.onend = () => {
+                    this.isReading = false;
+                    this.updateAudioButtons();
+
+                    if (this.isRepeatMode) {
+                        // Repeat current element
+                        setTimeout(() => this.startReading(), 500);
+                    } else if (this.currentReadingIndex < this.readableElements.length - 1) {
+                        // Auto-advance to next element
+                        setTimeout(() => {
+                            this.nextElement();
+                            this.startReading();
+                        }, 1000);
+                    } else {
+                        this.showNotification('✅ Lettura completata', 'success');
+                        this.clearCurrentHighlight();
+                    }
+                };
+
+                this.currentUtterance.onerror = (event) => {
+                    console.error('Speech synthesis error:', event);
+                    this.isReading = false;
+                    this.updateAudioButtons();
+                    this.showNotification('❌ Errore durante la lettura', 'error');
+                };
+
+                this.speechSynthesis.speak(this.currentUtterance);
+                this.updateCurrentReadingInfo();
+            }
+
+            pauseReading() {
+                if (!this.speechSynthesis.speaking) {
+                    this.showNotification('⚠️ Nessuna lettura in corso', 'warning');
+                    return;
+                }
+
+                if (this.speechSynthesis.paused) {
+                    this.speechSynthesis.resume();
+                    this.isReading = true;
+                    this.showNotification('▶️ Lettura ripresa', 'success');
+                } else {
+                    this.speechSynthesis.pause();
+                    this.isReading = false;
+                    this.showNotification('⏸️ Lettura in pausa', 'success');
+                }
+                this.updateAudioButtons();
+            }
+
+            stopReading() {
+                this.speechSynthesis.cancel();
+                this.isReading = false;
+                this.currentUtterance = null;
+                this.clearCurrentHighlight();
+                this.updateAudioButtons();
+                this.showNotification('⏹️ Lettura fermata', 'success');
+            }
+
+            nextElement() {
+                if (this.currentReadingIndex < this.readableElements.length - 1) {
+                    this.currentReadingIndex++;
+                    this.updateNavigationButtons();
+                    this.updateCurrentReadingInfo();
+
+                    if (this.isReading) {
+                        this.speechSynthesis.cancel();
+                        setTimeout(() => this.startReading(), 100);
+                    } else {
+                        this.highlightCurrentReading(this.readableElements[this.currentReadingIndex]);
+                    }
+                } else {
+                    this.showNotification('📖 Ultimo elemento raggiunto', 'warning');
+                }
+            }
+
+            previousElement() {
+                if (this.currentReadingIndex > 0) {
+                    this.currentReadingIndex--;
+                    this.updateNavigationButtons();
+                    this.updateCurrentReadingInfo();
+
+                    if (this.isReading) {
+                        this.speechSynthesis.cancel();
+                        setTimeout(() => this.startReading(), 100);
+                    } else {
+                        this.highlightCurrentReading(this.readableElements[this.currentReadingIndex]);
+                    }
+                } else {
+                    this.showNotification('📖 Primo elemento raggiunto', 'warning');
+                }
+            }
+
+            toggleRepeatMode() {
+                this.isRepeatMode = !this.isRepeatMode;
+                const repeatBtn = document.getElementById('repeatBtn');
+                const icon = repeatBtn.querySelector('i');
+
+                if (this.isRepeatMode) {
+                    repeatBtn.style.background = 'var(--accent-color)';
+                    repeatBtn.style.color = 'white';
+                    icon.className = 'fas fa-redo pulse';
+                    this.showNotification('🔄 Modalità ripetizione attivata', 'success');
+                } else {
+                    repeatBtn.style.background = 'var(--bg-secondary)';
+                    repeatBtn.style.color = 'var(--text-secondary)';
+                    icon.className = 'fas fa-redo';
+                    this.showNotification('🔄 Modalità ripetizione disattivata', 'success');
+                }
+            }
+
+            highlightCurrentReading(element) {
+                this.clearCurrentHighlight();
+                if (element) {
+                    element.classList.add('current-reading');
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    // Update TOC
+                    this.updateTOCHighlight(element);
+                }
+            }
+
+            clearCurrentHighlight() {
+                document.querySelectorAll('.current-reading').forEach(el => {
+                    el.classList.remove('current-reading');
+                });
+
+                document.querySelectorAll('.toc-item.current-reading').forEach(el => {
+                    el.classList.remove('current-reading');
+                });
+            }
+
+            updateTOCHighlight(element) {
+                // Find corresponding TOC item
+                const headingId = element.id || element.closest('[id]')?.id;
+                if (headingId) {
+                    document.querySelectorAll('.toc-item').forEach(item => {
+                        item.classList.remove('current-reading');
+                        if (item.getAttribute('data-anchor') === headingId) {
+                            item.classList.add('current-reading');
+                        }
+                    });
+                }
+            }
+
+            updateNavigationButtons() {
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+
+                prevBtn.disabled = this.currentReadingIndex === 0;
+                nextBtn.disabled = this.currentReadingIndex >= this.readableElements.length - 1;
+            }
+
+            updateCurrentReadingInfo() {
+                const infoElement = document.getElementById('currentReadingText');
+                if (this.readableElements.length > 0 && this.currentReadingIndex < this.readableElements.length) {
+                    const currentElement = this.readableElements[this.currentReadingIndex];
+                    const text = currentElement.textContent.trim();
+                    const preview = text.length > 50 ? text.substring(0, 50) + '...' : text;
+                    infoElement.textContent = `${this.currentReadingIndex + 1}/${this.readableElements.length}: ${preview}`;
+                } else {
+                    infoElement.textContent = 'Seleziona un contenuto per iniziare';
+                }
+            }
+
+            adjustSpeed() {
+                const currentIndex = this.speedOptions.indexOf(this.readingSpeed);
+                const nextIndex = (currentIndex + 1) % this.speedOptions.length;
+                this.readingSpeed = this.speedOptions[nextIndex];
+
+                const speedBtn = document.getElementById('speedBtn');
+                speedBtn.textContent = `${this.readingSpeed}x`;
+
+                this.showNotification(`🎚️ Velocità: ${this.readingSpeed}x`, 'success');
+
+                if (this.isReading) {
+                    this.stopReading();
+                    setTimeout(() => this.startReading(), 100);
+                }
+            }
+
+            updateAudioButtons() {
+                const playBtn = document.getElementById('playBtn');
+                const playIcon = playBtn.querySelector('i');
+
+                if (this.isReading) {
+                    playIcon.className = 'fas fa-volume-up pulse';
+                    playBtn.classList.add('reading');
+                } else {
+                    playIcon.className = 'fas fa-play';
+                    playBtn.classList.remove('reading');
+                }
+            }
+
+            extractTextContent(element) {
+                let text = element.textContent || element.innerText;
+
+                // Clean up the text
+                text = text
+                    .replace(/[📚📖👤🌹🏛️🎭🌅🌙🌸🚀⚙️📅🔢🇬🇧🧠👥🌍💭✅❌⚡🔥💡🎯🎨💀🌱🏰🎖️👑🌸🔮🔄]/g, '')
+                    .replace(/•/g, '')
+                    .replace(/\s+/g, ' ')
+                    .replace(/\n+/g, '. ')
+                    .replace(/\.\s*\./g, '.')
+                    .trim();
+
+                // Add pauses for better speech
+                text = text.replace(/:/g, ', ');
+                text = text.replace(/;/g, ', ');
+                text = text.replace(/\./g, '. ');
+
+                return text;
+            }
+
+            highlightElement(element) {
+                element.style.transition = 'all 0.5s ease';
+                element.style.backgroundColor = 'var(--primary-color)';
+                element.style.color = 'white';
+                element.style.borderRadius = 'var(--border-radius-lg)';
+                element.style.padding = '1rem';
+
+                setTimeout(() => {
+                    element.style.backgroundColor = '';
+                    element.style.color = '';
+                    element.style.padding = '';
+                }, 2000);
+            }
+
+            generateTOC() {
+                const tocContainer = document.getElementById('tocContainer');
+                const currentSectionElement = document.getElementById(this.currentSection);
+
+                if (!currentSectionElement) return;
+
+                const headings = currentSectionElement.querySelectorAll('h2, h3[id], div[id]');
+                tocContainer.innerHTML = '';
+
+                headings.forEach(heading => {
+                    const tocItem = document.createElement('a');
+                    tocItem.href = '#';
+                    tocItem.className = 'toc-item';
+                    tocItem.setAttribute('data-section', this.currentSection);
+
+                    if (heading.id) {
+                        tocItem.setAttribute('data-anchor', heading.id);
+                    }
+
+                    tocItem.textContent = heading.textContent;
+                    tocContainer.appendChild(tocItem);
+                });
+            }
+
+            updateTOC() {
+                this.generateTOC();
+            }
+
+            toggleTheme() {
+                this.isDarkTheme = !this.isDarkTheme;
+                document.body.classList.toggle('dark-theme', this.isDarkTheme);
+
+                const themeIcon = document.querySelector('#themeBtn i');
+                themeIcon.className = this.isDarkTheme ? 'fas fa-sun' : 'fas fa-moon';
+
+                this.showNotification(
+                    this.isDarkTheme ? '🌙 Tema scuro attivato' : '☀️ Tema chiaro attivato',
+                    'success'
+                );
+
+                this.saveUserPreferences();
+            }
+
+            toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().then(() => {
+                        this.showNotification('🔲 Modalità schermo intero', 'success');
+                        document.querySelector('#fullscreenBtn i').className = 'fas fa-compress';
+                    }).catch(() => {
+                        this.showNotification('❌ Fullscreen non supportato', 'error');
+                    });
+                } else {
+                    document.exitFullscreen().then(() => {
+                        this.showNotification('🪟 Modalità normale', 'success');
+                        document.querySelector('#fullscreenBtn i').className = 'fas fa-expand';
+                    });
+                }
+            }
+
+            toggleAudioPlayer() {
+                this.isAudioPlayerVisible = !this.isAudioPlayerVisible;
+                const audioPlayer = document.getElementById('audioPlayer');
+
+                if (this.isAudioPlayerVisible) {
+                    audioPlayer.classList.add('visible');
+                    this.showNotification('🎧 Player audio aperto', 'success');
+                } else {
+                    audioPlayer.classList.remove('visible');
+                    this.showNotification('🎧 Player audio chiuso', 'success');
+                }
+            }
+
+            showAudioPlayer() {
+                this.isAudioPlayerVisible = true;
+                document.getElementById('audioPlayer').classList.add('visible');
+            }
+
+            hideAudioPlayer() {
+                this.isAudioPlayerVisible = false;
+                document.getElementById('audioPlayer').classList.remove('visible');
+                this.stopReading();
+            }
+
+            toggleFabMenu() {
+                this.isFabMenuOpen = !this.isFabMenuOpen;
+                const fabMenu = document.getElementById('fabMenu');
+                const fabMain = document.getElementById('fabMain');
+
+                fabMenu.classList.toggle('open', this.isFabMenuOpen);
+                fabMain.style.transform = this.isFabMenuOpen ? 'rotate(45deg)' : 'rotate(0deg)';
+            }
+
+            closeFabMenu() {
+                this.isFabMenuOpen = false;
+                document.getElementById('fabMenu').classList.remove('open');
+                document.getElementById('fabMain').style.transform = 'rotate(0deg)';
+            }
+
+            addBookmark() {
+                const bookmarks = this.getBookmarks();
+                const bookmark = {
+                    id: Date.now(),
+                    section: this.currentSection,
+                    anchor: this.currentAnchor,
+                    title: this.getCurrentSectionTitle(),
+                    readingIndex: this.currentReadingIndex,
+                    timestamp: new Date().toISOString()
+                };
+
+                bookmarks.push(bookmark);
+                localStorage.setItem('studyhub_bookmarks', JSON.stringify(bookmarks));
+                this.showNotification('🔖 Bookmark aggiunto!', 'success');
+            }
+
+            getBookmarks() {
+                return JSON.parse(localStorage.getItem('studyhub_bookmarks') || '[]');
+            }
+
+            getCurrentSectionTitle() {
+                const activeSection = document.querySelector('.section.active .lesson-title');
+                return activeSection ? activeSection.textContent : this.currentSection;
+            }
+
+            startPomodoro() {
+                const minutes = prompt('🍅 Timer Pomodoro\n\nInserisci i minuti (default: 25):', '25');
+                if (minutes && !isNaN(minutes) && minutes > 0) {
+                    this.startPomodoroTimer(parseInt(minutes));
+                }
+            }
+
+            startPomodoroTimer(minutes) {
+                if (this.pomodoroTimer) {
+                    clearInterval(this.pomodoroTimer);
+                }
+
+                let timeLeft = minutes * 60;
+                this.showNotification(`🍅 Timer Pomodoro: ${minutes} minuti iniziati`, 'success');
+
+                let timerDisplay = document.getElementById('pomodoro-timer');
+                if (!timerDisplay) {
+                    timerDisplay = document.createElement('div');
+                    timerDisplay.id = 'pomodoro-timer';
+                    timerDisplay.style.cssText = `
+                        position: fixed;
+                        top: calc(var(--total-header-height) + 1rem);
+                        left: 2rem;
+                        background: var(--error-color);
+                        color: white;
+                        padding: 1rem 1.5rem;
+                        border-radius: var(--border-radius-xl);
+                        font-weight: 600;
+                        z-index: 1003;
+                        box-shadow: var(--shadow-xl);
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        border: 2px solid white;
+                        font-family: 'Courier New', monospace;
+                    `;
+                    document.body.appendChild(timerDisplay);
+                }
+
+                this.pomodoroTimer = setInterval(() => {
+                    const minutesLeft = Math.floor(timeLeft / 60);
+                    const secondsLeft = timeLeft % 60;
+
+                    timerDisplay.textContent = `🍅 ${minutesLeft}:${secondsLeft.toString().padStart(2, '0')}`;
+
+                    if (timeLeft <= 0) {
+                        clearInterval(this.pomodoroTimer);
+                        timerDisplay.remove();
+                        this.showNotification('⏰ Tempo Pomodoro terminato! Pausa di 5 minuti', 'warning');
+
+                        if ('Notification' in window && Notification.permission === 'granted') {
+                            new Notification('🍅 Pomodoro terminato!', {
+                                body: 'Tempo di fare una pausa di 5 minuti',
+                                icon: '/favicon.ico'
+                            });
+                        }
+                    }
+
+                    timeLeft--;
+                }, 1000);
+
+                timerDisplay.addEventListener('click', () => {
+                    if (confirm('Vuoi fermare il timer Pomodoro?')) {
+                        clearInterval(this.pomodoroTimer);
+                        timerDisplay.remove();
+                        this.showNotification('⏹️ Timer Pomodoro fermato', 'success');
+                    }
+                });
+            }
+
+            showStats() {
+                const progress = this.getProgress();
+                const bookmarks = this.getBookmarks();
+                const stats = this.calculateStats(progress, bookmarks);
+
+                const message = `📊 Le tue Statistiche di Studio:
+
+📚 Sezioni completate: ${stats.sectionsCompleted}
+🔖 Bookmark creati: ${stats.bookmarksCreated}
+🔥 Giorni di studio consecutivi: ${stats.studyStreak}
+⭐ Sezione preferita: ${stats.favoriteSection}
+📅 Ultima sessione: ${stats.lastStudySession}
+🎧 Tempo di ascolto: ${stats.listeningTime}
+
+${stats.studyStreak > 0 ? '🎉 Ottimo lavoro! Continua così!' : '💪 Inizia oggi la tua serie di studio!'}`;
+
+                alert(message);
+            }
+
+            calculateStats(progress, bookmarks) {
+                return {
+                    sectionsCompleted: Object.keys(progress).length,
+                    bookmarksCreated: bookmarks.length,
+                    studyStreak: this.calculateStudyStreak(progress),
+                    favoriteSection: this.getFavoriteSection(progress),
+                    lastStudySession: this.getLastStudyDate(progress),
+                    listeningTime: this.getListeningTime()
+                };
+            }
+
+            calculateStudyStreak(progress) {
+                const dates = Object.values(progress)
+                    .map(p => new Date(p.timestamp).toDateString())
+                    .filter((date, index, array) => array.indexOf(date) === index)
+                    .sort((a, b) => new Date(b) - new Date(a));
+
+                let streak = 0;
+                for (let i = 0; i < dates.length; i++) {
+                    const currentDate = new Date(dates[i]);
+                    const expectedDate = new Date();
+                    expectedDate.setDate(expectedDate.getDate() - i);
+
+                    if (currentDate.toDateString() === expectedDate.toDateString()) {
+                        streak++;
+                    } else {
+                        break;
+                    }
+                }
+                return streak;
+            }
+
+            getFavoriteSection(progress) {
+                const sectionCounts = {};
+                Object.keys(progress).forEach(key => {
+                    const section = key.split('-')[0];
+                    sectionCounts[section] = (sectionCounts[section] || 0) + 1;
+                });
+
+                const topSection = Object.keys(sectionCounts).reduce((a, b) =>
+                    sectionCounts[a] > sectionCounts[b] ? a : b, '');
+
+                return topSection || 'Nessuna';
+            }
+
+            getLastStudyDate(progress) {
+                const dates = Object.values(progress).map(p => new Date(p.timestamp));
+                return dates.length > 0 ?
+                    new Date(Math.max(...dates)).toLocaleDateString() : 'Mai';
+            }
+
+            getListeningTime() {
+                const listeningTime = localStorage.getItem('studyhub_listening_time') || '0';
+                const minutes = Math.floor(parseInt(listeningTime) / 60);
+                return `${minutes} minuti`;
+            }
+
+            exportNotes() {
+                const data = {
+                    generatedAt: new Date().toISOString(),
+                    bookmarks: this.getBookmarks(),
+                    progress: this.getProgress(),
+                    preferences: this.getUserPreferences(),
+                    stats: this.calculateStats(this.getProgress(), this.getBookmarks()),
+                    currentSession: {
+                        section: this.currentSection,
+                        anchor: this.currentAnchor,
+                        readingIndex: this.currentReadingIndex
+                    }
+                };
+
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = `studyhub-export-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+
+                this.showNotification('📤 Note esportate con successo!', 'success');
+            }
+
+            showSearch() {
+                const searchTerm = prompt('🔍 Cerca nell\'ebook:\n\nInserisci il termine da cercare:');
+                if (searchTerm && searchTerm.trim()) {
+                    this.performSearch(searchTerm.trim());
+                }
+            }
+
+            performSearch(term) {
+                const sections = document.querySelectorAll('.section');
+                let results = [];
+
+                sections.forEach(section => {
+                    const sectionId = section.id;
+                    const content = section.innerText.toLowerCase();
+
+                    if (content.includes(term.toLowerCase())) {
+                        const title = section.querySelector('.lesson-title')?.textContent || sectionId;
+                        results.push({
+                            section: sectionId,
+                            title: title
+                        });
+                    }
+                });
+
+                if (results.length === 0) {
+                    this.showNotification(`❌ Nessun risultato per "${term}"`, 'warning');
+                } else {
+                    this.showNotification(`🔍 Trovati ${results.length} risultati per "${term}"`, 'success');
+                    if (results.length === 1) {
+                        this.showSection(results[0].section);
+                    }
+                }
+            }
+
+            toggleMobileMenu() {
+                this.showNotification('📱 Menu mobile attivo', 'success');
+            }
+
+            updateProgressBar() {
+                const currentIndex = this.sections.indexOf(this.currentSection);
+                const progress = ((currentIndex + 1) / this.sections.length) * 100;
+
+                const progressBar = document.getElementById('progressBar');
+                if (progressBar) {
+                    progressBar.style.width = progress + '%';
+                }
+            }
+
+            saveProgress(sectionId, anchorId = null) {
+                const progress = this.getProgress();
+                const key = anchorId ? `${sectionId}-${anchorId}` : sectionId;
+
+                progress[key] = {
+                    timestamp: new Date().toISOString(),
+                    completed: true,
+                    readingIndex: this.currentReadingIndex
+                };
+
+                localStorage.setItem('studyhub_progress', JSON.stringify(progress));
+            }
+
+            getProgress() {
+                return JSON.parse(localStorage.getItem('studyhub_progress') || '{}');
+            }
+
+            saveUserPreferences() {
+                const preferences = {
+                    theme: this.isDarkTheme ? 'dark' : 'light',
+                    readingSpeed: this.readingSpeed,
+                    audioPlayerVisible: this.isAudioPlayerVisible,
+                    repeatMode: this.isRepeatMode
+                };
+
+                localStorage.setItem('studyhub_preferences', JSON.stringify(preferences));
+            }
+
+            loadUserPreferences() {
+                const preferences = this.getUserPreferences();
+
+                if (preferences.theme === 'dark') {
+                    this.isDarkTheme = true;
+                    document.body.classList.add('dark-theme');
+                    document.querySelector('#themeBtn i').className = 'fas fa-sun';
+                }
+
+                this.readingSpeed = preferences.readingSpeed || 1;
+                this.isAudioPlayerVisible = preferences.audioPlayerVisible || false;
+                this.isRepeatMode = preferences.repeatMode || false;
+
+                if (this.isAudioPlayerVisible) {
+                    this.showAudioPlayer();
+                }
+
+                if (this.isRepeatMode) {
+                    this.toggleRepeatMode();
+                }
+
+                // Update speed button
+                document.getElementById('speedBtn').textContent = `${this.readingSpeed}x`;
+            }
+
+            getUserPreferences() {
+                return JSON.parse(localStorage.getItem('studyhub_preferences') || '{}');
+            }
+
+            showNotification(message, type = 'success') {
+                const notification = document.getElementById('statusNotification');
+                const messageElement = document.getElementById('statusMessage');
+
+                notification.classList.remove('success', 'warning', 'error');
+                notification.classList.add(type);
+
+                messageElement.textContent = message;
+                notification.classList.add('show');
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 4000);
+            }
+
+            showWelcomeNotification() {
+                setTimeout(() => {
+                    this.showNotification('🚀 StudyHub migliorato! Usa Ctrl+Space per la lettura audio intelligente', 'success');
+                }, 1000);
+            }
+
+            // Public methods for global access
+            goToSection(sectionId, anchorId = null) {
+                this.showSection(sectionId, anchorId);
+            }
+
+            getCurrentSection() {
+                return this.currentSection;
+            }
+
+            getStudyData() {
+                return {
+                    progress: this.getProgress(),
+                    bookmarks: this.getBookmarks(),
+                    preferences: this.getUserPreferences(),
+                    currentSession: {
+                        section: this.currentSection,
+                        anchor: this.currentAnchor,
+                        readingIndex: this.currentReadingIndex
+                    }
+                };}
+        }
+
+        // Initialize the enhanced ebook when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            window.studyHub = new EnhancedStudyHubManager();
+
+            // Request notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            // Handle visibility change for better performance
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden && window.studyHub.isReading) {
+                    window.studyHub.pauseReading();
+                }
+            });
+
+            // Handle beforeunload for cleanup
+            window.addEventListener('beforeunload', () => {
+                if (window.studyHub.pomodoroTimer) {
+                    clearInterval(window.studyHub.pomodoroTimer);
+                }
+                if (window.studyHub.speechSynthesis) {
+                    window.studyHub.speechSynthesis.cancel();
+                }
+
+                // Save listening time
+                const currentTime = parseInt(localStorage.getItem('studyhub_listening_time') || '0');
+                localStorage.setItem('studyhub_listening_time', (currentTime + 60).toString());
+            });
+
+            // Add resize handler for responsive behavior
+            window.addEventListener('resize', () => {
+                // Adjust audio player for mobile
+                const audioPlayer = document.getElementById('audioPlayer');
+                if (window.innerWidth <= 768 && audioPlayer.classList.contains('visible')) {
+                    audioPlayer.style.width = 'calc(100vw - 2rem)';
+                    audioPlayer.style.minWidth = 'auto';
+                } else if (audioPlayer.classList.contains('visible')) {
+                    audioPlayer.style.width = '';
+                    audioPlayer.style.minWidth = '320px';
+                }
+            });
+
+            // Handle speech synthesis voices loading
+            window.speechSynthesis.onvoiceschanged = () => {
+                const voices = window.speechSynthesis.getVoices();
+                const italianVoices = voices.filter(voice => voice.lang.startsWith('it'));
+
+                if (italianVoices.length > 0) {
+                    console.log('🎤 Voci italiane disponibili:', italianVoices.map(v => v.name));
+                } else {
+                    console.warn('⚠️ Nessuna voce italiana trovata');
+                }
+            };
+
+            // Add service worker for offline support (if needed)
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('📱 Service Worker registrato:', registration);
+                }).catch(error => {
+                    console.log('❌ Service Worker fallito:', error);
+                });
+            }
+
+            console.log(`
+🎉 STUDYHUB ENHANCED CARICATO CON SUCCESSO!
+
+✨ Nuove funzionalità:
+🎧 Lettura audio intelligente con navigazione
+⏮️⏭️ Pulsanti precedente/successivo per gli elementi
+🔄 Modalità ripetizione per riascoltare
+📍 Lettura dal punto selezionato nell'indice
+📱 Design responsive migliorato per mobile
+🎯 Evidenziazione elemento corrente
+🔊 Controlli audio avanzati
+⌨️ Scorciatoie tastiera potenziate
+👆 Gesture touch migliorati
+🍅 Timer Pomodoro integrato
+📊 Statistiche di studio avanzate
+
+🎮 Comandi principali:
+• Ctrl + Space: Avvia/Pausa lettura
+• Frecce ← →: Naviga elementi (durante lettura)
+• Escape: Ferma tutto
+• Ctrl + B: Aggiungi bookmark
+• Ctrl + T: Cambia tema
+
+🚀 Buono studio con il nuovo StudyHub!
+            `);
+        });
+
+        // Global functions for backwards compatibility and console access
+        function showSection(sectionId, anchorId = null) {
+            if (window.studyHub) {
+                window.studyHub.goToSection(sectionId, anchorId);
+            }
+        }
+
+        function toggleTheme() {
+            if (window.studyHub) {
+                window.studyHub.toggleTheme();
+            }
+        }
+
+        function startReading() {
+            if (window.studyHub) {
+                window.studyHub.startReading();
+            }
+        }
+
+        function stopReading() {
+            if (window.studyHub) {
+                window.studyHub.stopReading();
+            }
+        }
+
+        function nextElement() {
+            if (window.studyHub) {
+                window.studyHub.nextElement();
+            }
+        }
+
+        function previousElement() {
+            if (window.studyHub) {
+                window.studyHub.previousElement();
+            }
+        }
+
+        function showStats() {
+            if (window.studyHub) {
+                window.studyHub.showStats();
+            }
+        }
+
+        function addBookmark() {
+            if (window.studyHub) {
+                window.studyHub.addBookmark();
+            }
+        }
+
+        function exportNotes() {
+            if (window.studyHub) {
+                window.studyHub.exportNotes();
+            }
+        }
+
+        function startPomodoro() {
+            if (window.studyHub) {
+                window.studyHub.startPomodoro();
+            }
+        }
+
+        function toggleAudioPlayer() {
+            if (window.studyHub) {
+                window.studyHub.toggleAudioPlayer();
+            }
+        }
+
+        // Enhanced error handling
+        window.addEventListener('error', (event) => {
+            console.error('❌ Errore JavaScript:', event.error);
+
+            if (window.studyHub) {
+                window.studyHub.showNotification('❌ Si è verificato un errore', 'error');
+            }
+        });
+
+        // Enhanced unhandled promise rejection handling
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('❌ Promise rejections:', event.reason);
+
+            if (window.studyHub) {
+                window.studyHub.showNotification('⚠️ Errore di connessione', 'warning');
+            }
+        });
+
+        // Additional CSS for enhanced mobile experience
+        const mobileEnhancedCSS = `
+        /* Enhanced mobile touch targets */
+        @media (max-width: 768px) {
+            .current-reading {
+                background: var(--accent-color) !important;
+                color: white !important;
+                padding: 0.75rem !important;
+                border-radius: var(--border-radius-lg) !important;
+                margin: 0.5rem 0 !important;
+                box-shadow: var(--shadow-lg) !important;
+                animation: mobileHighlight 1s ease-in-out !important;
+            }
+
+            @keyframes mobileHighlight {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.02); }
+            }
+
+            .toc-item.current-reading {
+                background: var(--accent-color) !important;
+                color: white !important;
+                font-weight: bold !important;
+                transform: translateX(8px) !important;
+                border-left-color: var(--warning-color) !important;
+            }
+
+            .audio-player.visible {
+                animation: slideUpMobile 0.4s ease-out !important;
+            }
+
+            @keyframes slideUpMobile {
+                from {
+                    transform: translateY(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            .nav-btn, .control-btn {
+                min-width: 44px !important;
+                min-height: 44px !important;
+                font-size: 1.1rem !important;
+            }
+
+            .play-btn {
+                min-width: 54px !important;
+                min-height: 54px !important;
+                font-size: 1.3rem !important;
+            }
+
+            .status-notification {
+                font-size: 0.95rem !important;
+                padding: 1rem 1.25rem !important;
+                border-radius: var(--border-radius-lg) !important;
+            }
+
+            .audio-controls {
+                padding: 0.5rem !important;
+                background: var(--bg-secondary) !important;
+                border-radius: var(--border-radius-lg) !important;
+                margin-bottom: 1rem !important;
+            }
+
+            .main-audio-controls {
+                justify-content: space-around !important;
+                flex: 1 !important;
+            }
+
+            .current-reading-info {
+                font-size: 0.85rem !important;
+                line-height: 1.4 !important;
+                padding: 1rem !important;
+            }
+
+            /* Better touch feedback */
+            .subject-btn:active,
+            .action-btn:active,
+            .nav-btn:active,
+            .control-btn:active,
+            .play-btn:active {
+                transform: scale(0.95) !important;
+                transition: transform 0.1s ease !important;
+            }
+
+            /* Improved text readability on mobile */
+            .card {
+                font-size: 0.95rem !important;
+                line-height: 1.6 !important;
+            }
+
+            .card-title {
+                font-size: 1.1rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+
+            .lesson-content h2 {
+                font-size: 1.6rem !important;
+                margin-bottom: 1rem !important;
+                line-height: 1.3 !important;
+            }
+
+            .lesson-content h3 {
+                font-size: 1.3rem !important;
+                margin-bottom: 0.75rem !important;
+                margin-top: 1.5rem !important;
+            }
+
+            .lesson-content p {
+                margin-bottom: 1rem !important;
+                line-height: 1.7 !important;
+            }
+
+            .lesson-content ul, .lesson-content ol {
+                margin-bottom: 1rem !important;
+                padding-left: 1.5rem !important;
+            }
+
+            .lesson-content li {
+                margin-bottom: 0.5rem !important;
+                line-height: 1.6 !important;
+            }
+        }
+
+        /* Enhanced dark theme for mobile */
+        @media (max-width: 768px) {
+            .dark-theme .current-reading {
+                background: var(--warning-color) !important;
+                color: var(--bg-primary) !important;
+                box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+            }
+
+            .dark-theme .audio-player {
+                background: rgba(51, 65, 85, 0.95) !important;
+                backdrop-filter: blur(20px) !important;
+                border: 1px solid var(--border-color) !important;
+            }
+
+            .dark-theme .status-notification {
+                background: var(--bg-card) !important;
+                border: 1px solid var(--border-color) !important;
+            }
+        }
+
+        /* Accessibility improvements for mobile */
+        @media (max-width: 768px) {
+            .sr-only {
+                position: absolute !important;
+                width: 1px !important;
+                height: 1px !important;
+                padding: 0 !important;
+                margin: -1px !important;
+                overflow: hidden !important;
+                clip: rect(0, 0, 0, 0) !important;
+                white-space: nowrap !important;
+                border: 0 !important;
+            }
+
+            .nav-btn:focus,
+            .control-btn:focus,
+            .play-btn:focus {
+                outline: 3px solid var(--primary-color) !important;
+                outline-offset: 2px !important;
+            }
+
+            .toc-item:focus,
+            .lesson-link:focus {
+                outline: 2px solid var(--primary-color) !important;
+                outline-offset: 1px !important;
+                background: var(--primary-light) !important;
+                color: white !important;
+            }
+        }
+
+        /* Loading states for better UX */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--bg-secondary);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .play-btn.loading::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        /* Error states */
+        .error-state {
+            background: var(--error-color) !important;
+            color: white !important;
+            animation: shake 0.5s ease-in-out !important;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Success states */
+        .success-state {
+            background: var(--success-color) !important;
+            color: white !important;
+            animation: bounce 0.6s ease-in-out !important;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        `;
+
+        // Append mobile enhanced CSS
+        const mobileStyleSheet = document.createElement('style');
+        mobileStyleSheet.textContent = mobileEnhancedCSS;
+        document.head.appendChild(mobileStyleSheet);
+
+        // Add meta tag for better mobile experience
+        const viewportMeta = document.querySelector('meta[name="viewport"]');
+        if (viewportMeta) {
+            viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes');
+        }
+
+        // Add theme-color meta for mobile browsers
+        const themeColorMeta = document.createElement('meta');
+        themeColorMeta.name = 'theme-color';
+        themeColorMeta.content = '#6366f1';
+        document.head.appendChild(themeColorMeta);
+
+        // Add apple-mobile-web-app-capable for iOS
+        const appleMobileMeta = document.createElement('meta');
+        appleMobileMeta.name = 'apple-mobile-web-app-capable';
+        appleMobileMeta.content = 'yes';
+        document.head.appendChild(appleMobileMeta);
+    </script>
+</body>
+</html>
