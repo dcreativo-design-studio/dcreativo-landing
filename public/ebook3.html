@@ -1044,6 +1044,173 @@
         box-shadow: 0 8px 24px rgba(245, 158, 11, 0.5);
     }
 }
+/* Compact Audio Player for Mobile */
+@media (max-width: 768px) {
+    .audio-player {
+        transition: all 0.3s ease;
+    }
+
+    /* Modalità minimizzata */
+    .audio-player.minimized {
+        min-width: auto !important;
+        width: auto !important;
+        padding: 0.75rem !important;
+        border-radius: 50px !important;
+        bottom: 1rem !important;
+        right: 1rem !important;
+        left: auto !important;
+        cursor: pointer !important;
+        user-select: none !important;
+    }
+    .audio-player.minimized:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .audio-player.minimized .audio-header,
+    .audio-player.minimized .current-reading-info,
+    .audio-player.minimized .secondary-controls,
+    .audio-player.minimized .speed-indicator,
+    .audio-player.minimized .nav-btn {
+        display: none !important;
+    }
+
+    .audio-player.minimized .audio-controls {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: none !important;
+    }
+
+    .audio-player.minimized .main-audio-controls {
+        gap: 0.5rem !important;
+    }
+
+    .audio-player.minimized .play-btn {
+        width: 45px !important;
+        height: 45px !important;
+        min-width: 45px !important;
+        min-height: 45px !important;
+        margin: 0 !important;
+        font-size: 1.1rem !important;
+    }
+
+    /* Bottone minimize/maximize */
+    .minimize-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 2.5rem;
+        background: var(--bg-secondary);
+        border: none;
+        color: var(--text-secondary);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+    }
+
+    .minimize-btn:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    /* Indicatore di stato compatto */
+    .compact-status {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 16px;
+        height: 16px;
+        background: var(--success-color);
+        border-radius: 50%;
+        border: 2px solid var(--bg-card);
+        display: none;
+    }
+
+    .audio-player.minimized .compact-status {
+        display: block;
+        animation: pulse 2s infinite;
+    }
+
+    .audio-player.minimized.reading .compact-status {
+        background: var(--error-color);
+    }
+
+    /* Modalità floating migliorata */
+    .audio-player.visible {
+        position: fixed;
+        bottom: calc(var(--nav-height, 60px) + 1rem);
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+
+    /* Trasparenza per vedere il contenuto dietro */
+    .audio-player:not(.minimized) {
+        background: rgba(var(--bg-card-rgb, 255, 255, 255), 0.95) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+    }
+
+    .dark-theme .audio-player:not(.minimized) {
+        background: rgba(51, 65, 85, 0.95) !important;
+    }
+}
+
+/* Aggiunta variabili CSS per colori RGB */
+:root {
+    --bg-card-rgb: 255, 255, 255;
+}
+
+.dark-theme {
+    --bg-card-rgb: 51, 65, 85;
+}
+
+/* Animazione floating per mobile */
+@media (max-width: 768px) {
+    .floating-audio-toggle {
+        position: fixed;
+        bottom: calc(var(--nav-height, 60px) + 1rem);
+        right: 1rem;
+        width: 50px;
+        height: 50px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: var(--shadow-lg);
+        z-index: 998;
+        transition: all 0.3s ease;
+        border: none;
+        font-size: 1.2rem;
+    }
+
+    .floating-audio-toggle:hover {
+        transform: scale(1.1);
+    }
+
+    .floating-audio-toggle.active {
+        background: var(--error-color);
+        animation: pulse 2s infinite;
+    }
+}
+
+/* Ottimizzazione per scroll content mentre audio player è visibile */
+@media (max-width: 768px) {
+    body.audio-player-visible {
+        padding-bottom: 200px;
+    }
+
+    body.audio-player-minimized {
+        padding-bottom: 80px;
+    }
+}
     </style>
     <style>
 /* Search Results Popup Styles */
@@ -7457,13 +7624,24 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="floating-controls">
         <!-- Enhanced Audio Player -->
         <div class="audio-player" id="audioPlayer">
-            <div class="audio-header">
-                <span class="audio-title">🎧 Lettura Audio</span>
-                <button class="close-audio" id="closeAudio">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+    <div class="audio-header">
+        <span class="audio-title">🎧 Lettura Audio</span>
+        <button class="minimize-btn" id="minimizeBtn" title="Minimizza">
+            <i class="fas fa-minus"></i>
+        </button>
+        <button class="close-audio" id="closeAudio">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
 
+    <!-- Indicatore di stato compatto per modalità minimizzata -->
+    <div class="compact-status"></div>
+
+    <!-- Resto del contenuto esistente... -->
+    <!-- Floating Audio Toggle for Mobile -->
+<button class="floating-audio-toggle" id="floatingAudioToggle" style="display: none;">
+    <i class="fas fa-headphones"></i>
+</button>
             <div class="current-reading-info" id="currentReadingInfo">
                 <i class="fas fa-book-open"></i>
                 <span id="currentReadingText">Seleziona un contenuto per iniziare</span>
@@ -7591,6 +7769,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.updateProgressBar();
                 this.showWelcomeNotification();
                 this.initializeReadableElements();
+                // Aggiungi queste proprietà nella classe
+this.isPlayerMinimized = false;
+this.isMobile = window.innerWidth <= 768;
             }
 
             setupEventListeners() {
@@ -7611,7 +7792,39 @@ document.addEventListener('DOMContentLoaded', () => {
                         this.showSection(section, anchor);
                     });
                 });
+                // Minimize/Maximize button
+const minimizeBtn = document.getElementById('minimizeBtn');
+if (minimizeBtn) {
+    minimizeBtn.addEventListener('click', () => this.toggleMinimize());
+}
+// Click sul player minimizzato per espanderlo
+const audioPlayer = document.getElementById('audioPlayer');
+if (audioPlayer) {
+    audioPlayer.addEventListener('click', (e) => {
+        // Solo se è minimizzato e il click non è su un bottone
+        if (this.isPlayerMinimized && !e.target.closest('button')) {
+            this.toggleMinimize();
+        }
+    });
+}
+// Floating audio toggle for mobile
+const floatingToggle = document.getElementById('floatingAudioToggle');
+if (floatingToggle) {
+    floatingToggle.addEventListener('click', () => this.toggleFloatingAudio());
+}
 
+// Gestione resize per mobile
+window.addEventListener('resize', () => {
+    const wasMobile = this.isMobile;
+    this.isMobile = window.innerWidth <= 768;
+
+    if (wasMobile !== this.isMobile) {
+        this.updateAudioPlayerMode();
+    }
+});
+
+// Inizializza il modo mobile se necessario
+this.updateAudioPlayerMode();
                 // Header actions
                 document.getElementById('themeBtn').addEventListener('click', () => this.toggleTheme());
                 document.getElementById('fullscreenBtn').addEventListener('click', () => this.toggleFullscreen());
@@ -7839,49 +8052,59 @@ document.addEventListener('keydown', (e) => {
             }
 
             startReading() {
-                if (!this.speechSynthesis) {
-                    this.showNotification('❌ Sintesi vocale non supportata su questo dispositivo', 'error');
-                    return;
+    if (!this.speechSynthesis) {
+        this.showNotification('❌ Sintesi vocale non supportata su questo dispositivo', 'error');
+        return;
+    }
+
+    if (this.readableElements.length === 0) {
+        this.initializeReadableElements();
+        if (this.readableElements.length === 0) {
+            this.showNotification('⚠️ Nessun contenuto da leggere', 'warning');
+            return;
+        }
+    }
+
+    // Stop any current reading
+    this.speechSynthesis.cancel();
+
+    const currentElement = this.readableElements[this.currentReadingIndex];
+    if (!currentElement) {
+        this.showNotification('⚠️ Nessun elemento da leggere', 'warning');
+        return;
+    }
+
+    const textContent = this.extractTextContent(currentElement);
+    if (!textContent.trim()) {
+        this.nextElement();
+        return;
+    }
+
+    // Highlight current element
+    this.highlightCurrentReading(currentElement);
+
+    this.currentUtterance = new SpeechSynthesisUtterance(textContent);
+    this.currentUtterance.lang = 'it-IT';
+    this.currentUtterance.rate = this.readingSpeed;
+    this.currentUtterance.pitch = 1;
+    this.currentUtterance.volume = 0.8;
+
+    this.currentUtterance.onstart = () => {
+        this.isReading = true;
+        this.updateAudioButtons();
+        this.showAudioPlayer();
+
+        // Su mobile, minimizza automaticamente dopo 2 secondi
+        if (this.isMobile && !this.isPlayerMinimized) {
+            setTimeout(() => {
+                if (this.isReading) {
+                    this.toggleMinimize();
                 }
+            }, 2000);
+        }
 
-                if (this.readableElements.length === 0) {
-                    this.initializeReadableElements();
-                    if (this.readableElements.length === 0) {
-                        this.showNotification('⚠️ Nessun contenuto da leggere', 'warning');
-                        return;
-                    }
-                }
-
-                // Stop any current reading
-                this.speechSynthesis.cancel();
-
-                const currentElement = this.readableElements[this.currentReadingIndex];
-                if (!currentElement) {
-                    this.showNotification('⚠️ Nessun elemento da leggere', 'warning');
-                    return;
-                }
-
-                const textContent = this.extractTextContent(currentElement);
-                if (!textContent.trim()) {
-                    this.nextElement();
-                    return;
-                }
-
-                // Highlight current element
-                this.highlightCurrentReading(currentElement);
-
-                this.currentUtterance = new SpeechSynthesisUtterance(textContent);
-                this.currentUtterance.lang = 'it-IT';
-                this.currentUtterance.rate = this.readingSpeed;
-                this.currentUtterance.pitch = 1;
-                this.currentUtterance.volume = 0.8;
-
-                this.currentUtterance.onstart = () => {
-                    this.isReading = true;
-                    this.updateAudioButtons();
-                    this.showAudioPlayer();
-                    this.showNotification('🔊 Lettura in corso...', 'success');
-                };
+        this.showNotification('🔊 Lettura in corso...', 'success');
+    };
 
                 this.currentUtterance.onend = () => {
                     this.isReading = false;
@@ -8012,7 +8235,17 @@ document.addEventListener('keydown', (e) => {
                     el.classList.remove('current-reading');
                 });
             }
+            // Aggiungi questa funzione per aggiornare lo stato del player minimizzato
+updateMinimizedPlayerState() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    const compactStatus = audioPlayer.querySelector('.compact-status');
 
+    if (this.isReading) {
+        audioPlayer.classList.add('reading');
+    } else {
+        audioPlayer.classList.remove('reading');
+    }
+}
             updateTOCHighlight(element) {
                 // Find corresponding TOC item
                 const headingId = element.id || element.closest('[id]')?.id;
@@ -8065,6 +8298,14 @@ document.addEventListener('keydown', (e) => {
             updateAudioButtons() {
                 const playBtn = document.getElementById('playBtn');
                 const playIcon = playBtn.querySelector('i');
+                // Aggiorna anche lo stato del player minimizzato
+this.updateMinimizedPlayerState();
+
+// Aggiorna il floating toggle su mobile
+const floatingToggle = document.getElementById('floatingAudioToggle');
+if (floatingToggle && this.isReading) {
+    floatingToggle.classList.add('active');
+}
 
                 if (this.isReading) {
                     playIcon.className = 'fas fa-volume-up pulse';
@@ -8074,6 +8315,7 @@ document.addEventListener('keydown', (e) => {
                     playBtn.classList.remove('reading');
                 }
             }
+
 
             extractTextContent(element) {
                 let text = element.textContent || element.innerText;
@@ -8181,16 +8423,107 @@ document.addEventListener('keydown', (e) => {
                 }
             }
 
-            showAudioPlayer() {
-                this.isAudioPlayerVisible = true;
-                document.getElementById('audioPlayer').classList.add('visible');
-            }
+           toggleMinimize() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    const minimizeBtn = document.getElementById('minimizeBtn');
+    const minimizeIcon = minimizeBtn.querySelector('i');
 
-            hideAudioPlayer() {
-                this.isAudioPlayerVisible = false;
-                document.getElementById('audioPlayer').classList.remove('visible');
-                this.stopReading();
-            }
+    this.isPlayerMinimized = !this.isPlayerMinimized;
+
+    if (this.isPlayerMinimized) {
+        audioPlayer.classList.add('minimized');
+        minimizeIcon.className = 'fas fa-expand';
+        minimizeBtn.title = 'Espandi';
+        document.body.classList.add('audio-player-minimized');
+        document.body.classList.remove('audio-player-visible');
+        this.showNotification('🎧 Player minimizzato', 'success');
+    } else {
+        audioPlayer.classList.remove('minimized');
+        minimizeIcon.className = 'fas fa-minus';
+        minimizeBtn.title = 'Minimizza';
+        document.body.classList.remove('audio-player-minimized');
+        document.body.classList.add('audio-player-visible');
+        this.showNotification('🎧 Player espanso', 'success');
+    }
+}
+
+toggleFloatingAudio() {
+    const isVisible = this.isAudioPlayerVisible;
+
+    if (isVisible) {
+        this.hideAudioPlayer();
+    } else {
+        this.showAudioPlayer();
+        // Se è mobile, minimizza automaticamente dopo 3 secondi se sta leggendo
+        if (this.isMobile && this.isReading) {
+            setTimeout(() => {
+                if (this.isReading && !this.isPlayerMinimized) {
+                    this.toggleMinimize();
+                }
+            }, 3000);
+        }
+    }
+}
+
+updateAudioPlayerMode() {
+    const floatingToggle = document.getElementById('floatingAudioToggle');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const minimizeBtn = document.getElementById('minimizeBtn');
+
+    if (this.isMobile) {
+        // Modalità mobile
+        if (floatingToggle) floatingToggle.style.display = 'flex';
+        if (minimizeBtn) minimizeBtn.style.display = 'flex';
+
+        // Se il player è visibile su mobile, aggiungi le classi appropriate
+        if (this.isAudioPlayerVisible) {
+            document.body.classList.add(this.isPlayerMinimized ? 'audio-player-minimized' : 'audio-player-visible');
+        }
+    } else {
+        // Modalità desktop
+        if (floatingToggle) floatingToggle.style.display = 'none';
+        if (minimizeBtn) minimizeBtn.style.display = 'none';
+        if (audioPlayer) audioPlayer.classList.remove('minimized');
+        document.body.classList.remove('audio-player-visible', 'audio-player-minimized');
+        this.isPlayerMinimized = false;
+    }
+}
+
+// Modifica la funzione showAudioPlayer esistente
+showAudioPlayer() {
+    this.isAudioPlayerVisible = true;
+    const audioPlayer = document.getElementById('audioPlayer');
+    const floatingToggle = document.getElementById('floatingAudioToggle');
+
+    audioPlayer.classList.add('visible');
+
+    if (this.isMobile) {
+        document.body.classList.add(this.isPlayerMinimized ? 'audio-player-minimized' : 'audio-player-visible');
+        if (floatingToggle) {
+            floatingToggle.classList.add('active');
+            floatingToggle.innerHTML = '<i class="fas fa-times"></i>';
+        }
+    }
+}
+
+// Modifica la funzione hideAudioPlayer esistente
+hideAudioPlayer() {
+    this.isAudioPlayerVisible = false;
+    const audioPlayer = document.getElementById('audioPlayer');
+    const floatingToggle = document.getElementById('floatingAudioToggle');
+
+    audioPlayer.classList.remove('visible');
+    document.body.classList.remove('audio-player-visible', 'audio-player-minimized');
+
+    if (this.isMobile && floatingToggle) {
+        floatingToggle.classList.remove('active');
+        floatingToggle.innerHTML = '<i class="fas fa-headphones"></i>';
+    }
+
+    // Non fermare la lettura quando si nasconde il player
+    // this.stopReading(); // Commenta questa riga
+}
+
 
             toggleFabMenu() {
                 this.isFabMenuOpen = !this.isFabMenuOpen;
