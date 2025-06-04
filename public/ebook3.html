@@ -1044,6 +1044,47 @@
         box-shadow: 0 8px 24px rgba(245, 158, 11, 0.5);
     }
 }
+
+/* Aggiunta variabili CSS per colori RGB */
+:root {
+    --bg-card-rgb: 255, 255, 255;
+}
+
+.dark-theme {
+    --bg-card-rgb: 51, 65, 85;
+}
+
+/* Animazione floating per mobile */
+@media (max-width: 768px) {
+    .floating-audio-toggle {
+        position: fixed;
+        bottom: calc(var(--nav-height, 60px) + 1rem);
+        right: 1rem;
+        width: 50px;
+        height: 50px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: var(--shadow-lg);
+        z-index: 998;
+        transition: all 0.3s ease;
+        border: none;
+        font-size: 1.2rem;
+    }
+
+    .floating-audio-toggle:hover {
+        transform: scale(1.1);
+    }
+
+    .floating-audio-toggle.active {
+        background: var(--error-color);
+        animation: pulse 2s infinite;
+    }
+}
 /* Compact Audio Player for Mobile */
 @media (max-width: 768px) {
     .audio-player {
@@ -1154,46 +1195,7 @@
     }
 }
 
-/* Aggiunta variabili CSS per colori RGB */
-:root {
-    --bg-card-rgb: 255, 255, 255;
-}
 
-.dark-theme {
-    --bg-card-rgb: 51, 65, 85;
-}
-
-/* Animazione floating per mobile */
-@media (max-width: 768px) {
-    .floating-audio-toggle {
-        position: fixed;
-        bottom: calc(var(--nav-height, 60px) + 1rem);
-        right: 1rem;
-        width: 50px;
-        height: 50px;
-        background: var(--primary-color);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: var(--shadow-lg);
-        z-index: 998;
-        transition: all 0.3s ease;
-        border: none;
-        font-size: 1.2rem;
-    }
-
-    .floating-audio-toggle:hover {
-        transform: scale(1.1);
-    }
-
-    .floating-audio-toggle.active {
-        background: var(--error-color);
-        animation: pulse 2s infinite;
-    }
-}
 
 /* Ottimizzazione per scroll content mentre audio player è visibile */
 @media (max-width: 768px) {
@@ -1409,6 +1411,7 @@
         font-size: 16px; /* Prevents zoom on iOS */
     }
 }
+
 </style>
 </head>
 <body>
