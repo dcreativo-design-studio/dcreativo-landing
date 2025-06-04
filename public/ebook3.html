@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📚 StudyHub - Socio-Psico-Pedagogico</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <meta name="mobile-web-app-capable" content="yes">
     <style>
         * {
             margin: 0;
@@ -1028,7 +1029,226 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-dark);
         }
+        /* Search result highlighting */
+.search-highlight-active {
+    animation: highlightPulse 1s ease-in-out 2;
+}
+
+@keyframes highlightPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 8px 24px rgba(245, 158, 11, 0.5);
+    }
+}
     </style>
+    <style>
+/* Search Results Popup Styles */
+.search-results-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--bg-card);
+    border-radius: var(--border-radius-2xl);
+    padding: 2rem;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-color);
+    z-index: 1010;
+    max-width: 600px;
+    width: 90%;
+    max-height: 70vh;
+    display: none;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.search-results-popup.show {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.search-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.close-search {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-search:hover {
+    background: var(--error-color);
+    color: white;
+}
+
+.search-input-container {
+    margin-bottom: 1.5rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
+    font-size: 1rem;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.search-results-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 0 -0.5rem;
+    padding: 0 0.5rem;
+}
+
+.search-result-item {
+    display: block;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-lg);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.search-result-item:hover {
+    background: var(--primary-light);
+    color: white;
+    transform: translateX(8px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.search-result-section {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.search-result-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: inherit;
+}
+
+.search-result-preview {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    line-height: 1.4;
+}
+
+.search-result-highlight {
+    background: var(--warning-color);
+    color: var(--bg-primary);
+    padding: 0.1rem 0.3rem;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+}
+
+.no-results {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+}
+
+.no-results-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 1009;
+    display: none;
+}
+
+.search-overlay.show {
+    display: block;
+}
+
+/* Dark theme adjustments */
+.dark-theme .search-results-popup {
+    background: var(--bg-card);
+}
+
+.dark-theme .search-input {
+    background: var(--bg-primary);
+    border-color: var(--border-color);
+}
+
+.dark-theme .search-result-highlight {
+    background: var(--accent-color);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .search-results-popup {
+        width: 95%;
+        max-height: 80vh;
+        padding: 1.5rem;
+    }
+
+    .search-title {
+        font-size: 1.2rem;
+    }
+
+    .search-input {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
+</style>
 </head>
 <body>
     <!-- Progress Bar -->
@@ -7310,7 +7530,31 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="status-notification" id="statusNotification">
         <div id="statusMessage"></div>
     </div>
+    <!-- Search Popup -->
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-results-popup" id="searchPopup">
+    <div class="search-header">
+        <h3 class="search-title">🔍 Ricerca nell'ebook</h3>
+        <button class="close-search" id="closeSearchBtn">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
 
+    <div class="search-input-container">
+        <input
+            type="text"
+            class="search-input"
+            id="searchInput"
+            placeholder="Inserisci il termine da cercare..."
+            autocomplete="off"
+            autofocus
+        >
+    </div>
+
+    <div class="search-results-list" id="searchResultsList">
+        <!-- I risultati verranno inseriti qui dinamicamente -->
+    </div>
+</div>
     <script>
         // Enhanced StudyHub Manager con lettura intelligente e navigazione
         class EnhancedStudyHubManager {
@@ -7391,7 +7635,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('pomodoroBtn').addEventListener('click', () => this.startPomodoro());
                 document.getElementById('statsBtn').addEventListener('click', () => this.showStats());
                 document.getElementById('exportBtn').addEventListener('click', () => this.exportNotes());
+                // Search popup event listeners
+document.getElementById('closeSearchBtn').addEventListener('click', () => this.closeSearch());
+document.getElementById('searchOverlay').addEventListener('click', () => this.closeSearch());
 
+// Search input con debouncing per ricerca in tempo reale
+let searchTimeout;
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    clearTimeout(searchTimeout);
+    const term = e.target.value.trim();
+
+    if (term.length >= 2) { // Inizia la ricerca dopo almeno 2 caratteri
+        searchTimeout = setTimeout(() => {
+            this.performSearch(term);
+        }, 300); // 300ms di debounce
+    } else {
+        document.getElementById('searchResultsList').innerHTML = `
+            <div class="no-results">
+                <p style="color: var(--text-muted);">Inserisci almeno 2 caratteri per iniziare la ricerca...</p>
+            </div>
+        `;
+    }
+});
+
+// Gestisci il tasto Enter nel campo di ricerca
+document.getElementById('searchInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const term = e.target.value.trim();
+        if (term) {
+            this.performSearch(term);
+        }
+    }
+});
+
+// ESC per chiudere la ricerca
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('searchPopup').classList.contains('show')) {
+        this.closeSearch();
+    }
+});
                 // TOC clicks
                 document.addEventListener('click', (e) => {
                     if (e.target.classList.contains('toc-item')) {
@@ -8119,40 +8402,181 @@ ${stats.studyStreak > 0 ? '🎉 Ottimo lavoro! Continua così!' : '💪 Inizia o
                 this.showNotification('📤 Note esportate con successo!', 'success');
             }
 
-            showSearch() {
-                const searchTerm = prompt('🔍 Cerca nell\'ebook:\n\nInserisci il termine da cercare:');
-                if (searchTerm && searchTerm.trim()) {
-                    this.performSearch(searchTerm.trim());
+          showSearch() {
+    // Mostra il popup di ricerca invece del prompt
+    const overlay = document.getElementById('searchOverlay');
+    const popup = document.getElementById('searchPopup');
+    const input = document.getElementById('searchInput');
+
+    overlay.classList.add('show');
+    popup.classList.add('show');
+    input.value = '';
+    input.focus();
+
+    // Pulisci i risultati precedenti
+    document.getElementById('searchResultsList').innerHTML = '';
+}
+
+         performSearch(term) {
+    const sections = document.querySelectorAll('.section');
+    let results = [];
+
+    sections.forEach(section => {
+        const sectionId = section.id;
+        const sectionTitle = section.querySelector('.lesson-title')?.textContent || sectionId;
+
+        // Cerca in tutti gli elementi testuali della sezione
+        const searchableElements = section.querySelectorAll('h2, h3, h4, p, li, .card-title, blockquote');
+
+        searchableElements.forEach(element => {
+            const text = element.textContent || '';
+            const lowerText = text.toLowerCase();
+            const lowerTerm = term.toLowerCase();
+
+            if (lowerText.includes(lowerTerm)) {
+                // Trova il contesto attorno al termine trovato
+                const index = lowerText.indexOf(lowerTerm);
+                const start = Math.max(0, index - 50);
+                const end = Math.min(text.length, index + term.length + 50);
+                let preview = text.substring(start, end);
+
+                // Aggiungi i puntini se il testo è stato troncato
+                if (start > 0) preview = '...' + preview;
+                if (end < text.length) preview = preview + '...';
+
+                // Evidenzia il termine cercato nel preview
+                const regex = new RegExp(`(${term})`, 'gi');
+                preview = preview.replace(regex, '<span class="search-result-highlight">$1</span>');
+
+                // Trova l'ID dell'elemento più vicino per l'ancoraggio
+                let anchorId = element.id;
+                if (!anchorId) {
+                    const parent = element.closest('[id]');
+                    if (parent) anchorId = parent.id;
                 }
-            }
 
-            performSearch(term) {
-                const sections = document.querySelectorAll('.section');
-                let results = [];
-
-                sections.forEach(section => {
-                    const sectionId = section.id;
-                    const content = section.innerText.toLowerCase();
-
-                    if (content.includes(term.toLowerCase())) {
-                        const title = section.querySelector('.lesson-title')?.textContent || sectionId;
-                        results.push({
-                            section: sectionId,
-                            title: title
-                        });
-                    }
+                results.push({
+                    section: sectionId,
+                    sectionTitle: sectionTitle,
+                    element: element,
+                    preview: preview,
+                    anchorId: anchorId,
+                    text: text
                 });
-
-                if (results.length === 0) {
-                    this.showNotification(`❌ Nessun risultato per "${term}"`, 'warning');
-                } else {
-                    this.showNotification(`🔍 Trovati ${results.length} risultati per "${term}"`, 'success');
-                    if (results.length === 1) {
-                        this.showSection(results[0].section);
-                    }
-                }
             }
+        });
+    });
 
+    this.displaySearchResults(results, term);
+}
+    displaySearchResults(results, term) {
+    const resultsList = document.getElementById('searchResultsList');
+    resultsList.innerHTML = '';
+
+    if (results.length === 0) {
+        resultsList.innerHTML = `
+            <div class="no-results">
+                <div class="no-results-icon">🔍</div>
+                <p>Nessun risultato trovato per "<strong>${term}</strong>"</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Prova con un termine diverso</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Mostra il numero di risultati
+    this.showNotification(`🔍 Trovati ${results.length} risultati per "${term}"`, 'success');
+
+    // Raggruppa i risultati per sezione
+    const groupedResults = {};
+    results.forEach(result => {
+        if (!groupedResults[result.section]) {
+            groupedResults[result.section] = {
+                title: result.sectionTitle,
+                items: []
+            };
+        }
+        groupedResults[result.section].items.push(result);
+    });
+
+    // Crea gli elementi HTML per ogni risultato
+    Object.keys(groupedResults).forEach(sectionId => {
+        const group = groupedResults[sectionId];
+
+        // Limita a 5 risultati per sezione per evitare troppi risultati
+        const itemsToShow = group.items.slice(0, 5);
+
+        itemsToShow.forEach(result => {
+            const resultItem = document.createElement('a');
+            resultItem.href = '#';
+            resultItem.className = 'search-result-item';
+            resultItem.innerHTML = `
+                <div class="search-result-section">📚 ${result.sectionTitle}</div>
+                <div class="search-result-title">${result.element.tagName}: ${result.element.textContent.substring(0, 50)}...</div>
+                <div class="search-result-preview">${result.preview}</div>
+            `;
+
+            // Aggiungi il click handler
+            resultItem.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.closeSearch();
+                this.showSection(result.section, result.anchorId);
+
+                // Evidenzia temporaneamente l'elemento trovato
+                setTimeout(() => {
+                    if (result.element) {
+                        this.highlightSearchResult(result.element);
+                    }
+                }, 500);
+            });
+
+            resultsList.appendChild(resultItem);
+        });
+
+        // Se ci sono più di 5 risultati per questa sezione, mostra un indicatore
+        if (group.items.length > 5) {
+            const moreIndicator = document.createElement('div');
+            moreIndicator.style.cssText = 'text-align: center; padding: 0.5rem; color: var(--text-muted); font-size: 0.85rem;';
+            moreIndicator.textContent = `... e altri ${group.items.length - 5} risultati in ${group.title}`;
+            resultsList.appendChild(moreIndicator);
+        }
+    });
+}
+    closeSearch() {
+    const overlay = document.getElementById('searchOverlay');
+    const popup = document.getElementById('searchPopup');
+
+    overlay.classList.remove('show');
+    popup.classList.remove('show');
+}
+
+highlightSearchResult(element) {
+    // Rimuovi eventuali evidenziazioni precedenti
+    document.querySelectorAll('.search-highlight-active').forEach(el => {
+        el.classList.remove('search-highlight-active');
+    });
+
+    // Aggiungi l'evidenziazione
+    element.classList.add('search-highlight-active');
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Animazione di evidenziazione temporanea
+    element.style.transition = 'all 0.3s ease';
+    element.style.backgroundColor = 'var(--warning-color)';
+    element.style.color = 'var(--bg-primary)';
+    element.style.padding = '0.5rem';
+    element.style.borderRadius = 'var(--border-radius-lg)';
+    element.style.boxShadow = '0 4px 12px rgba(245, 158, 11, 0.3)';
+
+    // Rimuovi l'evidenziazione dopo 3 secondi
+    setTimeout(() => {
+        element.style.backgroundColor = '';
+        element.style.color = '';
+        element.style.padding = '';
+        element.style.boxShadow = '';
+        element.classList.remove('search-highlight-active');
+    }, 3000);
+}
             toggleMobileMenu() {
                 this.showNotification('📱 Menu mobile attivo', 'success');
             }
