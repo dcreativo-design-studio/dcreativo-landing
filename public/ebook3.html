@@ -1205,7 +1205,6 @@
         padding-bottom: 80px;
     }
 }
-
     </style>
     <style>
 /* Search Results Popup Styles */
@@ -7796,11 +7795,9 @@ if (minimizeBtn) {
 const audioPlayer = document.getElementById('audioPlayer');
 if (audioPlayer) {
     audioPlayer.addEventListener('click', (e) => {
-        // Evita il click se l'elemento cliccato è un pulsante o il suo contenuto
-        if (!e.target.closest('button')) {
-            if (this.isPlayerMinimized) {
-                this.toggleMinimize();
-            }
+        // Solo se è minimizzato e il click non è su un bottone
+        if (this.isPlayerMinimized && !e.target.closest('button')) {
+            this.toggleMinimize();
         }
     });
 }
