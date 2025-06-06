@@ -7607,7 +7607,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <li>Lezione 5: Funzioni Esponenziali e Logaritmiche</li>
                                 <li>Lezione 6: Funzioni Goniometriche di Base</li>
                                 <li>Lezione 7: Limiti e Continuità</li>
-                                <li>Lezione 8: Concetti di Base</li>
+                                <li>Lezione 8: Derivate - Concetti di Base</li>
                             </ul>
 
                             <h4><strong>📐 MODULO 2: GEOMETRIA E TRIGONOMETRIA</strong></h4>
@@ -8836,6 +8836,249 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
 
             <!-- LEZIONE 7: LIMITI E CONTINUITÀ -->
+            <!-- LEZIONE 7: LIMITI E CONTINUITÀ -->
+            <div id="matematica-lezione7" class="lesson-content">
+                <h2>🎯 LEZIONE 7: Limiti e Continuità</h2>
+
+                <div class="card card-tip">
+                    <h3 class="card-title">🎯 Obiettivi della lezione</h3>
+                    <p><strong>Oggi imparerai:</strong></p>
+                    <ul>
+                        <li>Comprendere il concetto intuitivo di limite</li>
+                        <li>Calcolare limiti di funzioni elementari</li>
+                        <li>Riconoscere e risolvere forme indeterminate</li>
+                        <li>Studiare la continuità di una funzione</li>
+                        <li>Applicare i concetti a situazioni reali</li>
+                    </ul>
+                </div>
+
+                <h3>🔍 Concetto Intuitivo di Limite</h3>
+
+                <div class="card card-important">
+                    <h4><strong>APPROCCIO INTUITIVO</strong></h4>
+                    <ul>
+                        <li>Osservare il comportamento di f(x) quando x si avvicina a un valore c</li>
+                        <li>Esempio grafico: f(x) = (x²-1)/(x-1) per x → 1</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>LIMITE FINITO PER x → c</strong></h4>
+                    <ul>
+                        <li><strong>Notazione:</strong> $\lim_{x \to c} f(x) = L$</li>
+                        <li><strong>Significato:</strong> f(x) si avvicina arbitrariamente a L quando x si avvicina a c</li>
+                        <li>Non importa il valore di f(c), ma solo il comportamento vicino a c</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>LIMITE DESTRO E SINISTRO</strong></h4>
+                    <ul>
+                        <li><strong>Limite destro:</strong> $\lim_{x \to c^+} f(x) = L^+$</li>
+                        <li><strong>Limite sinistro:</strong> $\lim_{x \to c^-} f(x) = L^-$</li>
+                        <li>Il limite esiste se L⁺ = L⁻</li>
+                    </ul>
+                </div>
+
+                <div class="card card-important">
+                    <h4><strong>ESEMPI GRAFICI</strong></h4>
+                    <ul>
+                        <li>Funzione con limite che esiste</li>
+                        <li>Funzione con limite che non esiste</li>
+                        <li>Funzione con discontinuità</li>
+                    </ul>
+                </div>
+
+                <h3>⚡ Calcolo dei Limiti</h3>
+
+                <div class="card card-highlight">
+                    <h4><strong>TEOREMI SUI LIMITI</strong></h4>
+                    <ul>
+                        <li><strong>1. Limiti di funzioni elementari</strong>
+                            <ul>
+                                <li>$\lim_{x \to c} k = k$ (funzione costante)</li>
+                                <li>$\lim_{x \to c} x = c$ (funzione identità)</li>
+                                <li>$\lim_{x \to c} x^n = c^n$</li>
+                            </ul>
+                        </li>
+                        <li><strong>2. Algebra dei limiti</strong> Se $\lim_{x \to c} f(x) = L$ e $\lim_{x \to c} g(x) = M$, allora:
+                            <ul>
+                                <li>$\lim_{x \to c} [f(x) ± g(x)] = L ± M$</li>
+                                <li>$\lim_{x \to c} [f(x) \cdot g(x)] = L \cdot M$</li>
+                                <li>$\lim_{x \to c} \frac{f(x)}{g(x)} = \frac{L}{M}$ (se M ≠ 0)</li>
+                                <li>$\lim_{x \to c} [f(x)]^n = L^n$</li>
+                            </ul>
+                        </li>
+                        <li><strong>3. Limite della funzione composta</strong>
+                            <ul>
+                                <li>Se $\lim_{x \to c} g(x) = L$ e f è continua in L, allora:</li>
+                                <li>$\lim_{x \to c} f(g(x)) = f(L)$</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3>🔧 Esempi di Calcolo</h3>
+
+                <div class="card card-tip">
+                    <h4><strong>1. LIMITI DIRETTI</strong></h4>
+                    <ul>
+                        <li>$\lim_{x \to 3} (2x^2 - 5x + 1) = 2(9) - 5(3) + 1 = 4$</li>
+                        <li>$\lim_{x \to 2} \frac{x + 1}{x - 3} = \frac{3}{-1} = -3$</li>
+                    </ul>
+                </div>
+
+                <div class="card card-important">
+                    <h4><strong>2. LIMITI CHE RICHIEDONO MANIPOLAZIONI</strong></h4>
+                    <ul>
+                        <li>$\lim_{x \to 1} \frac{x^2 - 1}{x - 1} = \lim_{x \to 1} \frac{(x-1)(x+1)}{x-1} = \lim_{x \to 1} (x+1) = 2$</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>3. LIMITI CON RADICI</strong></h4>
+                    <ul>
+                        <li>$\lim_{x \to 4} \frac{\sqrt{x} - 2}{x - 4}$ (razionalizzare il numeratore)</li>
+                    </ul>
+                </div>
+
+                <h3>🚫 Forme Indeterminate e Limiti all'Infinito</h3>
+
+                <div class="card card-important">
+                    <h4><strong>FORME INDETERMINATE PRINCIPALI</strong></h4>
+                    <ul>
+                        <li>$\frac{0}{0}$: richiedono manipolazioni algebriche</li>
+                        <li>$\frac{\infty}{\infty}$: confronto degli ordini di infinito</li>
+                        <li>$0 \cdot \infty$, $\infty - \infty$, $1^{\infty}$, $0^0$, $\infty^0$</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>RISOLUZIONE DELLA FORMA $\frac{0}{0}$</strong></h4>
+                    <ul>
+                        <li>Scomposizione in fattori</li>
+                        <li>Razionalizzazione</li>
+                        <li>Limiti notevoli (cenni)</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>ESEMPI RISOLTI</strong></h4>
+                    <ul>
+                        <li>$\lim_{x \to 2} \frac{x^2 - 4}{x - 2} = \lim_{x \to 2} \frac{(x-2)(x+2)}{x-2} = 4$</li>
+                        <li>$\lim_{x \to 0} \frac{\sin x}{x} = 1$ (limite notevole)</li>
+                    </ul>
+                </div>
+
+                <h3>📊 Limiti all'Infinito</h3>
+
+                <div class="card card-important">
+                    <h4><strong>CONCETTO DI LIMITE ALL'INFINITO</strong></h4>
+                    <ul>
+                        <li>$\lim_{x \to +\infty} f(x) = L$</li>
+                        <li>$\lim_{x \to -\infty} f(x) = L$</li>
+                        <li>$\lim_{x \to c} f(x) = ±\infty$</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>COMPORTAMENTO DI FUNZIONI ELEMENTARI</strong></h4>
+                    <ul>
+                        <li>$\lim_{x \to +\infty} x^n = +\infty$ (se n > 0)</li>
+                        <li>$\lim_{x \to +\infty} \frac{1}{x^n} = 0$ (se n > 0)</li>
+                        <li>$\lim_{x \to +\infty} e^x = +\infty$</li>
+                        <li>$\lim_{x \to +\infty} \ln x = +\infty$</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>FUNZIONI RAZIONALI</strong></h4>
+                    <ul>
+                        <li>$\lim_{x \to ±\infty} \frac{a_n x^n + ... + a_0}{b_m x^m + ... + b_0}$</li>
+                        <li>Dipende dal grado del numeratore e denominatore</li>
+                    </ul>
+                </div>
+
+                <h3>🔄 Continuità di una Funzione</h3>
+
+                <div class="card card-important">
+                    <h4><strong>DEFINIZIONE DI CONTINUITÀ</strong></h4>
+                    <ul>
+                        <li><strong>1. Continuità in un punto</strong> Una funzione f è continua in c se:
+                            <ul>
+                                <li>f(c) esiste</li>
+                                <li>$\lim_{x \to c} f(x)$ esiste</li>
+                                <li>$\lim_{x \to c} f(x) = f(c)$</li>
+                            </ul>
+                        </li>
+                        <li><strong>2. Continuità su un intervallo</strong>
+                            <ul>
+                                <li>f è continua su [a,b] se è continua in ogni punto dell'intervallo</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>FUNZIONI CONTINUE ELEMENTARI</strong></h4>
+                    <ul>
+                        <li>Polinomi: continui su ℝ</li>
+                        <li>Funzioni razionali: continue nel loro dominio</li>
+                        <li>Funzioni esponenziali e logaritmiche: continue nel loro dominio</li>
+                        <li>Funzioni goniometriche: continue nel loro dominio</li>
+                    </ul>
+                </div>
+
+                <h3>⚠️ Punti di Discontinuità</h3>
+
+                <div class="card card-tip">
+                    <h4><strong>1. DISCONTINUITÀ DI PRIMA SPECIE (O DI SALTO)</strong></h4>
+                    <ul>
+                        <li>Esistono limiti destro e sinistro finiti ma diversi</li>
+                        <li>Esempio: f(x) = sgn(x) in x = 0</li>
+                    </ul>
+                </div>
+
+                <div class="card card-important">
+                    <h4><strong>2. DISCONTINUITÀ DI SECONDA SPECIE (O ESSENZIALE)</strong></h4>
+                    <ul>
+                        <li>Almeno uno dei limiti laterali non esiste o è infinito</li>
+                        <li>Esempio: f(x) = 1/x in x = 0</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>3. DISCONTINUITÀ DI TERZA SPECIE (O ELIMINABILE)</strong></h4>
+                    <ul>
+                        <li>Il limite esiste ma f(c) non esiste o è diverso dal limite</li>
+                        <li>Esempio: f(x) = (x²-1)/(x-1) in x = 1</li>
+                    </ul>
+                </div>
+
+                <h3>🎯 Applicazioni in Ambito Socio-Educativo</h3>
+
+                <div class="card card-important">
+                    <h4><strong>ESEMPI PRATICI</strong></h4>
+                    <ul>
+                        <li><strong>Velocità istantanea come limite della velocità media</strong></li>
+                        <li><strong>Tasso di crescita istantaneo di una popolazione</strong></li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>APPLICAZIONI IMMEDIATE</strong></h4>
+                    <ul>
+                        <li>Velocità istantanea come limite della velocità media</li>
+                        <li>Tasso di crescita istantaneo di una popolazione</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>ESEMPIO STUDIATO</strong></h4>
+                    <p>Studiare la continuità di $f(x) = \begin{cases} x^2 & \text{se } x < 1 \\ 2x & \text{se } x \geq 1 \end{cases}$</p>
+                    <ul>
+                        <li>Controllo in x = 1: limite sinistro = 1, limite destro = 2, f(1) = 2</li>
+                        <li>La funzione ha una discontinuità di prima specie in x = 1</li><!-- LEZIONE 7: LIMITI E CONTINUITÀ -->
             <div id="matematica-lezione7" class="lesson-content">
                 <h2>🎯 LEZIONE 7: Limiti e Continuità</h2>
 
@@ -9079,8 +9322,773 @@ document.addEventListener('DOMContentLoaded', () => {
                         <li>Controllo in x = 1: limite sinistro = 1, limite destro = 2, f(1) = 2</li>
                         <li>La funzione ha una discontinuità di prima specie in x = 1</li>
                     </ul>
+                 </div>
+            </div>
+
+            <!-- LEZIONE 8: DERIVATE - CONCETTI DI BASE -->
+            <div id="matematica-lezione8" class="lesson-content">
+                <h2>📈 LEZIONE 8: Derivate - Concetti di Base</h2>
+
+                <div class="card card-tip">
+                    <h3 class="card-title">🎯 Obiettivi della lezione</h3>
+                    <p><strong>Oggi imparerai:</strong></p>
+                    <ul>
+                        <li>Comprendere il concetto di derivata come limite</li>
+                        <li>Interpretare geometricamente e fisicamente la derivata</li>
+                        <li>Calcolare derivate di funzioni elementari</li>
+                        <li>Applicare il concetto di derivata a problemi di variazione</li>
+                    </ul>
+                </div>
+
+                <h3>🔬 Concetto di Derivata</h3>
+
+                <div class="card card-important">
+                    <h4><strong>PROBLEMA DELLA TANGENTE</strong></h4>
+                    <ul>
+                        <li>Retta secante tra due punti: P(x₀, f(x₀)) e Q(x₀+h, f(x₀+h))</li>
+                        <li>Coefficiente angolare: $m_{sec} = \frac{f(x_0+h) - f(x_0)}{h}$</li>
+                        <li>Retta tangente come limite delle secanti per h → 0</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>DEFINIZIONE DI DERIVATA</strong></h4>
+                    <ul>
+                        <li>$f'(x_0) = \lim_{h \to 0} \frac{f(x_0+h) - f(x_0)}{h}$</li>
+                        <li><strong>Notazioni alternative:</strong> $\frac{df}{dx}$, $D_x f(x)$, $\dot{f}(x)$</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>INTERPRETAZIONE GEOMETRICA</strong></h4>
+                    <ul>
+                        <li>f'(x₀) = coefficiente angolare della retta tangente in x₀</li>
+                        <li>Equazione della tangente: $y - f(x_0) = f'(x_0)(x - x_0)$</li>
+                    </ul>
+                </div>
+
+                <div class="card card-important">
+                    <h4><strong>INTERPRETAZIONE FISICA</strong></h4>
+                    <ul>
+                        <li>Se s(t) = posizione, allora s'(t) = velocità istantanea</li>
+                        <li>In generale: derivata = tasso di variazione istantaneo</li>
+                    </ul>
+                </div>
+
+                <h3>🧮 Regole di Derivazione</h3>
+
+                <div class="card card-highlight">
+                    <h4><strong>DERIVATE FONDAMENTALI</strong></h4>
+                    <ul>
+                        <li>$(k)' = 0$ (costante)</li>
+                        <li>$(x)' = 1$ (identità)</li>
+                        <li>$(x^n)' = nx^{n-1}$ (potenza)</li>
+                        <li>$(e^x)' = e^x$ (esponenziale)</li>
+                        <li>$(\ln x)' = \frac{1}{x}$ (logaritmo naturale)</li>
+                        <li>$(\sin x)' = \cos x$ (seno)</li>
+                        <li>$(\cos x)' = -\sin x$ (coseno)</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>REGOLE DI CALCOLO</strong></h4>
+                    <ul>
+                        <li><strong>Linearità:</strong> $(af + bg)' = af' + bg'$</li>
+                        <li><strong>Prodotto:</strong> $(fg)' = f'g + fg'$</li>
+                        <li><strong>Quoziente:</strong> $\left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2}$</li>
+                        <li><strong>Composizione:</strong> $(f(g(x)))' = f'(g(x)) \cdot g'(x)$</li>
+                    </ul>
+                </div>
+
+                <h3>💡 Esempi di Calcolo</h3>
+
+                <div class="card card-important">
+                    <h4><strong>ESEMPI RISOLTI</strong></h4>
+                    <ul>
+                        <li>$(3x^2 + 2x - 5)' = 6x + 2$</li>
+                        <li>$(x^2 \cdot e^x)' = 2x \cdot e^x + x^2 \cdot e^x = x^2e^x(2 + x)$</li>
+                        <li>$\left(\frac{x^2}{x+1}\right)' = \frac{2x(x+1) - x^2 \cdot 1}{(x+1)^2} = \frac{x^2 + 2x}{(x+1)^2}$</li>
+                    </ul>
+                </div>
+
+                <h3>🎯 Applicazioni in Ambito Socio-Educativo</h3>
+
+                <div class="card card-highlight">
+                    <h4><strong>1. VELOCITÀ DI APPRENDIMENTO</strong></h4>
+                    <ul>
+                        <li>Se A(t) = competenza acquisita al tempo t</li>
+                        <li>A'(t) = velocità di apprendimento istantanea</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>2. TASSO DI CRESCITA DEMOGRAFICA</strong></h4>
+                    <ul>
+                        <li>Se P(t) = popolazione al tempo t</li>
+                        <li>P'(t) = tasso di crescita istantaneo</li>
+                    </ul>
+                </div>
+
+                <div class="card card-important">
+                    <h4><strong>3. EFFICACIA MARGINALE DI UN INTERVENTO</strong></h4>
+                    <ul>
+                        <li>Se E(x) = efficacia con x ore di intervento</li>
+                        <li>E'(x) = efficacia marginale (miglioramento per ora aggiuntiva)</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>4. ANALISI DI TREND PSICOLOGICI</strong></h4>
+                    <ul>
+                        <li>Se S(t) = livello di stress nel tempo</li>
+                        <li>S'(t) > 0: stress crescente, S'(t) < 0: stress decrescente</li>
+                    </ul>
+                </div>
+
+                <h3>📊 Problema Applicativo Risolto</h3>
+
+                <div class="card card-tip">
+                    <h4><strong>APPRENDIMENTO LINGUISTICO</strong></h4>
+                    <p>Un bambino apprende nuove parole secondo il modello: V(t) = 100t - 5t² (parole dopo t mesi)</p>
+                    <ul>
+                        <li>Velocità di apprendimento: V'(t) = 100 - 10t parole/mese</li>
+                        <li>Al 5° mese: V'(5) = 50 parole/mese</li>
+                        <li>L'apprendimento rallenta nel tempo (V''(t) = -10 < 0)</li>
+                    </ul>
                 </div>
             </div>
+
+            <!-- LEZIONE 9: GEOMETRIA PIANA - RIPASSO -->
+            <div id="matematica-lezione9" class="lesson-content">
+                <h2>📐 LEZIONE 9: Geometria Piana - Ripasso</h2>
+
+                <div class="card card-tip">
+                    <h3 class="card-title">🎯 Obiettivi della lezione</h3>
+                    <p><strong>Oggi imparerai:</strong></p>
+                    <ul>
+                        <li>Consolidare le conoscenze di geometria euclidea</li>
+                        <li>Applicare teoremi fondamentali</li>
+                        <li>Calcolare aree e perimetri</li>
+                        <li>Risolvere problemi geometrici in contesti reali</li>
+                    </ul>
+                </div>
+
+                <h3>🔺 Triangoli e Loro Proprietà</h3>
+
+                <div class="card card-important">
+                    <h4><strong>CLASSIFICAZIONE DEI TRIANGOLI</strong></h4>
+                    <ul>
+                        <li><strong>Per i lati:</strong> equilatero, isoscele, scaleno</li>
+                        <li><strong>Per gli angoli:</strong> acutangolo, rettangolo, ottusangolo</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>CRITERI DI CONGRUENZA</strong></h4>
+                    <ul>
+                        <li><strong>I criterio (LAL):</strong> due lati e angolo compreso</li>
+                        <li><strong>II criterio (ALA):</strong> due angoli e lato compreso</li>
+                        <li><strong>III criterio (LLL):</strong> tre lati</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>CRITERI DI SIMILITUDINE</strong></h4>
+                    <ul>
+                        <li><strong>I criterio (AA):</strong> due angoli</li>
+                        <li><strong>II criterio (LAL):</strong> due lati e angolo compreso proporzionali</li>
+                        <li><strong>III criterio (LLL):</strong> tre lati proporzionali</li>
+                    </ul>
+                </div>
+
+                <div class="card card-important">
+                    <h4><strong>TEOREMI FONDAMENTALI</strong></h4>
+                    <ul>
+                        <li><strong>Teorema di Pitagora:</strong> $a^2 + b^2 = c^2$ (triangolo rettangolo)</li>
+                        <li><strong>I Teorema di Euclide:</strong> $b^2 = a \cdot b'$ (proiezione cateto su ipotenusa)</li>
+                        <li><strong>II Teorema di Euclide:</strong> $h^2 = b' \cdot c'$ (altezza su ipotenusa)</li>
+                    </ul>
+                </div>
+
+                <h3>🔷 Quadrilateri e Poligoni</h3>
+
+                <div class="card card-highlight">
+                    <h4><strong>QUADRILATERI NOTEVOLI</strong></h4>
+                    <ul>
+                        <li><strong>Parallelogramma:</strong> lati opposti paralleli e uguali</li>
+                        <li><strong>Rettangolo:</strong> parallelogramma con angoli retti</li>
+                        <li><strong>Rombo:</strong> parallelogramma con lati uguali</li>
+                        <li><strong>Quadrato:</strong> rettangolo con lati uguali</li>
+                        <li><strong>Trapezio:</strong> una coppia di lati paralleli</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>PROPRIETÀ DEI PARALLELOGRAMMI</strong></h4>
+                    <ul>
+                        <li>Lati opposti uguali e paralleli</li>
+                        <li>Angoli opposti uguali</li>
+                        <li>Diagonali che si bisecano</li>
+                    </ul>
+                </div>
+
+                <div class="card card-important">
+                    <h4><strong>AREE DEI QUADRILATERI</strong></h4>
+                    <ul>
+                        <li><strong>Parallelogramma:</strong> A = base × altezza</li>
+                        <li><strong>Rettangolo:</strong> A = base × altezza</li>
+                        <li><strong>Rombo:</strong> A = (d₁ × d₂)/2 (diagonali)</li>
+                        <li><strong>Trapezio:</strong> A = [(B + b) × h]/2</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>POLIGONI REGOLARI</strong></h4>
+                    <ul>
+                        <li><strong>Definizione:</strong> tutti i lati e angoli uguali</li>
+                        <li><strong>Angolo interno:</strong> $\alpha = \frac{(n-2) \cdot 180°}{n}$</li>
+                        <li><strong>Apotema e area:</strong> relazioni con il raggio</li>
+                    </ul>
+                </div>
+
+                <h3>⭕ Circonferenza e Cerchio</h3>
+
+                <div class="card card-important">
+                    <h4><strong>DEFINIZIONI</strong></h4>
+                    <ul>
+                        <li><strong>Circonferenza:</strong> luogo dei punti equidistanti dal centro</li>
+                        <li><strong>Cerchio:</strong> regione interna alla circonferenza</li>
+                        <li>Raggio, diametro, corda, arco, settore</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>TEOREMI SULLA CIRCONFERENZA</strong></h4>
+                    <ul>
+                        <li>Angolo al centro e angolo alla circonferenza</li>
+                        <li>Angoli alla circonferenza che insistono sullo stesso arco</li>
+                        <li>Tangenti da un punto esterno</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>POLIGONI INSCRITTI E CIRCOSCRITTI</strong></h4>
+                    <ul>
+                        <li>Triangolo inscritto in semicerchio (angolo retto)</li>
+                        <li>Quadrilateri ciclici (somma angoli opposti = 180°)</li>
+                    </ul>
+                </div>
+
+                <div class="card card-important">
+                    <h4><strong>FORMULE</strong></h4>
+                    <ul>
+                        <li><strong>Lunghezza circonferenza:</strong> C = 2πr</li>
+                        <li><strong>Area cerchio:</strong> A = πr²</li>
+                        <li><strong>Lunghezza arco:</strong> l = rα (α in radianti)</li>
+                        <li><strong>Area settore:</strong> A = (1/2)r²α</li>
+                    </ul>
+                </div>
+
+                <h3>🎯 Applicazioni e Problem Solving</h3>
+
+                <div class="card card-highlight">
+                    <h4><strong>PROBLEMA 1: PROGETTAZIONE DI SPAZI EDUCATIVI</strong></h4>
+                    <p>Un'aula deve essere progettata con forma rettangolare. Il perimetro disponibile è 24 m.</p>
+                    <ul>
+                        <li>Determinare le dimensioni per avere area massima</li>
+                        <li><strong>Soluzione:</strong> quadrato 6×6 m, area = 36 m²</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>PROBLEMA 2: DISPOSIZIONE OTTIMALE</strong></h4>
+                    <p>In un cortile circolare di raggio 10 m, si vogliono disporre 8 panchine sui vertici di un ottagono regolare.</p>
+                    <ul>
+                        <li>Calcolare la distanza tra panchine adiacenti</li>
+                        <li><strong>Distanza:</strong> = 2r·sen(π/8) ≈ 7.65 m</li>
+                    </ul>
+                </div>
+
+                <div class="card card-important">
+                    <h4><strong>PROBLEMA 3: ANALISI DI DATI GEOMETRICI</strong></h4>
+                    <p>Uno psicologo utilizza test che richiedono di riconoscere forme geometriche.</p>
+                    <ul>
+                        <li>Calcolare aree e perimetri di figure mostrate</li>
+                        <li>Correlazione tra capacità di calcolo geometrico e intelligenza spaziale</li>
+                    </ul>
+                </div>
+
+                <h3>🔬 Applicazioni Specifiche in Ambito Socio-Educativo</h3>
+
+                <div class="card card-highlight">
+                    <h4><strong>1. PSICOLOGIA DELLA PERCEZIONE</strong></h4>
+                    <ul>
+                        <li>Illusioni ottiche basate su figure geometriche</li>
+                        <li>Test di orientamento spaziale</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>2. PROGETTAZIONE DI AMBIENTI EDUCATIVI</strong></h4>
+                    <ul>
+                        <li>Ottimizzazione di spazi per l'apprendimento</li>
+                        <li>Disposizione di arredi secondo criteri geometrici</li>
+                    </ul>
+                </div>
+
+                <div class="card card-important">
+                    <h4><strong>3. ARTE-TERAPIA</strong></h4>
+                    <ul>
+                        <li>Uso di forme geometriche per espressione emotiva</li>
+                        <li>Mandala e simmetrie per rilassamento</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- LEZIONE 10: GEOMETRIA SOLIDA -->
+            <div id="matematica-lezione10" class="lesson-content">
+                <h2>📦 LEZIONE 10: Geometria Solida</h2>
+
+                <div class="card card-tip">
+                    <h3 class="card-title">🎯 Obiettivi della lezione</h3>
+                    <p><strong>Oggi imparerai:</strong></p>
+                    <ul>
+                        <li>Riconoscere e classificare i solidi geometrici</li>
+                        <li>Calcolare aree superficiali e volumi</li>
+                        <li>Applicare le formule a problemi concreti</li>
+                        <li>Visualizzare nello spazio tridimensionale</li>
+                    </ul>
+                </div>
+
+                <h3>📦 Poliedri</h3>
+
+                <div class="card card-important">
+                    <h4><strong>DEFINIZIONI BASE</strong></h4>
+                    <ul>
+                        <li><strong>Poliedro:</strong> solido limitato da poligoni (facce)</li>
+                        <li>Vertici, spigoli, facce</li>
+                        <li><strong>Formula di Eulero:</strong> V + F = S + 2</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>PRISMI</strong></h4>
+                    <ul>
+                        <li><strong>Definizione:</strong> due basi poligonali parallele e congruenti</li>
+                        <li><strong>Prisma retto:</strong> spigoli laterali perpendicolari alle basi</li>
+                        <li><strong>Parallelepipedo:</strong> prisma con base parallelogramma</li>
+                        <li><strong>Cubo:</strong> parallelepipedo con facce quadrate</li>
+                    </ul>
+                    <p><strong>Formule per il parallelepipedo:</strong></p>
+                    <ul>
+                        <li>Area laterale: $A_l = P_{base} \times h$</li>
+                        <li>Area totale: $A_t = A_l + 2A_{base}$</li>
+                        <li>Volume: $V = A_{base} \times h$</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>PIRAMIDI</strong></h4>
+                    <ul>
+                        <li>Base poligonale e vertice non complanare</li>
+                        <li><strong>Piramide retta:</strong> vertice sulla perpendicolare al centro della base</li>
+                        <li>Apotema della piramide e apotema di base</li>
+                    </ul>
+                    <p><strong>Formule per la piramide:</strong></p>
+                    <ul>
+                        <li>Area laterale: $A_l = \frac{P_{base} \times ap}{2}$</li>
+                        <li>Volume: $V = \frac{A_{base} \times h}{3}$</li>
+                    </ul>
+                </div>
+
+                <h3>🔄 Solidi di Rotazione</h3>
+
+                <div class="card card-important">
+                    <h4><strong>CILINDRO</strong></h4>
+                    <ul>
+                        <li>Generato dalla rotazione di un rettangolo</li>
+                        <li><strong>Cilindro retto:</strong> asse perpendicolare alle basi</li>
+                    </ul>
+                    <p><strong>Formule:</strong></p>
+                    <ul>
+                        <li>Area laterale: $A_l = 2πrh$</li>
+                        <li>Area totale: $A_t = 2πr(r + h)$</li>
+                        <li>Volume: $V = πr²h$</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>CONO</strong></h4>
+                    <ul>
+                        <li>Generato dalla rotazione di un triangolo rettangolo</li>
+                        <li>Apotema (generatrice): $a = \sqrt{r² + h²}$</li>
+                    </ul>
+                    <p><strong>Formule:</strong></p>
+                    <ul>
+                        <li>Area laterale: $A_l = πra$</li>
+                        <li>Area totale: $A_t = πr(r + a)$</li>
+                        <li>Volume: $V = \frac{πr²h}{3}$</li>
+                    </ul>
+                </div>
+
+                <div class="card card-tip">
+                    <h4><strong>SFERA</strong></h4>
+                    <ul>
+                        <li>Generata dalla rotazione di un semicerchio</li>
+                    </ul>
+                    <p><strong>Formule:</strong></p>
+                    <ul>
+                        <li>Area: $A = 4πr²$</li>
+                        <li>Volume: $V = \frac{4πr³}{3}$</li>
+                    </ul>
+                </div>
+
+                <h3>📊 Esempi Risolti</h3>
+
+                <div class="card card-important">
+                    <h4><strong>Esempio 1: Serbatoio cilindrico</strong></h4>
+                    <p>Un serbatoio d'acqua ha forma cilindrica con raggio 2 m e altezza 5 m.</p>
+                    <ul>
+                        <li>Volume: V = π × 2² × 5 = 20π ≈ 62.8 m³</li>
+                        <li>Superficie da verniciare (laterale + base): A = 2π × 2 × 5 + π × 2² = 24π ≈ 75.4 m²</li>
+                    </ul>
+                </div>
+
+                <div class="card card-highlight">
+                    <h4><strong>Esempio 2: Cono gelato (continuazione)</strong></h4>
+            <p>Un cono ha raggio base 3 cm e altezza 8 cm.</p>
+            <ul>
+                <li>Apotema: a = √(3² + 8²) = √73 ≈ 8.54 cm</li>
+                <li>Volume: V = (π × 3² × 8)/3 = 24π ≈ 75.4 cm³</li>
+                <li>Area totale: A = π × 3 × (3 + 8.54) ≈ 108.8 cm²</li>
+            </ul>
+        </div>
+
+        <h3>🎯 Applicazioni e Problem Solving</h3>
+
+        <div class="card card-important">
+            <h4><strong>Problema 1: Progettazione di una piscina</strong></h4>
+            <p>Una piscina cilindrica deve contenere 100 m³ d'acqua. Il costo del fondo è 50€/m², delle pareti 30€/m².</p>
+            <ul>
+                <li>Trovare raggio e altezza per minimizzare il costo</li>
+                <li>Vincolo: V = πr²h = 100, quindi h = 100/(πr²)</li>
+                <li>Costo: C = 50πr² + 30 × 2πrh = 50πr² + 6000/r</li>
+                <li>Derivando e uguagliando a zero: r = ∛(60/π) ≈ 2.52 m</li>
+            </ul>
+        </div>
+
+        <div class="card card-highlight">
+            <h4><strong>Problema 2: Ottimizzazione di packaging</strong></h4>
+            <p>Una scatola cilindrica deve contenere 1 litro. Minimizzare la superficie.</p>
+            <ul>
+                <li>V = 1000 cm³ = πr²h</li>
+                <li>Superficie: S = 2πr² + 2πrh = 2πr² + 2000/r</li>
+                <li>Minimo per r = ∛(500/π) ≈ 5.42 cm</li>
+            </ul>
+        </div>
+
+        <div class="card card-tip">
+            <h4><strong>Problema 3: Analisi architettonica</strong></h4>
+            <p>In un edificio scolastico, calcolare il volume d'aria per studente in aule di diverse forme.</p>
+            <ul>
+                <li>Aula cubica 6×6×3 m: 108 m³ per 25 studenti = 4.32 m³/studente</li>
+                <li>Confronto con normative vigenti</li>
+            </ul>
+        </div>
+
+        <h3>🔬 Applicazioni Specifiche</h3>
+
+        <div class="card card-important">
+            <h4><strong>1. ACUSTICA DEGLI AMBIENTI</strong></h4>
+            <ul>
+                <li>Volume e superficie influenzano la riverberazione</li>
+                <li>Rapporto superficie/volume ottimale per aule</li>
+            </ul>
+        </div>
+
+        <div class="card card-highlight">
+            <h4><strong>2. VENTILAZIONE E CLIMATIZZAZIONE</strong></h4>
+            <ul>
+                <li>Calcolo dei ricambi d'aria basato sul volume</li>
+                <li>Distribuzione ottimale dell'aria</li>
+            </ul>
+        </div>
+
+        <div class="card card-tip">
+            <h4><strong>3. ERGONOMIA DEGLI SPAZI</strong></h4>
+            <ul>
+                <li>Volumi minimi per persona</li>
+                <li>Altezze ottimali per comfort visivo</li>
+            </ul>
+        </div>
+
+        <!-- LEZIONE 11: PIANO CARTESIANO E RETTA -->
+        <div id="matematica-lezione11" class="lesson-content">
+            <h2>📊 LEZIONE 11: Piano Cartesiano e Retta</h2>
+
+            <div class="card card-tip">
+                <h3 class="card-title">🎯 Obiettivi della lezione</h3>
+                <p><strong>Oggi imparerai:</strong></p>
+                <ul>
+                    <li>Padroneggiare il sistema di coordinate cartesiane</li>
+                    <li>Studiare la geometria analitica della retta</li>
+                    <li>Calcolare distanze e angoli</li>
+                    <li>Applicare la geometria analitica a problemi reali</li>
+                </ul>
+            </div>
+
+            <h3>📍 Sistema di Coordinate Cartesiane</h3>
+
+            <div class="card card-important">
+                <h4><strong>SISTEMA DI RIFERIMENTO CARTESIANO</strong></h4>
+                <ul>
+                    <li>Origine O(0,0)</li>
+                    <li>Asse delle ascisse (x) e delle ordinate (y)</li>
+                    <li>Quadranti I, II, III, IV</li>
+                    <li>Coordinate di un punto: P(x, y)</li>
+                </ul>
+            </div>
+
+            <div class="card card-highlight">
+                <h4><strong>DISTANZA TRA DUE PUNTI</strong></h4>
+                <ul>
+                    <li><strong>Formula:</strong> $d(A,B) = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$</li>
+                    <li>Derivazione dal teorema di Pitagora</li>
+                    <li>Casi particolari: punti sullo stesso asse</li>
+                </ul>
+            </div>
+
+            <div class="card card-tip">
+                <h4><strong>PUNTO MEDIO DI UN SEGMENTO</strong></h4>
+                <ul>
+                    <li><strong>Formula:</strong> $M\left(\frac{x_A + x_B}{2}, \frac{y_A + y_B}{2}\right)$</li>
+                    <li>Interpretazione come media aritmetica delle coordinate</li>
+                </ul>
+            </div>
+
+            <div class="card card-important">
+                <h4><strong>BARICENTRO DI UN TRIANGOLO</strong></h4>
+                <ul>
+                    <li>$G\left(\frac{x_A + x_B + x_C}{3}, \frac{y_A + y_B + y_C}{3}\right)$</li>
+                    <li>Punto di equilibrio</li>
+                </ul>
+            </div>
+
+            <h3>📏 Equazione della Retta</h3>
+
+            <div class="card card-highlight">
+                <h4><strong>FORME DELL'EQUAZIONE DELLA RETTA</strong></h4>
+                <ul>
+                    <li><strong>Forma esplicita:</strong> $y = mx + q$
+                        <ul>
+                            <li>m: coefficiente angolare (pendenza)</li>
+                            <li>q: ordinata all'origine</li>
+                            <li>Valida se la retta non è verticale</li>
+                        </ul>
+                    </li>
+                    <li><strong>Forma implicita:</strong> $ax + by + c = 0$
+                        <ul>
+                            <li>Valida per qualsiasi retta</li>
+                            <li>Coefficiente angolare: $m = -\frac{a}{b}$ (se b ≠ 0)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card card-tip">
+                <h4><strong>RETTE PARTICOLARI</strong></h4>
+                <ul>
+                    <li><strong>Retta orizzontale:</strong> $y = k$</li>
+                    <li><strong>Retta verticale:</strong> $x = k$</li>
+                    <li><strong>Equazione passante per l'origine:</strong> $y = mx$</li>
+                </ul>
+            </div>
+
+            <div class="card card-important">
+                <h4><strong>COEFFICIENTE ANGOLARE</strong></h4>
+                <ul>
+                    <li><strong>Definizione:</strong> $m = \frac{\Delta y}{\Delta x} = \frac{y_2 - y_1}{x_2 - x_1}$</li>
+                    <li><strong>Interpretazione geometrica:</strong> tangente dell'angolo con l'asse x</li>
+                    <li>m > 0: retta crescente</li>
+                    <li>m < 0: retta decrescente</li>
+                    <li>m = 0: retta orizzontale</li>
+                </ul>
+            </div>
+
+            <h3>🔧 Determinazione dell'Equazione</h3>
+
+            <div class="card card-highlight">
+                <h4><strong>PASSANTE PER UN PUNTO CON COEFFICIENTE ANGOLARE NOTO</strong></h4>
+                <ul>
+                    <li>$y - y_0 = m(x - x_0)$</li>
+                    <li><strong>Passante per due punti:</strong> $\frac{y - y_1}{y_2 - y_1} = \frac{x - x_1}{x_2 - x_1}$</li>
+                </ul>
+            </div>
+
+            <h3>💡 Esempi Risolti</h3>
+
+            <div class="card card-important">
+                <h4><strong>Esempio 1: Trovare l'equazione della retta passante per A(2,3) con coefficiente angolare m = -1/2</strong></h4>
+                <ul>
+                    <li>Usando y - y₀ = m(x - x₀): y - 3 = -1/2(x - 2)</li>
+                    <li>y - 3 = -x/2 + 1</li>
+                    <li>y = -x/2 + 4 oppure x + 2y - 8 = 0</li>
+                </ul>
+            </div>
+
+            <div class="card card-highlight">
+                <h4><strong>Esempio 2: Retta passante per A(1,2) e B(3,8)</strong></h4>
+                <ul>
+                    <li>Coefficiente angolare: m = (8-2)/(3-1) = 3</li>
+                    <li>Equazione: y - 2 = 3(x - 1) → y = 3x - 1</li>
+                </ul>
+            </div>
+
+            <div class="card card-tip">
+                <h4><strong>Esempio 3: Interpretazione di dati sperimentali</strong></h4>
+                <p>Una ricerca mostra che il tempo di reazione (y, in ms) dipende dall'età (x, in anni) secondo: y = 2x + 200</p>
+                <ul>
+                    <li>Coefficiente angolare: 2 ms/anno (rallentamento con l'età)</li>
+                    <li>Ordinata all'origine: 200 ms (tempo base)</li>
+                </ul>
+            </div>
+
+            <h3>↔️ Posizioni Reciproche e Distanze</h3>
+
+            <div class="card card-important">
+                <h4><strong>RETTE PARALLELE E PERPENDICOLARI</strong></h4>
+                <ul>
+                    <li><strong>Rette parallele:</strong>
+                        <ul>
+                            <li>Condizione: $m_1 = m_2$ (stesso coefficiente angolare)</li>
+                            <li>Non si intersecano mai</li>
+                            <li>Esempio: y = 2x + 3 e y = 2x - 1</li>
+                        </ul>
+                    </li>
+                    <li><strong>Rette perpendicolari:</strong>
+                        <ul>
+                            <li>Condizione: $m_1 = -\frac{1}{m_2}$ (coefficienti antireciproci)</li>
+                            <li>Si intersecano ad angolo retto</li>
+                            <li>Esempio: y = 2x + 1 e y = -x/2 + 3</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card card-highlight">
+                <h4><strong>DISTANZA PUNTO-RETTA</strong></h4>
+                <ul>
+                    <li><strong>Formula:</strong> $d = \frac{|ax_0 + by_0 + c|}{\sqrt{a^2 + b^2}}$</li>
+                    <li>Dove la retta ha equazione ax + by + c = 0</li>
+                    <li>Il punto ha coordinate (x₀, y₀)</li>
+                </ul>
+            </div>
+
+            <div class="card card-tip">
+                <h4><strong>DISTANZA TRA RETTE PARALLELE</strong></h4>
+                <ul>
+                    <li>Se le rette sono y = mx + q₁ e y = mx + q₂</li>
+                    <li>Distanza: $d = \frac{|q_2 - q_1|}{\sqrt{1 + m^2}}$</li>
+                </ul>
+            </div>
+
+            <h3>🎯 Applicazioni Immediate</h3>
+
+            <div class="card card-important">
+                <h4><strong>LOCALIZZAZIONE GEOGRAFICA CON COORDINATE</strong></h4>
+                <ul>
+                    <li>Sistemi GPS e mappe digitali</li>
+                    <li>Tracciamento di percorsi educativi</li>
+                </ul>
+            </div>
+
+            <div class="card card-highlight">
+                <h4><strong>GRAFICI A DISPERSIONE IN RICERCHE PSICOLOGICHE</strong></h4>
+                <ul>
+                    <li>Analisi di correlazioni tra variabili</li>
+                    <li>Rette di regressione per predizioni</li>
+                </ul>
+            </div>
+
+            <h3>📊 Problemi Applicativi Completi</h3>
+
+            <div class="card card-tip">
+                <h4><strong>Problema 1: Pianificazione urbana di un campus</strong></h4>
+                <p>Un architetto deve posizionare 3 edifici: biblioteca A(100, 200), mensa B(300, 100), aule C(200, 400). Le coordinate sono in metri.</p>
+                <ul>
+                    <li>Calcolare le distanze tra gli edifici</li>
+                    <li>d(A,B) = √[(300-100)² + (100-200)²] = √[40000 + 10000] = √50000 ≈ 224 m</li>
+                    <li>d(A,C) = √[(200-100)² + (400-200)²] = √[10000 + 40000] = √50000 ≈ 224 m</li>
+                    <li>d(B,C) = √[(200-300)² + (400-100)²] = √[10000 + 90000] = √100000 ≈ 316 m</li>
+                    <li>Trovare il punto centrale (baricentro): G(200, 233)</li>
+                </ul>
+            </div>
+
+            <div class="card card-important">
+                <h4><strong>Problema 2: Analisi di trend educativi</strong></h4>
+                <p>I dati mostrano l'evoluzione dei voti medi in una scuola:</p>
+                <ul>
+                    <li>2020: voto 6.5, 2021: voto 7.2, 2022: voto 7.8</li>
+                    <li>Trovare la retta di regressione</li>
+                    <li>Coefficiente angolare: (7.8-6.5)/(2022-2020) = 0.65 punti/anno</li>
+                    <li>Previsione per il 2025: y = 0.65x + b → 7.8 = 0.65(2022) + b → b = -1306.5</li>
+                    <li>Voto previsto 2025: 0.65(2025) - 1306.5 = 9.75</li>
+                </ul>
+            </div>
+
+            <div class="card card-highlight">
+                <h4><strong>Problema 3: Ottimizzazione percorsi scolastici</strong></h4>
+                <p>Trovare il percorso più breve tra casa dello studente S(0,0) e scuola T(800,600), evitando l'ostacolo rappresentato dal lago con centro L(400,300) e raggio 150m.</p>
+                <ul>
+                    <li>Distanza diretta: d = √(800² + 600²) = 1000 m</li>
+                    <li>La retta diretta passa troppo vicino al lago</li>
+                    <li>Calcolare percorsi alternativi tangenti al lago</li>
+                </ul>
+            </div>
+
+            <h3>🔗 Collegamenti Interdisciplinari</h3>
+
+            <div class="card card-tip">
+                <h4><strong>PSICOLOGIA:</strong> ritmi circadiani, cicli dell'attenzione</h4>
+            </div>
+
+            <div class="card card-important">
+                <h4><strong>SOCIOLOGIA:</strong> dinamiche cicliche nelle comunità</h4>
+            </div>
+
+            <div class="card card-highlight">
+                <h4><strong>PEDAGOGIA:</strong> alternanza attività-riposo nell'apprendimento</h4>
+            </div>
+
+            <div class="card card-tip">
+                <h4><strong>BIOLOGIA:</strong> bioritmi, crescita ciclica</h4>
+            </div>
+        </div>
+
+        <!-- Conclusione del modulo -->
+        <div class="card card-important">
+            <h3>🎯 Riepilogo delle Competenze Acquisite</h3>
+            <p>Alla fine di questo percorso, hai sviluppato competenze in:</p>
+            <ul>
+                <li><strong>Algebra e funzioni:</strong> dai concetti base alle applicazioni avanzate</li>
+                <li><strong>Geometria euclidea e analitica:</strong> dal piano allo spazio</li>
+                <li><strong>Analisi matematica elementare:</strong> limiti, continuità e derivate</li>
+                <li><strong>Applicazioni interdisciplinari:</strong> modelli matematici per le scienze umane</li>
+            </ul>
+        </div>
+
+        <div class="card card-highlight">
+            <h3>🚀 Prospettive Future</h3>
+            <p>Queste basi matematiche ti preparano per:</p>
+            <ul>
+                <li>Corsi universitari in psicologia, sociologia, pedagogia</li>
+                <li>Ricerca quantitativa nelle scienze umane</li>
+                <li>Analisi statistica di dati educativi e sociali</li>
+                <li>Modellizzazione di fenomeni comportamentali</li>
+            </ul>
+        </div>
+    </div>
+
 
         </section>
                 <!-- Sezione Psicologia -->
