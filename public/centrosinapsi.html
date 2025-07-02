@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PWA Centro Sinapsi - Proposta Sviluppo</title>
+    <meta name="description" content="Proposta sviluppo Progressive Web Application per Centro Sinapsi - Domenico Riccio Web & App Solutions">
+    <meta name="robots" content="noindex, nofollow">
     <style>
         * {
             margin: 0;
@@ -15,17 +17,46 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 210mm;
-            margin: 0 auto;
-            padding: 20px;
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+            min-height: 100vh;
         }
 
         .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
             background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2c5aa0, #4CAF50);
+        }
+
+        .status-banner {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin: -20px -20px 30px -20px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .status-banner.signed {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            display: block;
         }
 
         .header {
@@ -35,126 +66,162 @@
             padding-bottom: 25px;
             margin-bottom: 40px;
             position: relative;
-        }
-
-        .company-info {
-            float: left;
-            width: 45%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
         }
 
         .company-info h1 {
             color: #2c5aa0;
-            font-size: 28px;
+            font-size: clamp(24px, 5vw, 32px);
             margin-bottom: 8px;
             font-weight: 700;
         }
 
         .company-info .tagline {
-            font-size: 16px;
+            font-size: clamp(14px, 3vw, 18px);
             color: #333;
             font-weight: 600;
             margin-bottom: 15px;
         }
 
-        .company-info p {
-            font-size: 13px;
+        .company-info p, .client-info p {
+            font-size: clamp(12px, 2.5vw, 14px);
             margin-bottom: 3px;
             color: #333;
         }
 
         .client-info {
-            float: right;
-            width: 45%;
             text-align: right;
         }
 
         .client-info h2 {
             color: #2c5aa0;
-            font-size: 22px;
+            font-size: clamp(18px, 4vw, 24px);
             margin-bottom: 8px;
-        }
-
-        .client-info p {
-            font-size: 13px;
-            margin-bottom: 3px;
-            color: #333;
-        }
-
-        .clearfix::after {
-            content: "";
-            display: table;
-            clear: both;
         }
 
         .app-title {
             text-align: center;
             margin: 40px 0;
-            padding: 30px;
+            padding: 40px 20px;
             background: linear-gradient(135deg, #2c5aa0, #4CAF50);
             color: white;
-            border-radius: 15px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(44, 90, 160, 0.3);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .app-title:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(44, 90, 160, 0.4);
         }
 
         .app-title h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
+            font-size: clamp(28px, 6vw, 42px);
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .app-title p {
-            font-size: 20px;
-            opacity: 0.9;
+            font-size: clamp(16px, 4vw, 22px);
+            opacity: 0.95;
         }
 
         .section {
-            margin-bottom: 35px;
-            page-break-inside: avoid;
+            margin-bottom: 50px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .section h2 {
             color: #2c5aa0;
-            font-size: 22px;
-            margin-bottom: 20px;
+            font-size: clamp(18px, 4vw, 26px);
+            margin-bottom: 25px;
             border-bottom: 3px solid #e3f2fd;
-            padding-bottom: 8px;
+            padding-bottom: 10px;
             display: flex;
             align-items: center;
+            position: relative;
         }
 
         .section h2::before {
             content: "▶";
-            margin-right: 10px;
+            margin-right: 15px;
             color: #4CAF50;
+            font-size: 0.8em;
         }
 
         .services-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
-            margin: 20px 0;
+            gap: 25px;
+            margin: 30px 0;
         }
 
         .service-category {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
-            border-left: 4px solid #2c5aa0;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #2c5aa0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #2c5aa0, #4CAF50);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .service-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .service-category:hover::before {
+            transform: scaleX(1);
         }
 
         .service-category h3 {
             color: #2c5aa0;
-            margin-bottom: 15px;
-            font-size: 20px;
+            margin-bottom: 20px;
+            font-size: clamp(16px, 3.5vw, 22px);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .service-price {
             color: #4CAF50;
             font-weight: bold;
-            font-size: 18px;
+            font-size: clamp(16px, 3.5vw, 20px);
+            background: linear-gradient(135deg, #e8f5e8, #f0fff0);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 2px solid #4CAF50;
         }
 
         .service-list {
@@ -163,10 +230,17 @@
         }
 
         .service-list li {
-            margin-bottom: 8px;
-            padding-left: 20px;
+            margin-bottom: 12px;
+            padding-left: 25px;
             position: relative;
             color: #555;
+            font-size: clamp(13px, 2.8vw, 15px);
+            line-height: 1.5;
+            transition: color 0.2s ease;
+        }
+
+        .service-list li:hover {
+            color: #2c5aa0;
         }
 
         .service-list li::before {
@@ -175,78 +249,96 @@
             font-weight: bold;
             position: absolute;
             left: 0;
+            font-size: 1.2em;
         }
 
         .tech-stack {
-            background: #e3f2fd;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 25px 0;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            padding: 35px;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(44, 90, 160, 0.1);
         }
 
         .tech-stack h3 {
             color: #2c5aa0;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: clamp(16px, 3.5vw, 20px);
+            text-align: center;
         }
 
         .tech-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin: 15px 0;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
         }
 
         .tech-item {
             background: white;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
             border: 2px solid #2c5aa0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(44, 90, 160, 0.2);
+            border-color: #4CAF50;
         }
 
         .tech-item h4 {
             color: #2c5aa0;
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-size: clamp(12px, 2.5vw, 16px);
         }
 
         .tech-item p {
-            font-size: 12px;
+            font-size: clamp(11px, 2vw, 13px);
             color: #666;
         }
 
         .pricing-summary {
             background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
-            padding: 30px;
-            border-radius: 15px;
-            margin: 30px 0;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .pricing-summary h3 {
+            color: #2c5aa0;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: clamp(18px, 4vw, 24px);
         }
 
         .price-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 25px 0;
             background: white;
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
         .price-table th {
-            background: #2c5aa0;
+            background: linear-gradient(135deg, #2c5aa0, #1e4080);
             color: white;
-            padding: 15px;
+            padding: 20px 15px;
             text-align: left;
             font-weight: 600;
+            font-size: clamp(14px, 3vw, 16px);
         }
 
         .price-table td {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
+            padding: 18px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: clamp(13px, 2.8vw, 15px);
         }
 
         .price-table .service-name {
@@ -261,101 +353,135 @@
         }
 
         .total-row {
-            background: #f0f7ff;
+            background: linear-gradient(135deg, #f0f7ff, #e3f2fd);
             font-weight: bold;
-            font-size: 18px;
+            font-size: clamp(14px, 3vw, 18px);
         }
 
         .discount-row {
-            background: #e8f5e8;
+            background: linear-gradient(135deg, #e8f5e8, #f0fff0);
             color: #4CAF50;
             font-weight: bold;
-            font-size: 18px;
+            font-size: clamp(14px, 3vw, 18px);
         }
 
         .final-row {
-            background: #2c5aa0;
+            background: linear-gradient(135deg, #2c5aa0, #1e4080);
             color: white;
             font-weight: bold;
-            font-size: 20px;
+            font-size: clamp(16px, 3.5vw, 20px);
         }
 
         .discount-highlight {
-            background: #fff3cd;
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
             border: 2px solid #ffc107;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
             text-align: center;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
         }
 
         .discount-highlight h3 {
             color: #ff6b35;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: clamp(16px, 3.5vw, 20px);
         }
 
         .timeline-section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 25px 0;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            padding: 35px;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .timeline-section h3 {
+            color: #2c5aa0;
+            margin-bottom: 25px;
+            font-size: clamp(16px, 3.5vw, 20px);
+            text-align: center;
         }
 
         .timeline-item {
             display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 15px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 20px;
             background: white;
-            border-radius: 8px;
-            border-left: 4px solid #2c5aa0;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            border-radius: 12px;
+            border-left: 5px solid #2c5aa0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
         .timeline-item .week {
-            background: #2c5aa0;
+            background: linear-gradient(135deg, #2c5aa0, #1e4080);
             color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
             font-weight: bold;
             margin-right: 20px;
-            min-width: 100px;
+            min-width: 120px;
             text-align: center;
+            font-size: clamp(12px, 2.5vw, 14px);
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-content strong {
+            color: #2c5aa0;
+            font-size: clamp(14px, 3vw, 16px);
         }
 
         .payment-options {
-            background: #f0f7ff;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 25px 0;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            background: linear-gradient(135deg, #f0f7ff, #e3f2fd);
+            padding: 35px;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(44, 90, 160, 0.1);
+        }
+
+        .payment-options h3 {
+            color: #2c5aa0;
+            margin-bottom: 25px;
+            font-size: clamp(16px, 3.5vw, 20px);
+            text-align: center;
         }
 
         .payment-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 20px 0;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
         }
 
         .payment-card {
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            border: 2px solid #4CAF50;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            padding: 25px;
+            border-radius: 15px;
+            border: 3px solid #4CAF50;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .payment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.2);
         }
 
         .payment-card h4 {
             color: #4CAF50;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: clamp(14px, 3vw, 18px);
         }
 
         .payment-table {
@@ -364,51 +490,356 @@
         }
 
         .payment-table td {
-            padding: 8px;
-            border-bottom: 1px solid #eee;
+            padding: 10px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: clamp(12px, 2.5vw, 14px);
         }
 
         .cta-section {
             background: linear-gradient(135deg, #2c5aa0, #4CAF50);
             color: white;
-            padding: 40px;
-            border-radius: 15px;
+            padding: 50px 30px;
+            border-radius: 20px;
             text-align: center;
-            margin: 40px 0;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            margin: 50px 0;
+            box-shadow: 0 20px 50px rgba(44, 90, 160, 0.3);
         }
 
+        .cta-section h2 {
+            font-size: clamp(20px, 5vw, 32px);
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .cta-section p {
+            font-size: clamp(14px, 3vw, 18px);
+            margin-bottom: 15px;
+            opacity: 0.95;
+        }
+
+        /* Sezione Firma Digitale */
+        .signature-section {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 50px 0;
+            border: 3px solid #2c5aa0;
+            box-shadow: 0 15px 40px rgba(44, 90, 160, 0.15);
+        }
+
+        .signature-section h2 {
+            color: #2c5aa0;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: clamp(20px, 4.5vw, 28px);
+        }
+
+        .signature-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .acceptance-checkboxes {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #4CAF50;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            font-size: clamp(13px, 2.8vw, 15px);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 15px;
+            transform: scale(1.3);
+            accent-color: #4CAF50;
+            margin-top: 2px;
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .signature-canvas-container {
+            background: white;
+            border: 3px dashed #2c5aa0;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .signature-canvas {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: crosshair;
+            width: 100%;
+            max-width: 500px;
+            height: 200px;
+            background: #fafafa;
+        }
+
+        .signature-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: clamp(13px, 2.8vw, 15px);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-clear {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 40px;
+            font-size: clamp(15px, 3vw, 18px);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .signature-info {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: clamp(12px, 2.5vw, 14px);
+            color: #666;
+            text-align: center;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+            display: none;
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.3);
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideInDown 0.5s ease-out;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .signature-preview {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #4CAF50;
+            margin-top: 20px;
+        }
+
+        .signature-preview h4 {
+            color: #2c5aa0;
+            margin-bottom: 15px;
+            font-size: clamp(14px, 3vw, 16px);
+        }
+
+        .signature-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            font-size: clamp(12px, 2.5vw, 14px);
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 2px solid #ffc107;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.2);
+        }
+
+        .info-box h3 {
+            color: #ff6b35;
+            margin-bottom: 15px;
+            font-size: clamp(16px, 3.5vw, 20px);
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .contact-section h3 {
+            color: #2c5aa0;
+            margin-bottom: 25px;
+            font-size: clamp(18px, 4vw, 24px);
+        }
+
+        .contact-section p {
+            font-size: clamp(14px, 3vw, 18px);
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+                border-radius: 10px;
+            }
+
+            .header {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .client-info {
+                text-align: center;
+            }
+
+            .service-category h3 {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .tech-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .payment-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .timeline-item .week {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .signature-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-title {
+                padding: 25px 15px;
+            }
+
+            .section {
+                margin-bottom: 30px;
+            }
+
+            .service-category,
+            .tech-stack,
+            .pricing-summary,
+            .timeline-section,
+            .payment-options,
+            .signature-section {
+                padding: 20px;
+            }
+
+            .price-table th,
+            .price-table td {
+                padding: 12px 8px;
+            }
+        }
+
+        /* Print styles mantengono le ottimizzazioni precedenti */
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
                 color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-            
+
             @page {
                 margin: 12mm !important;
                 size: A4 !important;
             }
-            
+
             body {
                 background: white !important;
                 padding: 0 !important;
                 font-size: 11px !important;
                 line-height: 1.4 !important;
                 margin: 0 !important;
-                max-width: 100% !important;
             }
-            
+
             .container {
                 box-shadow: none !important;
                 padding: 0 !important;
                 margin: 0 !important;
-                max-width: 100% !important;
                 background: white !important;
             }
-            
-            /* Header ottimizzato */
+
+            .signature-section,
+            .success-message {
+                display: none !important;
+            }
+
             .header {
                 background: white !important;
                 color: #333 !important;
@@ -418,33 +849,9 @@
                 page-break-inside: avoid !important;
                 border-bottom: 2px solid #2c5aa0 !important;
                 keep-with-next: always !important;
+                grid-template-columns: 1fr 1fr !important;
             }
-            
-            .company-info h1 {
-                font-size: 16px !important;
-                margin-bottom: 4px !important;
-                color: #2c5aa0 !important;
-            }
-            
-            .company-info .tagline {
-                font-size: 11px !important;
-                margin-bottom: 8px !important;
-            }
-            
-            .company-info p,
-            .client-info p {
-                font-size: 9px !important;
-                line-height: 1.2 !important;
-                margin-bottom: 2px !important;
-            }
-            
-            .client-info h2 {
-                font-size: 14px !important;
-                margin-bottom: 4px !important;
-                color: #2c5aa0 !important;
-            }
-            
-            /* Titolo app */
+
             .app-title {
                 margin: 0 0 15px 0 !important;
                 padding: 15px !important;
@@ -456,323 +863,30 @@
                 break-after: avoid !important;
                 border-radius: 8px !important;
             }
-            
-            .app-title h1 {
-                font-size: 18px !important;
-                margin-bottom: 5px !important;
-            }
-            
-            .app-title p {
-                font-size: 13px !important;
-            }
-            
-            /* Sezioni principali */
+
             .section {
                 margin-bottom: 20px !important;
                 page-break-inside: avoid !important;
                 break-inside: avoid !important;
             }
-            
-            .section h2 {
-                font-size: 13px !important;
-                margin-bottom: 12px !important;
-                page-break-after: avoid !important;
-                keep-with-next: always !important;
-                color: #2c5aa0 !important;
-            }
-            
-            .section h2::before {
-                font-size: 11px !important;
-            }
-            
-            /* Servizi */
-            .services-grid {
-                display: block !important;
-                margin: 15px 0 !important;
-            }
-            
-            .service-category {
-                padding: 12px !important;
-                margin-bottom: 15px !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                background: #f8f9fa !important;
-                border-left: 3px solid #2c5aa0 !important;
-            }
-            
-            .service-category h3 {
-                font-size: 11px !important;
-                margin-bottom: 8px !important;
-                page-break-after: avoid !important;
-                keep-with-next: always !important;
-                color: #2c5aa0 !important;
-            }
-            
-            .service-price {
-                font-size: 11px !important;
-                color: #4CAF50 !important;
-            }
-            
-            .service-list {
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            
-            .service-list li {
-                font-size: 8.5px !important;
-                margin-bottom: 3px !important;
-                line-height: 1.3 !important;
-                padding-left: 12px !important;
-                color: #555 !important;
-            }
-            
-            .service-list li::before {
-                font-size: 8px !important;
-                color: #4CAF50 !important;
-            }
-            
-            /* Stack tecnologico */
-            .tech-stack {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                padding: 12px !important;
-                margin: 15px 0 !important;
-                background: #e3f2fd !important;
-            }
-            
-            .tech-stack h3 {
-                font-size: 11px !important;
-                margin-bottom: 8px !important;
-                color: #2c5aa0 !important;
-            }
-            
-            .tech-grid {
-                grid-template-columns: repeat(4, 1fr) !important;
-                gap: 8px !important;
-                page-break-inside: avoid !important;
-            }
-            
-            .tech-item {
-                padding: 8px !important;
-                font-size: 8px !important;
-                background: white !important;
-                border: 1px solid #2c5aa0 !important;
-            }
-            
-            .tech-item h4 {
-                font-size: 9px !important;
-                margin-bottom: 2px !important;
-                color: #2c5aa0 !important;
-            }
-            
-            .tech-item p {
-                font-size: 7px !important;
-                color: #666 !important;
-            }
-            
-            /* Pricing */
-            .pricing-summary {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                margin: 15px 0 !important;
-                padding: 15px !important;
-                background: linear-gradient(135deg, #f8f9fa, #e3f2fd) !important;
-            }
-            
-            .pricing-summary h3 {
-                font-size: 12px !important;
-                margin-bottom: 10px !important;
-                color: #2c5aa0 !important;
-                text-align: center !important;
-            }
-            
-            .price-table {
-                font-size: 9px !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                background: white !important;
-            }
-            
-            .price-table th {
-                padding: 6px !important;
-                background: #2c5aa0 !important;
-                color: white !important;
-            }
-            
-            .price-table td {
-                padding: 6px !important;
-                border-bottom: 1px solid #eee !important;
-            }
-            
-            .price-table .service-name {
-                color: #333 !important;
-            }
-            
-            .price-table .price {
-                color: #2c5aa0 !important;
-            }
-            
-            .total-row {
-                background: #f0f7ff !important;
-                font-size: 10px !important;
-            }
-            
-            .discount-row {
-                background: #e8f5e8 !important;
-                color: #4CAF50 !important;
-                font-size: 10px !important;
-            }
-            
-            .final-row {
-                background: #2c5aa0 !important;
-                color: white !important;
-                font-size: 11px !important;
-            }
-            
-            /* Discount highlight */
-            .discount-highlight {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                margin: 10px 0 !important;
-                padding: 12px !important;
-                font-size: 9px !important;
-                background: #fff3cd !important;
-                border: 1px solid #ffc107 !important;
-            }
-            
-            .discount-highlight h3 {
-                font-size: 10px !important;
-                color: #ff6b35 !important;
-            }
-            
-            /* Timeline */
-            .timeline-section {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                padding: 12px !important;
-                margin: 15px 0 !important;
-                background: #f8f9fa !important;
-            }
-            
-            .timeline-section h3 {
-                font-size: 11px !important;
-                margin-bottom: 8px !important;
-                color: #2c5aa0 !important;
-            }
-            
-            .timeline-item {
-                margin-bottom: 8px !important;
-                padding: 8px !important;
-                font-size: 8.5px !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                background: white !important;
-                border-left: 3px solid #2c5aa0 !important;
-            }
-            
-            .timeline-item .week {
-                padding: 4px 8px !important;
-                font-size: 8px !important;
-                min-width: 70px !important;
-                margin-right: 10px !important;
-                background: #2c5aa0 !important;
-                color: white !important;
-            }
-            
-            /* Payment options */
+
+            .service-category,
+            .tech-stack,
+            .pricing-summary,
+            .timeline-section,
             .payment-options {
                 page-break-inside: avoid !important;
                 break-inside: avoid !important;
+                margin-bottom: 15px !important;
                 padding: 12px !important;
-                margin: 15px 0 !important;
-                background: #f0f7ff !important;
             }
-            
-            .payment-options h3 {
-                font-size: 11px !important;
-                margin-bottom: 8px !important;
-                color: #2c5aa0 !important;
-            }
-            
-            .payment-grid {
-                grid-template-columns: 1fr 1fr !important;
-                gap: 12px !important;
-                page-break-inside: avoid !important;
-            }
-            
-            .payment-card {
-                padding: 10px !important;
-                font-size: 8.5px !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                background: white !important;
-                border: 1px solid #4CAF50 !important;
-            }
-            
-            .payment-card h4 {
-                font-size: 9px !important;
-                margin-bottom: 6px !important;
-                color: #4CAF50 !important;
-            }
-            
-            .payment-table {
-                font-size: 8px !important;
-            }
-            
-            .payment-table td {
-                padding: 3px !important;
-                border-bottom: 1px solid #eee !important;
-            }
-            
-            /* CTA section */
-            .cta-section {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                margin: 15px 0 !important;
-                padding: 15px !important;
-                font-size: 10px !important;
-                background: linear-gradient(135deg, #2c5aa0, #4CAF50) !important;
-                color: white !important;
-            }
-            
-            .cta-section h2 {
-                font-size: 14px !important;
-                margin-bottom: 8px !important;
-                color: white !important;
-            }
-            
-            .cta-section p {
-                font-size: 9px !important;
-                margin-bottom: 8px !important;
-                color: white !important;
-            }
-            
-            /* Box informativi */
-            div[style*="background: #fff3cd"] {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                background: #fff3cd !important;
-                border: 1px solid #ffeaa7 !important;
-                padding: 12px !important;
-                margin: 10px 0 !important;
-                font-size: 9px !important;
-            }
-            
-            div[style*="background: #f8f9fa"][style*="text-align: center"] {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                background: #f8f9fa !important;
-                padding: 15px !important;
-                margin: 15px 0 !important;
-                font-size: 9px !important;
-            }
-            
-            /* Forza elementi insieme */
+
+            /* Altri stili print ottimizzati come nella versione precedente */
             .header + .app-title {
                 page-break-before: avoid !important;
                 break-before: avoid !important;
             }
-            
+
             h1, h2, h3, h4 {
                 page-break-after: avoid !important;
                 break-after: avoid !important;
@@ -780,41 +894,16 @@
                 widows: 3 !important;
                 keep-with-next: always !important;
             }
-            
-            p, li {
-                orphans: 2 !important;
-                widows: 2 !important;
-            }
-            
-            /* Mantieni insieme le sezioni importanti */
-            .service-category,
-            .tech-stack,
-            .pricing-summary,
-            .timeline-section,
-            .payment-options,
-            .discount-highlight,
-            .cta-section {
-                page-break-before: avoid !important;
-                page-break-after: avoid !important;
-                page-break-inside: avoid !important;
-                break-before: avoid !important;
-                break-after: avoid !important;
-                break-inside: avoid !important;
-            }
-            
-            /* Evita interruzioni nelle liste */
-            .service-list,
-            .payment-table,
-            .price-table {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header clearfix">
+        <div class="status-banner" id="statusBanner">
+            ✅ PROPOSTA FIRMATA E ACCETTATA DIGITALMENTE
+        </div>
+
+        <div class="header">
             <div class="company-info">
                 <h1>Domenico Riccio</h1>
                 <div class="tagline">Web & App Solutions</div>
@@ -842,7 +931,7 @@
         <div class="section">
             <h2>🛠️ Servizi di Sviluppo Inclusi</h2>
             <div class="services-grid">
-                
+
                 <div class="service-category">
                     <h3>
                         🎯 Portale Clienti Completo
@@ -1034,8 +1123,8 @@
         <div class="section">
             <h2>💰 Investimento per il Progetto</h2>
             <div class="pricing-summary">
-                <h3 style="color: #2c5aa0; text-align: center; margin-bottom: 25px;">Riepilogo Costi Servizi</h3>
-                
+                <h3>Riepilogo Costi Servizi</h3>
+
                 <table class="price-table">
                     <thead>
                         <tr>
@@ -1099,58 +1188,58 @@
             <h2>📅 Cronoprogramma di Sviluppo</h2>
             <div class="timeline-section">
                 <h3>Tempistiche di realizzazione: 10-12 settimane</h3>
-                
+
                 <div class="timeline-item">
                     <div class="week">Sett. 1-2</div>
-                    <div>
+                    <div class="timeline-content">
                         <strong>Setup e Progettazione</strong><br>
                         Configurazione ambiente, database design, wireframe e mockup
                     </div>
                 </div>
-                
+
                 <div class="timeline-item">
                     <div class="week">Sett. 3</div>
-                    <div>
+                    <div class="timeline-content">
                         <strong>Servizio Fotografico</strong><br>
                         Shooting professionale del centro, video promozionale, post-produzione
                     </div>
                 </div>
-                
+
                 <div class="timeline-item">
                     <div class="week">Sett. 4-6</div>
-                    <div>
+                    <div class="timeline-content">
                         <strong>Sviluppo Portale Clienti</strong><br>
                         Frontend responsive, sistema autenticazione, prenotazioni
                     </div>
                 </div>
-                
+
                 <div class="timeline-item">
                     <div class="week">Sett. 7-8</div>
-                    <div>
+                    <div class="timeline-content">
                         <strong>Dashboard Amministratore</strong><br>
                         Pannello admin, analytics, gestione prenotazioni, report
                     </div>
                 </div>
-                
+
                 <div class="timeline-item">
                     <div class="week">Sett. 9</div>
-                    <div>
+                    <div class="timeline-content">
                         <strong>Integrazioni e Automazioni</strong><br>
                         WhatsApp Twilio, email system, cron jobs, notifiche
                     </div>
                 </div>
-                
+
                 <div class="timeline-item">
                     <div class="week">Sett. 10-11</div>
-                    <div>
+                    <div class="timeline-content">
                         <strong>Testing e Ottimizzazioni</strong><br>
                         Test funzionali, ottimizzazione performance, correzione bug
                     </div>
                 </div>
-                
+
                 <div class="timeline-item">
                     <div class="week">Sett. 12</div>
-                    <div>
+                    <div class="timeline-content">
                         <strong>Deploy e Formazione</strong><br>
                         Messa online, formazione team, documentazione
                     </div>
@@ -1162,7 +1251,7 @@
             <h2>💳 Opzioni di Pagamento</h2>
             <div class="payment-options">
                 <h3>Modalità flessibili per ogni esigenza di budget</h3>
-                
+
                 <div class="payment-grid">
                     <div class="payment-card">
                         <h4>📅 Opzione A - Pagamento Rapido</h4>
@@ -1180,9 +1269,9 @@
                                 <td>CHF 1'680</td>
                             </tr>
                         </table>
-                        <p style="font-size: 8px; margin-top: 8px; color: #666;">Pagamento in 3 rate per completamento veloce</p>
+                        <p style="font-size: 12px; margin-top: 10px; color: #666;">Pagamento in 3 rate per completamento veloce</p>
                     </div>
-                    
+
                     <div class="payment-card">
                         <h4>📅 Opzione B - Rateizzazione Estesa</h4>
                         <table class="payment-table">
@@ -1203,20 +1292,20 @@
                                 <td><strong>CHF 4'860</strong></td>
                             </tr>
                         </table>
-                        <p style="font-size: 8px; margin-top: 8px; color: #666;">Include CHF 60 costi amministrativi rateizzazione</p>
+                        <p style="font-size: 12px; margin-top: 10px; color: #666;">Include CHF 60 costi amministrativi rateizzazione</p>
                     </div>
                 </div>
-                
-                <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 9px;">
+
+                <div class="info-box">
                     <p><strong>⚠️ Importante:</strong> I costi annuali di gestione (CHF 625/anno) sono separati e fatturati a parte dal secondo anno di attività dell'applicazione.</p>
                 </div>
             </div>
         </div>
 
-        <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <div class="info-box">
             <h3>💼 Costi Annuali di Gestione (Separati)</h3>
             <p>Dopo il lancio dell'applicazione, per mantenere tutti i servizi sempre attivi:</p>
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 15px 0;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 15px 0; font-size: clamp(12px, 2.5vw, 14px);">
                 <div>• <strong>Hosting Premium:</strong> CHF 180/anno</div>
                 <div>• <strong>Dominio:</strong> CHF 25/anno</div>
                 <div>• <strong>Twilio WhatsApp:</strong> CHF 120/anno</div>
@@ -1226,21 +1315,372 @@
             <p style="font-style: italic; margin-top: 10px; color: #666;">*Questi costi sono fatturati separatamente dal secondo anno di attività dell'applicazione</p>
         </div>
 
+        <!-- Sezione Firma Digitale -->
+        <div class="signature-section" id="signatureSection">
+            <h2>✍️ Accettazione e Firma Digitale</h2>
+
+            <div class="signature-content">
+                <div class="acceptance-checkboxes">
+                    <h4 style="color: #2c5aa0; margin-bottom: 20px; font-size: clamp(14px, 3vw, 18px);">Conferma di Accettazione</h4>
+
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="accept-terms" required>
+                        <label for="accept-terms">
+                            <strong>Accetto tutti i servizi e le condizioni</strong> descritti in questa proposta per lo sviluppo della PWA Centro Sinapsi al prezzo finale di <strong>CHF 4'800</strong>
+                        </label>
+                    </div>
+
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="accept-timeline" required>
+                        <label for="accept-timeline">
+                            <strong>Confermo i tempi di realizzazione</strong> di 10-12 settimane e il cronoprogramma di sviluppo presentato
+                        </label>
+                    </div>
+
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="accept-payment" required>
+                        <label for="accept-payment">
+                            <strong>Scelgo l'opzione di pagamento:</strong><br>
+                            <select id="payment-option" style="margin-top: 8px; padding: 8px; border-radius: 5px; border: 2px solid #4CAF50; font-size: clamp(12px, 2.5vw, 14px);">
+                                <option value="">Seleziona opzione di pagamento</option>
+                                <option value="rapid">Opzione A - Pagamento Rapido (3 rate)</option>
+                                <option value="extended">Opzione B - Rateizzazione Estesa (36 rate)</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="accept-annual-costs" required>
+                        <label for="accept-annual-costs">
+                            <strong>Sono consapevole dei costi annuali di gestione</strong> di CHF 625/anno dal secondo anno di attività dell'applicazione
+                        </label>
+                    </div>
+                </div>
+
+                <div class="signature-canvas-container">
+                    <h4 style="color: #2c5aa0; margin-bottom: 15px; font-size: clamp(14px, 3vw, 18px);">Firma Digitale</h4>
+                    <p style="margin-bottom: 15px; color: #666; font-size: clamp(12px, 2.5vw, 14px);">
+                        Disegna la tua firma nel riquadro sottostante usando il mouse o il dito su dispositivi touch
+                    </p>
+
+                    <canvas id="signatureCanvas" class="signature-canvas" width="500" height="200"></canvas>
+
+                    <div class="signature-controls">
+                        <button type="button" class="btn btn-clear" onclick="clearSignature()">
+                            🗑️ Cancella Firma
+                        </button>
+                        <button type="button" class="btn btn-submit" id="submitBtn" onclick="submitProposal()" disabled>
+                            ✅ Firma e Accetta Proposta
+                        </button>
+                    </div>
+
+                    <div class="signature-info">
+                        <p><strong>📋 Informazioni:</strong> Firmando digitalmente questa proposta, accetti tutti i termini e condizioni. La firma ha lo stesso valore legale di una firma cartacea.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messaggio di Successo -->
+        <div class="success-message" id="successMessage">
+            <h2>🎉 Proposta Firmata con Successo!</h2>
+            <p>Grazie per aver accettato la proposta. Il contratto è ora vincolante e inizieremo subito i lavori di sviluppo.</p>
+            <p><strong>Ti contatteremo entro 24 ore per organizzare il primo incontro e l'acconto.</strong></p>
+        </div>
+
+        <!-- Anteprima Firma (visibile solo dopo la firma) -->
+        <div class="signature-preview" id="signaturePreview" style="display: none;">
+            <h4>📋 Dettagli Firma Digitale</h4>
+            <div class="signature-details">
+                <div><strong>Data e Ora:</strong> <span id="signatureDate"></span></div>
+                <div><strong>Cliente:</strong> Centro Sinapsi - Shote</div>
+                <div><strong>Sviluppatore:</strong> Domenico Riccio</div>
+                <div><strong>Importo:</strong> CHF 4'800</div>
+                <div><strong>Opzione Pagamento:</strong> <span id="selectedPayment"></span></div>
+                <div><strong>IP Address:</strong> <span id="clientIP"></span></div>
+            </div>
+            <div style="margin-top: 15px;">
+                <strong>Firma:</strong><br>
+                <img id="signatureImage" style="border: 1px solid #ddd; border-radius: 5px; max-width: 100%; height: auto;">
+            </div>
+        </div>
+
         <div class="cta-section">
             <h2>🚀 Trasformiamo Insieme il Centro Sinapsi!</h2>
             <p>Una soluzione digitale completa che automatizzerà tutti i processi di prenotazione e gestione clienti, portando il vostro centro nell'era digitale con tecnologie all'avanguardia.</p>
-            <div style="margin-top: 30px; font-size: 20px;">
+            <div style="margin-top: 30px; font-size: clamp(16px, 4vw, 22px);">
                 <strong>💻 Tecnologie Premium • 📱 App Moderna • 🤖 Automazioni Smart</strong>
             </div>
         </div>
 
-        <div style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-top: 30px; text-align: center;">
-            <h3 style="color: #2c5aa0; margin-bottom: 20px;">📞 Conferma e Inizio Sviluppo</h3>
-            <p style="font-size: 18px; margin-bottom: 10px;"><strong>Domenico Riccio</strong></p>
+        <div class="contact-section">
+            <h3>📞 Conferma e Inizio Sviluppo</h3>
+            <p style="font-size: clamp(16px, 3.5vw, 20px); margin-bottom: 15px;"><strong>Domenico Riccio</strong></p>
             <p>📱 WhatsApp: 076 781 01 94</p>
             <p>✉️ Email: info@dcreativo.ch</p>
-            <p style="margin-top: 20px; color: #666;">Questa proposta è valida per 30 giorni dalla data di presentazione.</p>
+            <p style="margin-top: 25px; color: #666; font-size: clamp(12px, 2.5vw, 14px);">Questa proposta è valida per 30 giorni dalla data di presentazione.</p>
         </div>
     </div>
+
+    <script>
+        // Variabili globali
+        let canvas = null;
+        let ctx = null;
+        let isDrawing = false;
+        let hasSignature = false;
+
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSignature();
+            checkStoredSignature();
+            setupEventListeners();
+
+            // Animazioni al caricamento
+            animateElements();
+        });
+
+        // Inizializza il canvas per la firma
+        function initializeSignature() {
+            canvas = document.getElementById('signatureCanvas');
+            ctx = canvas.getContext('2d');
+
+            // Imposta le proprietà del canvas
+            ctx.strokeStyle = '#2c5aa0';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Riempie il canvas con sfondo bianco
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Event listeners per desktop
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+
+            // Event listeners per mobile
+            canvas.addEventListener('touchstart', handleTouch);
+            canvas.addEventListener('touchmove', handleTouch);
+            canvas.addEventListener('touchend', stopDrawing);
+        }
+
+        // Gestisce eventi touch per mobile
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+
+            if (e.type === 'touchstart') {
+                isDrawing = true;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            } else if (e.type === 'touchmove' && isDrawing) {
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                hasSignature = true;
+                checkFormValidity();
+            }
+        }
+
+        // Inizia il disegno
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        // Disegna
+        function draw(e) {
+            if (!isDrawing) return;
+
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+            hasSignature = true;
+            checkFormValidity();
+        }
+
+        // Ferma il disegno
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // Cancella la firma
+        function clearSignature() {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            hasSignature = false;
+            checkFormValidity();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Checkbox listeners
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', checkFormValidity);
+            });
+
+            // Payment option listener
+            document.getElementById('payment-option').addEventListener('change', checkFormValidity);
+        }
+
+        // Controlla la validità del form
+        function checkFormValidity() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][required]');
+            const paymentOption = document.getElementById('payment-option');
+            const submitBtn = document.getElementById('submitBtn');
+
+            let allChecked = true;
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.checked) {
+                    allChecked = false;
+                }
+            });
+
+            const hasPaymentOption = paymentOption.value !== '';
+
+            // Abilita il pulsante solo se tutto è compilato
+            if (allChecked && hasPaymentOption && hasSignature) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.6';
+                submitBtn.style.cursor = 'not-allowed';
+            }
+        }
+
+        // Invia la proposta
+        async function submitProposal() {
+            if (!hasSignature) {
+                alert('⚠️ Per favore, inserisci la tua firma prima di procedere.');
+                return;
+            }
+
+            // Conferma finale
+            const confirmSubmit = confirm('🤝 Sei sicuro di voler firmare e accettare questa proposta? Una volta confermata, sarà vincolante.');
+            if (!confirmSubmit) return;
+
+            // Raccoglie i dati
+            const signatureData = {
+                date: new Date().toLocaleString('it-IT'),
+                paymentOption: document.getElementById('payment-option').value,
+                signatureImage: canvas.toDataURL(),
+                clientIP: await getClientIP(),
+                timestamp: Date.now()
+            };
+
+            // Salva in localStorage
+            localStorage.setItem('centrosinapsi_signature', JSON.stringify(signatureData));
+
+            // Mostra il successo
+            showSuccess(signatureData);
+        }
+
+        // Ottiene l'IP del cliente
+        async function getClientIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return 'Non disponibile';
+            }
+        }
+
+        // Mostra il messaggio di successo
+        function showSuccess(signatureData) {
+            // Nasconde la sezione firma
+            document.getElementById('signatureSection').style.display = 'none';
+
+            // Mostra il banner di stato
+            const statusBanner = document.getElementById('statusBanner');
+            statusBanner.classList.add('signed');
+
+            // Mostra il messaggio di successo
+            const successMessage = document.getElementById('successMessage');
+            successMessage.classList.add('show');
+
+            // Popola l'anteprima firma
+            populateSignaturePreview(signatureData);
+
+            // Scroll al messaggio di successo
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+
+            // Invia notifica (simulata)
+            sendNotification(signatureData);
+        }
+
+        // Popola l'anteprima della firma
+        function populateSignaturePreview(data) {
+            document.getElementById('signatureDate').textContent = data.date;
+            document.getElementById('selectedPayment').textContent =
+                data.paymentOption === 'rapid' ? 'Opzione A - Pagamento Rapido' : 'Opzione B - Rateizzazione Estesa';
+            document.getElementById('clientIP').textContent = data.clientIP;
+            document.getElementById('signatureImage').src = data.signatureImage;
+
+            const preview = document.getElementById('signaturePreview');
+            preview.style.display = 'block';
+        }
+
+        // Controlla se c'è già una firma salvata
+        function checkStoredSignature() {
+            const storedSignature = localStorage.getItem('centrosinapsi_signature');
+            if (storedSignature) {
+                const data = JSON.parse(storedSignature);
+                showSuccess(data);
+            }
+        }
+
+        // Invia notifica (simulata)
+        function sendNotification(data) {
+            console.log('📧 Notifica inviata a Domenico Riccio:', {
+                cliente: 'Centro Sinapsi - Shote',
+                data: data.date,
+                importo: 'CHF 4\'800',
+                pagamento: data.paymentOption,
+                ip: data.clientIP
+            });
+
+            // In un'implementazione reale, qui invieresti i dati al server
+            // fetch('/api/proposal-signed', { method: 'POST', body: JSON.stringify(data) })
+        }
+
+        // Animazioni al caricamento
+        function animateElements() {
+            // Intersection Observer per animazioni scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            // Osserva le sezioni per l'animazione
+            document.querySelectorAll('.section, .service-category, .tech-item').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease-out';
+                observer.observe(el);
+            });
+        }
+
+        // Funzione per testare (da rimuovere in produzione)
+        function resetProposal() {
+            localStorage.removeItem('centrosinapsi_signature');
+            location.reload();
+        }
+
+        // Debug: aggiungi funzione globale per reset (rimuovi in produzione)
+        window.resetProposal = resetProposal;
+    </script>
 </body>
 </html>
