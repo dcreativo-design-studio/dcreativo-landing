@@ -18,7 +18,9 @@
     { "source": "/cookie-policy", "destination": "/cookie-system.html" },
     { "source": "/ebook", "destination": "/ebook.html" },
     { "source": "/ebook2", "destination": "/ebook2.html" },
-    { "source": "/ebook3", "destination": "/ebook3.html" }
+    { "source": "/ebook3", "destination": "/ebook3.html" },
+    { "source": "/centrosinapsi", "destination": "/centrosinapsi.html" }
+
 
   ],
   "headers": [
