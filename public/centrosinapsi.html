@@ -919,7 +919,7 @@
                 <p>Via Toron d'Örz 7, 6703 Osogna</p>
                 <p>📞 Tel: 078 846 06 87</p>
                 <p>✉️ Email: info@centrosinapsi.ch</p>
-                <p style="margin-top: 15px; color: #666;"><strong>Data:</strong> 4 Luglio 2025</p>
+                <p style="margin-top: 15px; color: #666;"><strong>Data:</strong> <span id="currentDate"></span></p>
             </div>
         </div>
 
@@ -1431,6 +1431,7 @@
 
         // Inizializzazione
         document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentDate();
             initializeSignature();
             checkStoredSignature();
             setupEventListeners();
@@ -1438,6 +1439,22 @@
             // Animazioni al caricamento
             animateElements();
         });
+
+        // Aggiorna la data corrente
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                timeZone: 'Europe/Zurich'
+            };
+
+            const formatter = new Intl.DateTimeFormat('it-IT', options);
+            const currentDateFormatted = formatter.format(now);
+
+            document.getElementById('currentDate').textContent = currentDateFormatted;
+        }
 
         // Inizializza il canvas per la firma
         function initializeSignature() {
