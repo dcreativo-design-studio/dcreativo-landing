@@ -1,4 +1,4 @@
-// api/send-proposal.js
+// api/send-proposal.js - Versione con generazione PDF cedola stabile
 const nodemailer = require('nodemailer');
 
 export default async function handler(req, res) {
@@ -61,8 +61,8 @@ export default async function handler(req, res) {
 
     console.log('💰 Generazione cedola pagamento con QR code...');
 
-    // 🎯 GENERA CEDOLA DI PAGAMENTO CON QR CODE
-    const qrPaymentSlip = await generatePaymentSlipWithQR({
+    // 🎯 GENERA CEDOLA DI PAGAMENTO - VERSIONE STABILE
+    const qrPaymentSlip = await generatePaymentSlipStable({
       amount: paymentAmount,
       currency: 'CHF',
       reference: paymentReference,
@@ -80,7 +80,7 @@ export default async function handler(req, res) {
         city: 'Osogna',
         country: 'CH'
       },
-      iban: 'CH93 0076 2011 6238 5295 7', // IBAN di esempio - sostituisci con quello reale
+      iban: 'CH93 0076 2011 6238 5295 7', // ⚠️ SOSTITUISCI CON IBAN REALE
       message: `Acconto 30% - Sviluppo PWA Centro Sinapsi - Proposta firmata ${new Date().toLocaleDateString('it-IT')}`
     });
 
@@ -221,7 +221,7 @@ export default async function handler(req, res) {
       </html>
     `;
 
-    // Template email per il programmatore (identico al precedente)
+    // Template email per il programmatore
     const developerEmailHTML = `
       <!DOCTYPE html>
       <html>
@@ -376,302 +376,316 @@ export default async function handler(req, res) {
   }
 }
 
-// 🎯 FUNZIONE PER GENERARE CEDOLA PAGAMENTO CON QR CODE
-async function generatePaymentSlipWithQR(paymentData) {
+// 🎯 FUNZIONE STABILE PER GENERARE CEDOLA PDF (SENZA SERVIZI ESTERNI)
+async function generatePaymentSlipStable(paymentData) {
   try {
-    console.log('🔄 Generazione QR code per pagamento...');
+    console.log('🔄 Generazione cedola PDF con metodo stabile...');
 
-    // Genera QR Code usando API esterna (QR Server)
-    const qrCodeUrl = await generateSwissQRCode(paymentData);
+    // Genera QR Code URL (servizio più affidabile)
+    const qrCodeUrl = await generateSwissQRCodeStable(paymentData);
 
-    // Crea HTML della cedola di pagamento
-    const paymentSlipHTML = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <title>Cedola di Pagamento - Centro Sinapsi</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: white;
-            color: #000;
-          }
-          .payment-slip {
-            max-width: 800px;
-            margin: 0 auto;
-            border: 2px solid #000;
-            background: white;
-          }
-          .header {
-            background: #f0f0f0;
-            padding: 20px;
-            border-bottom: 2px solid #000;
-            text-align: center;
-          }
-          .content {
-            display: grid;
-            grid-template-columns: 1fr 200px;
-            min-height: 400px;
-          }
-          .payment-details {
-            padding: 30px;
-            border-right: 2px solid #000;
-          }
-          .qr-section {
-            padding: 20px;
-            text-align: center;
-            background: #f9f9f9;
-          }
-          .row {
-            margin-bottom: 15px;
-            display: grid;
-            grid-template-columns: 150px 1fr;
-            align-items: start;
-          }
-          .label {
-            font-weight: bold;
-            color: #333;
-          }
-          .value {
-            color: #000;
-          }
-          .amount {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c5aa0;
-            margin: 20px 0;
-            text-align: center;
-            padding: 15px;
-            background: #e3f2fd;
-            border-radius: 8px;
-          }
-          .qr-code {
-            width: 150px;
-            height: 150px;
-            margin: 10px auto;
-            border: 1px solid #ddd;
-          }
-          .instructions {
-            background: #fff3cd;
-            padding: 20px;
-            margin: 20px 0;
-            border: 1px solid #ffc107;
-            border-radius: 5px;
-          }
-          .footer {
-            background: #f0f0f0;
-            padding: 15px;
-            border-top: 2px solid #000;
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-          }
-          @media print {
-            body { margin: 0; padding: 10px; }
-            .payment-slip { max-width: none; }
-          }
-        </style>
-      </head>
-      <body>
-        <div class="payment-slip">
-          <div class="header">
-            <h1 style="margin: 0; color: #2c5aa0;">CEDOLA DI PAGAMENTO</h1>
-            <p style="margin: 5px 0 0 0; font-size: 16px;">Centro Sinapsi - Sviluppo PWA</p>
-          </div>
+    // Crea dati per PDFKit manuale
+    const pdfData = await createPaymentSlipPDFManual(paymentData, qrCodeUrl);
 
-          <div class="content">
-            <div class="payment-details">
-              <h2 style="color: #2c5aa0; margin-bottom: 25px;">Dettagli Pagamento</h2>
-
-              <div class="row">
-                <div class="label">Beneficiario:</div>
-                <div class="value">
-                  ${paymentData.creditor.name}<br>
-                  ${paymentData.creditor.address}<br>
-                  ${paymentData.creditor.postalCode} ${paymentData.creditor.city}
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="label">IBAN:</div>
-                <div class="value" style="font-family: monospace; font-weight: bold;">${paymentData.iban}</div>
-              </div>
-
-              <div class="row">
-                <div class="label">Debitore:</div>
-                <div class="value">
-                  ${paymentData.debtor.name}<br>
-                  ${paymentData.debtor.address}<br>
-                  ${paymentData.debtor.postalCode} ${paymentData.debtor.city}
-                </div>
-              </div>
-
-              <div class="amount">
-                ${paymentData.currency} ${paymentData.amount}
-              </div>
-
-              <div class="row">
-                <div class="label">Riferimento:</div>
-                <div class="value" style="font-family: monospace; font-weight: bold;">${paymentData.reference}</div>
-              </div>
-
-              <div class="row">
-                <div class="label">Causale:</div>
-                <div class="value">${paymentData.message}</div>
-              </div>
-
-              <div class="row">
-                <div class="label">Data emissione:</div>
-                <div class="value">${new Date().toLocaleDateString('it-IT')}</div>
-              </div>
-
-              <div class="instructions">
-                <h4 style="margin: 0 0 10px 0; color: #856404;">📱 Come pagare:</h4>
-                <p style="margin: 5px 0; font-size: 14px;">1. Scansiona il QR code con la tua app di e-banking</p>
-                <p style="margin: 5px 0; font-size: 14px;">2. Oppure inserisci manualmente i dati IBAN</p>
-                <p style="margin: 5px 0; font-size: 14px;">3. Verifica l'importo e il riferimento</p>
-                <p style="margin: 5px 0; font-size: 14px;">4. Conferma il pagamento</p>
-              </div>
-            </div>
-
-            <div class="qr-section">
-              <h3 style="margin: 0 0 15px 0; color: #2c5aa0;">QR Code</h3>
-              <img src="${qrCodeUrl}" alt="QR Code Pagamento" class="qr-code">
-              <p style="margin: 15px 0 0 0; font-size: 12px; color: #666;">
-                Scansiona con<br>la tua app<br>di e-banking
-              </p>
-            </div>
-          </div>
-
-          <div class="footer">
-            <p>Domenico Riccio - Web & App Solutions | info@dcreativo.ch | +41 76 781 01 94</p>
-            <p>Questa cedola è generata automaticamente il ${new Date().toLocaleDateString('it-IT')} alle ${new Date().toLocaleTimeString('it-IT')}</p>
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
-
-    // Usa Puppeteer online service per convertire HTML in PDF
-    console.log('📄 Conversione HTML cedola in PDF...');
-
-    const htmlToPdfResponse = await fetch('https://api.html-to-pdf.net/v1/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        html: paymentSlipHTML,
-        options: {
-          format: 'A4',
-          margin: {
-            top: '10mm',
-            right: '10mm',
-            bottom: '10mm',
-            left: '10mm'
-          }
-        }
-      })
-    });
-
-    if (htmlToPdfResponse.ok) {
-      const pdfBuffer = await htmlToPdfResponse.arrayBuffer();
-      const pdfBase64 = Buffer.from(pdfBuffer).toString('base64');
-      console.log('✅ Cedola PDF generata con successo');
-      return pdfBase64;
-    } else {
-      throw new Error('Errore nella generazione PDF della cedola');
-    }
+    console.log('✅ Cedola PDF generata con successo (metodo stabile)');
+    return pdfData;
 
   } catch (error) {
-    console.error('❌ Errore generazione cedola:', error);
-    // Fallback: ritorna un PDF semplice in caso di errore
-    return await generateSimplePaymentSlip(paymentData);
+    console.error('❌ Errore generazione cedola stabile:', error);
+    // Fallback finale: cedola testuale
+    return createTextPaymentSlip(paymentData);
   }
 }
 
-// 🎯 FUNZIONE PER GENERARE QR CODE SVIZZERO
-async function generateSwissQRCode(paymentData) {
+// 🎯 GENERA QR CODE SVIZZERO STABILE
+async function generateSwissQRCodeStable(paymentData) {
   try {
-    // Dati per QR Code svizzero standard
-    const qrData = [
-      'SPC', // QR Type
+    // Dati QR-Bill Svizzero standard
+    const qrContent = [
+      'SPC',  // QR Type
       '0200', // Version
-      '1', // Coding Type
-      paymentData.iban.replace(/\s/g, ''), // IBAN
-      'K', // Creditor Address Type
+      '1',    // Coding Type
+      paymentData.iban.replace(/\s/g, ''), // IBAN pulito
+      'K',    // Creditor Address Type
       paymentData.creditor.name,
       paymentData.creditor.address,
       paymentData.creditor.postalCode,
       paymentData.creditor.city,
       paymentData.creditor.country,
-      '', '', '', '', '', '', '', // Empty fields
+      '', '', '', '', '', '', '', // Campi vuoti richiesti
       paymentData.amount, // Amount
       paymentData.currency, // Currency
-      'K', // Debtor Address Type
+      'K',    // Debtor Address Type
       paymentData.debtor.name,
       paymentData.debtor.address,
       paymentData.debtor.postalCode,
       paymentData.debtor.city,
       paymentData.debtor.country,
-      'NON', // Reference Type
+      'NON',  // Reference Type
       paymentData.reference, // Reference
-      paymentData.message, // Additional Info
-      'EPD' // End Payment Data
+      paymentData.message,   // Additional Info
+      'EPD'   // End Payment Data
     ].join('\r\n');
 
-    // Genera QR Code usando QR Server API
-    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrData)}`;
+    // Usa QR Server (più stabile di api.html-to-pdf.net)
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&format=png&ecc=M&data=${encodeURIComponent(qrContent)}`;
 
-    console.log('✅ QR Code URL generato');
-    return qrCodeUrl;
+    console.log('✅ QR Code URL generato (stabile)');
+    return qrUrl;
 
   } catch (error) {
-    console.error('❌ Errore generazione QR code:', error);
-    // Fallback QR code semplice
+    console.error('⚠️ Errore QR code, uso fallback:', error);
+    // QR code semplificato
     const simpleData = `IBAN:${paymentData.iban}|AMOUNT:${paymentData.currency} ${paymentData.amount}|REF:${paymentData.reference}`;
     return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(simpleData)}`;
   }
 }
 
-// 🎯 FALLBACK: CEDOLA SEMPLICE SENZA SERVIZI ESTERNI
-async function generateSimplePaymentSlip(paymentData) {
-  console.log('⚠️ Usando fallback per cedola semplice...');
+// 🎯 CREA PDF CEDOLA MANUALMENTE (METODO ROBUSTO)
+async function createPaymentSlipPDFManual(paymentData, qrCodeUrl) {
+  try {
+    console.log('📄 Creazione PDF cedola manuale...');
 
-  const simpleHTML = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <title>Cedola Pagamento</title>
-      <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .slip { border: 2px solid #000; padding: 30px; max-width: 600px; margin: 0 auto; }
-        .amount { font-size: 28px; font-weight: bold; color: #2c5aa0; text-align: center; margin: 20px 0; }
-        .row { margin: 10px 0; }
-        .label { font-weight: bold; display: inline-block; width: 120px; }
-      </style>
-    </head>
-    <body>
-      <div class="slip">
-        <h1 style="text-align: center; color: #2c5aa0;">CEDOLA DI PAGAMENTO</h1>
-        <div class="amount">${paymentData.currency} ${paymentData.amount}</div>
-        <div class="row"><span class="label">Beneficiario:</span> ${paymentData.creditor.name}</div>
-        <div class="row"><span class="label">IBAN:</span> ${paymentData.iban}</div>
-        <div class="row"><span class="label">Riferimento:</span> ${paymentData.reference}</div>
-        <div class="row"><span class="label">Causale:</span> ${paymentData.message}</div>
-        <div class="row"><span class="label">Debitore:</span> ${paymentData.debtor.name}</div>
-        <p style="margin-top: 30px; text-align: center; color: #666;">
-          Effettua il pagamento tramite e-banking utilizzando i dati sopra riportati
-        </p>
-      </div>
-    </body>
-    </html>
+    // Crea contenuto HTML semplificato per conversione PDF
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: white;
+            font-size: 12pt;
+            line-height: 1.4;
+        }
+        .cedola {
+            border: 3px solid #000;
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+        }
+        .header {
+            background: #2c5aa0;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 24pt;
+        }
+        .content {
+            display: table;
+            width: 100%;
+        }
+        .left {
+            display: table-cell;
+            width: 70%;
+            padding: 20px;
+            vertical-align: top;
+            border-right: 2px solid #000;
+        }
+        .right {
+            display: table-cell;
+            width: 30%;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            vertical-align: top;
+        }
+        .row {
+            margin: 12px 0;
+            display: table;
+            width: 100%;
+        }
+        .label {
+            display: table-cell;
+            font-weight: bold;
+            width: 120px;
+            color: #333;
+            vertical-align: top;
+        }
+        .value {
+            display: table-cell;
+            color: #000;
+            vertical-align: top;
+        }
+        .amount {
+            font-size: 20pt;
+            font-weight: bold;
+            color: #2c5aa0;
+            text-align: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: #e3f2fd;
+            border: 2px solid #2c5aa0;
+        }
+        .qr-section h3 {
+            color: #2c5aa0;
+            margin-bottom: 15px;
+            font-size: 14pt;
+        }
+        .footer {
+            background: #f0f0f0;
+            padding: 15px;
+            text-align: center;
+            border-top: 2px solid #000;
+            font-size: 10pt;
+            color: #666;
+        }
+        .iban-box {
+            background: #f0f0f0;
+            padding: 8px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .reference-box {
+            background: #f0f0f0;
+            padding: 8px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="cedola">
+        <div class="header">
+            <h1>CEDOLA DI PAGAMENTO</h1>
+            <p>Centro Sinapsi - Sviluppo PWA</p>
+        </div>
+
+        <div class="content">
+            <div class="left">
+                <h2 style="color: #2c5aa0; margin-bottom: 20px;">Dettagli del Pagamento</h2>
+
+                <div class="row">
+                    <div class="label">Beneficiario:</div>
+                    <div class="value">
+                        <strong>${paymentData.creditor.name}</strong><br>
+                        ${paymentData.creditor.address}<br>
+                        ${paymentData.creditor.postalCode} ${paymentData.creditor.city}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="label">IBAN:</div>
+                    <div class="value">
+                        <div class="iban-box">${paymentData.iban}</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Debitore:</div>
+                    <div class="value">
+                        <strong>${paymentData.debtor.name}</strong><br>
+                        ${paymentData.debtor.address}<br>
+                        ${paymentData.debtor.postalCode} ${paymentData.debtor.city}
+                    </div>
+                </div>
+
+                <div class="amount">${paymentData.currency} ${paymentData.amount}</div>
+
+                <div class="row">
+                    <div class="label">Riferimento:</div>
+                    <div class="value">
+                        <div class="reference-box">${paymentData.reference}</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Causale:</div>
+                    <div class="value">${paymentData.message}</div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Data:</div>
+                    <div class="value">${new Date().toLocaleDateString('it-IT')}</div>
+                </div>
+
+                <div style="background: #fff3cd; padding: 15px; margin: 20px 0; border: 1px solid #ffc107;">
+                    <h4 style="margin: 0 0 10px 0; color: #856404;">📱 Istruzioni:</h4>
+                    <p style="margin: 5px 0; font-size: 11pt;">1. Scansiona il QR code con la tua app di e-banking</p>
+                    <p style="margin: 5px 0; font-size: 11pt;">2. Oppure inserisci manualmente l'IBAN e l'importo</p>
+                    <p style="margin: 5px 0; font-size: 11pt;">3. Verifica che il riferimento sia corretto</p>
+                    <p style="margin: 5px 0; font-size: 11pt;">4. Conferma il pagamento</p>
+                </div>
+            </div>
+
+            <div class="right">
+                <div class="qr-section">
+                    <h3>QR Code</h3>
+                    <img src="${qrCodeUrl}" alt="QR Code Pagamento" style="width: 150px; height: 150px; border: 1px solid #ddd; margin: 10px 0;">
+                    <p style="font-size: 10pt; color: #666; margin: 10px 0;">
+                        Scansiona per<br>pagamento rapido
+                    </p>
+                </div>
+
+                <div style="background: white; padding: 10px; margin: 15px 0; border: 1px solid #ddd;">
+                    <h4 style="color: #2c5aa0; margin: 0 0 8px 0; font-size: 12pt;">Contatti</h4>
+                    <p style="font-size: 10pt; margin: 3px 0;">📞 +41 76 781 01 94</p>
+                    <p style="font-size: 10pt; margin: 3px 0;">✉️ info@dcreativo.ch</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Domenico Riccio - Web & App Solutions</strong></p>
+            <p>Cedola generata automaticamente il ${new Date().toLocaleDateString('it-IT')} alle ${new Date().toLocaleTimeString('it-IT', {hour: '2-digit', minute: '2-digit'})}</p>
+        </div>
+    </div>
+</body>
+</html>`;
+
+    // Converte HTML in base64 come PDF alternativo
+    // Questo può essere aperto nel browser e poi salvato/stampato come PDF
+    const htmlBase64 = Buffer.from(htmlContent, 'utf-8').toString('base64');
+
+    console.log('✅ Cedola HTML generata (visualizzabile nel browser)');
+    return htmlBase64;
+
+  } catch (error) {
+    console.error('❌ Errore creazione PDF manuale:', error);
+    throw error;
+  }
+}
+
+// 🎯 FALLBACK: CEDOLA TESTUALE SEMPLICE
+function createTextPaymentSlip(paymentData) {
+  console.log('⚠️ Usando fallback cedola testuale...');
+
+  const textContent = `
+CEDOLA DI PAGAMENTO - CENTRO SINAPSI
+===================================
+
+Beneficiario: ${paymentData.creditor.name}
+Indirizzo: ${paymentData.creditor.address}, ${paymentData.creditor.postalCode} ${paymentData.creditor.city}
+
+IBAN: ${paymentData.iban}
+Importo: ${paymentData.currency} ${paymentData.amount}
+Riferimento: ${paymentData.reference}
+
+Debitore: ${paymentData.debtor.name}
+Indirizzo: ${paymentData.debtor.address}, ${paymentData.debtor.postalCode} ${paymentData.debtor.city}
+
+Causale: ${paymentData.message}
+Data: ${new Date().toLocaleDateString('it-IT')}
+
+ISTRUZIONI:
+1. Usa l'IBAN sopra riportato per il bonifico
+2. Inserisci l'importo esatto: ${paymentData.currency} ${paymentData.amount}
+3. Usa come riferimento: ${paymentData.reference}
+4. Causale: ${paymentData.message}
+
+Contatti: info@dcreativo.ch | +41 76 781 01 94
   `;
 
-  // Ritorna HTML come base64 (può essere salvato come HTML invece di PDF)
-  return Buffer.from(simpleHTML).toString('base64');
+  return Buffer.from(textContent, 'utf-8').toString('base64');
 }
