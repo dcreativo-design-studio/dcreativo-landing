@@ -25,8 +25,8 @@ export default async function handler(req, res) {
       paymentOption: signatureData.paymentOption?.description || 'N/A'
     });
 
-    // Configurazione email transporter
-    const transporter = nodemailer.createTransporter({
+    // ✅ CORREZIONE: createTransport invece di createTransporter
+    const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
