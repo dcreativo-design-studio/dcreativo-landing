@@ -118,6 +118,18 @@
             background: linear-gradient(135deg, #f44336, #d32f2f);
         }
 
+        /* 🧪 TEST MODE BANNER */
+        .test-mode-banner {
+            background: linear-gradient(135deg, #9C27B0, #673AB7);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin: -20px -20px 30px -20px;
+            font-weight: bold;
+            font-size: clamp(13px, 2.8vw, 15px);
+            border: 2px solid #fff;
+        }
+
         /* Loading Screen */
         .loading-screen {
             position: fixed;
@@ -1169,7 +1181,8 @@
 
             .signature-section,
             .success-message,
-            .timer-display {
+            .timer-display,
+            .test-mode-banner {
                 display: none !important;
             }
 
@@ -1248,6 +1261,11 @@
     </div>
 
     <div class="container" id="proposalContainer" style="display: none;">
+        <!-- 🧪 TEST MODE BANNER -->
+        <div class="test-mode-banner">
+            🧪 MODALITÀ TEST ATTIVA - Firme multiple consentite per testing
+        </div>
+
         <div class="timer-display" id="timerDisplay">
             ⏰ Tempo rimanente per firmare: <span id="timerText"></span>
         </div>
@@ -1844,12 +1862,13 @@
     </div>
 
     <script>
-        // Configurazione
+        // 🧪 CONFIGURAZIONE TEST MODE
         const CONFIG = {
-    password: 'centrosinapsi2025',
-    expiryDays: 30,
-    apiEndpoint: '/api/send-proposal' // Endpoint Vercel Function
-};
+            password: 'centrosinapsi2025',
+            expiryDays: 30,
+            apiEndpoint: '/api/send-proposal',
+            testMode: true  // 🧪 MODALITÀ TEST ATTIVA
+        };
 
         // Variabili globali
         let canvas = null;
@@ -1864,9 +1883,16 @@
             setupPasswordScreen();
             updateCurrentDate();
 
-            // Controllo se l'utente ha già effettuato l'accesso
-            if (localStorage.getItem('centrosinapsi_access')) {
+            // 🧪 IN TEST MODE: Accesso automatico senza controllo localStorage
+            if (CONFIG.testMode) {
+                console.log('🧪 Modalità Test: Accesso diretto senza controlli');
+                // Non controlla localStorage per firme precedenti
                 showProposal();
+            } else {
+                // Controllo normale per produzione
+                if (localStorage.getItem('centrosinapsi_access')) {
+                    showProposal();
+                }
             }
         });
 
@@ -1886,14 +1912,15 @@
             const errorMessage = document.getElementById('errorMessage');
 
             if (password === CONFIG.password) {
-                // Salva l'accesso e la data della prima apertura
-                const accessData = {
-                    firstAccess: Date.now(),
-                    hasAccess: true
-                };
-                localStorage.setItem('centrosinapsi_access', JSON.stringify(accessData));
+                // 🧪 IN TEST MODE: Non salva nel localStorage
+                if (!CONFIG.testMode) {
+                    const accessData = {
+                        firstAccess: Date.now(),
+                        hasAccess: true
+                    };
+                    localStorage.setItem('centrosinapsi_access', JSON.stringify(accessData));
+                }
 
-                // Mostra la proposta
                 showProposal();
             } else {
                 errorMessage.style.display = 'block';
@@ -1909,7 +1936,12 @@
 
             // Inizializza tutto
             initializeSignature();
-            checkStoredSignature();
+
+            // 🧪 IN TEST MODE: Non controlla firme precedenti
+            if (!CONFIG.testMode) {
+                checkStoredSignature();
+            }
+
             setupEventListeners();
             startTimer();
             animateElements();
@@ -1933,6 +1965,12 @@
 
         // Avvia il timer di 30 giorni
         function startTimer() {
+            // 🧪 IN TEST MODE: Timer disabilitato
+            if (CONFIG.testMode) {
+                document.getElementById('timerDisplay').style.display = 'none';
+                return;
+            }
+
             const accessData = JSON.parse(localStorage.getItem('centrosinapsi_access'));
             if (!accessData || !accessData.firstAccess) return;
 
@@ -1944,7 +1982,6 @@
                 const timeLeft = expiryDate - now;
 
                 if (timeLeft <= 0) {
-                    // Scaduto
                     clearInterval(timerInterval);
                     showExpiredState();
                     return;
@@ -1955,9 +1992,8 @@
                 const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
 
                 document.getElementById('timerText').textContent = `${days}d ${hours}h ${minutes}m`;
-            }, 60000); // Aggiorna ogni minuto
+            }, 60000);
 
-            // Aggiorna subito
             const now = new Date();
             const timeLeft = expiryDate - now;
             if (timeLeft > 0) {
@@ -1978,7 +2014,6 @@
             timerDisplay.classList.add('expired');
             timerDisplay.innerHTML = '⏰ <strong>PROPOSTA SCADUTA</strong> - Contatta Domenico Riccio per una nuova proposta';
 
-            // Disabilita la sezione firma
             const signatureSection = document.getElementById('signatureSection');
             if (signatureSection) {
                 signatureSection.style.opacity = '0.5';
@@ -1991,23 +2026,19 @@
             canvas = document.getElementById('signatureCanvas');
             ctx = canvas.getContext('2d');
 
-            // Imposta le proprietà del canvas
             ctx.strokeStyle = '#2c5aa0';
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
-            // Riempie il canvas con sfondo bianco
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Event listeners per desktop
             canvas.addEventListener('mousedown', startDrawing);
             canvas.addEventListener('mousemove', draw);
             canvas.addEventListener('mouseup', stopDrawing);
             canvas.addEventListener('mouseout', stopDrawing);
 
-            // Event listeners per mobile
             canvas.addEventListener('touchstart', handleTouch);
             canvas.addEventListener('touchmove', handleTouch);
             canvas.addEventListener('touchend', stopDrawing);
@@ -2069,12 +2100,10 @@
 
         // Setup event listeners
         function setupEventListeners() {
-            // Checkbox listeners
             document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 checkbox.addEventListener('change', checkFormValidity);
             });
 
-            // Payment option listeners
             document.querySelectorAll('input[name="payment-choice"]').forEach(radio => {
                 radio.addEventListener('change', function() {
                     updatePaymentSelection(this.value);
@@ -2082,25 +2111,21 @@
                 });
             });
 
-            // Custom payment inputs
             document.getElementById('custom-installments').addEventListener('input', calculateCustomPayment);
             document.getElementById('custom-amount').addEventListener('input', calculateCustomPayment);
         }
 
         // Aggiorna la selezione del pagamento
         function updatePaymentSelection(selectedOption) {
-            // Rimuove classe selected da tutte le card
             document.querySelectorAll('.payment-card, .payment-card-full').forEach(card => {
                 card.classList.remove('selected');
             });
 
-            // Aggiunge classe selected alla card scelta
             const selectedCard = document.querySelector(`[data-option="${selectedOption}"]`);
             if (selectedCard) {
                 selectedCard.classList.add('selected');
             }
 
-            // Mostra/nasconde sezione custom
             const customSection = document.getElementById('customCalculation');
             if (selectedOption === 'custom') {
                 calculateCustomPayment();
@@ -2121,19 +2146,16 @@
 
             customSection.style.display = 'block';
 
-            // Calcoli
-            const downPayment = 1440; // 30% fisso
+            const downPayment = 1440;
             const adminCosts = 60;
             const installmentTotal = installments * amount;
             const grandTotal = downPayment + installmentTotal + adminCosts;
-            const minimumTotal = 4860; // CHF 4800 + CHF 60
+            const minimumTotal = 4860;
 
-            // Aggiorna tabella
             document.getElementById('installment-description').textContent = `${installments} rate da CHF ${amount}`;
             document.getElementById('installment-total').textContent = `CHF ${installmentTotal.toLocaleString('de-CH')}`;
             document.getElementById('custom-total').textContent = `CHF ${grandTotal.toLocaleString('de-CH')}`;
 
-            // Validazione
             let isValid = false;
             let message = '';
 
@@ -2158,7 +2180,6 @@
 
             validationMessage.textContent = message;
 
-            // Abilita/disabilita radio button
             const customRadio = document.getElementById('payment-custom');
             if (isValid) {
                 customRadio.disabled = false;
@@ -2194,7 +2215,6 @@
                 }
             });
 
-            // Abilita il pulsante solo se tutto è compilato
             if (allChecked && hasPaymentOption && hasSignature) {
                 submitBtn.disabled = false;
                 submitBtn.style.opacity = '1';
@@ -2213,15 +2233,17 @@
                 return;
             }
 
-            // Conferma finale
-            const confirmSubmit = confirm('🤝 Sei sicuro di voler firmare e accettare questa proposta? Una volta confermata, sarà vincolante.');
+            // 🧪 IN TEST MODE: Conferma semplificata
+            const confirmMessage = CONFIG.testMode
+                ? '🧪 TEST: Vuoi inviare questa proposta di test?'
+                : '🤝 Sei sicuro di voler firmare e accettare questa proposta? Una volta confermata, sarà vincolante.';
+
+            const confirmSubmit = confirm(confirmMessage);
             if (!confirmSubmit) return;
 
-            // Mostra loading
             document.getElementById('loadingScreen').style.display = 'flex';
 
             try {
-                // Raccoglie opzione di pagamento selezionata
                 const selectedPayment = document.querySelector('input[name="payment-choice"]:checked');
                 let paymentDetails = {};
 
@@ -2254,13 +2276,14 @@
                     };
                 }
 
-                // Raccoglie i dati
+                // Raccoglie i dati (continuazione da dove ci siamo interrotti)
                 const signatureData = {
                     date: new Date().toLocaleString('it-IT'),
                     paymentOption: paymentDetails,
                     signatureImage: canvas.toDataURL(),
                     clientIP: await getClientIP(),
-                    timestamp: Date.now()
+                    timestamp: Date.now(),
+                    testMode: CONFIG.testMode  // 🧪 Flag per identificare test
                 };
 
                 // Genera PDF
@@ -2269,17 +2292,21 @@
                 // Invia email
                 await sendSignedProposal(signatureData, pdfBlob);
 
-                // Salva in localStorage
-                localStorage.setItem('centrosinapsi_signature', JSON.stringify(signatureData));
+                // 🧪 IN TEST MODE: NON salva nel localStorage
+                if (!CONFIG.testMode) {
+                    localStorage.setItem('centrosinapsi_signature', JSON.stringify(signatureData));
+                }
 
                 // Mostra il successo
                 showSuccess(signatureData);
 
             } catch (error) {
                 console.error('Errore nell\'invio:', error);
-                alert('⚠️ Si è verificato un errore durante l\'invio. Riprova o contatta Domenico Riccio.');
+                const errorMsg = CONFIG.testMode
+                    ? '🧪 TEST: Errore nell\'invio. Verifica i log della console.'
+                    : '⚠️ Si è verificato un errore durante l\'invio. Riprova o contatta Domenico Riccio.';
+                alert(errorMsg);
             } finally {
-                // Nascondi loading
                 document.getElementById('loadingScreen').style.display = 'none';
             }
         }
@@ -2288,7 +2315,6 @@
         async function generatePDF(signatureData) {
             return new Promise((resolve, reject) => {
                 try {
-                    // Crea una copia pulita del contenuto
                     const originalContainer = document.getElementById('proposalContainer');
                     const cleanContainer = originalContainer.cloneNode(true);
 
@@ -2299,6 +2325,7 @@
                         '.timer-display',
                         '.loading-screen',
                         '.status-banner',
+                        '.test-mode-banner',  // 🧪 Rimuove banner test dal PDF
                         'script',
                         '.login-screen'
                     ];
@@ -2319,8 +2346,12 @@
                         page-break-inside: avoid;
                     `;
 
+                    // 🧪 Aggiunge indicatore test nel PDF se in modalità test
+                    const testIndicator = CONFIG.testMode ? '<div style="color: #9C27B0; font-weight: bold; margin-bottom: 10px;">🧪 DOCUMENTO DI TEST</div>' : '';
+
                     signatureSection.innerHTML = `
                         <h3 style="color: #2c5aa0; margin-bottom: 20px; font-size: 18px;">✅ Proposta Firmata Digitalmente</h3>
+                        ${testIndicator}
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 15px 0; font-size: 14px;">
                             <div><strong>Data e Ora:</strong> ${signatureData.date}</div>
                             <div><strong>Cliente:</strong> Centro Sinapsi - Shote</div>
@@ -2375,26 +2406,22 @@
                             windowHeight: cleanContainer.scrollHeight
                         }).then(canvas => {
                             try {
-                                // Rimuove il container temporaneo
                                 document.body.removeChild(tempContainer);
 
-                                // Genera PDF
                                 const { jsPDF } = window.jspdf;
                                 const pdf = new jsPDF('p', 'mm', 'a4');
 
                                 const imgData = canvas.toDataURL('image/png', 0.8);
-                                const imgWidth = 210; // A4 width
-                                const pageHeight = 297; // A4 height
+                                const imgWidth = 210;
+                                const pageHeight = 297;
                                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
                                 let heightLeft = imgHeight;
                                 let position = 0;
 
-                                // Prima pagina
                                 pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
                                 heightLeft -= pageHeight;
 
-                                // Pagine successive se necessario
                                 while (heightLeft >= 0) {
                                     position = heightLeft - imgHeight;
                                     pdf.addPage();
@@ -2427,16 +2454,17 @@
         // Invia email con proposta firmata
         async function sendSignedProposal(signatureData, pdfBlob) {
             try {
-                // Debug info
                 console.log('📧 Preparazione invio email...');
-                console.log('Dati firma:', signatureData);
-                console.log('PDF size:', pdfBlob.size, 'bytes');
 
-                // Converte il PDF in base64
+                // 🧪 Log aggiuntivi per test mode
+                if (CONFIG.testMode) {
+                    console.log('🧪 TEST MODE: Dati firma:', signatureData);
+                    console.log('🧪 TEST MODE: PDF size:', pdfBlob.size, 'bytes');
+                }
+
                 const pdfBase64 = await blobToBase64(pdfBlob);
                 console.log('📎 PDF convertito in base64, lunghezza:', pdfBase64.length);
 
-                // Prepara i dati per l'API
                 const payload = {
                     signatureData: signatureData,
                     pdfBase64: pdfBase64
@@ -2444,7 +2472,6 @@
 
                 console.log('📤 Invio richiesta all\'API...');
 
-                // Chiama la Vercel Function
                 const response = await fetch(CONFIG.apiEndpoint, {
                     method: 'POST',
                     headers: {
@@ -2461,7 +2488,13 @@
 
                 if (result.success) {
                     console.log('✅ Email inviate con successo!');
-                    console.log('🎉 Processo completato!');
+
+                    // 🧪 Log aggiuntivi per test mode
+                    if (CONFIG.testMode) {
+                        console.log('🧪 TEST MODE: Email cliente ID:', result.clientMessageId);
+                        console.log('🧪 TEST MODE: Email dev ID:', result.developerMessageId);
+                        console.log('🧪 TEST MODE: Riferimento pagamento:', result.paymentReference);
+                    }
                 } else {
                     throw new Error(result.error || 'Errore sconosciuto');
                 }
@@ -2502,8 +2535,23 @@
             const statusBanner = document.getElementById('statusBanner');
             statusBanner.classList.add('signed');
 
-            // Mostra il messaggio di successo
+            // 🧪 Modifica messaggio per test mode
             const successMessage = document.getElementById('successMessage');
+            if (CONFIG.testMode) {
+                successMessage.innerHTML = `
+                    <h2>🧪 Test Completato con Successo!</h2>
+                    <p>Il sistema di firma digitale funziona correttamente. Le email di test sono state inviate.</p>
+                    <p><strong>Nota:</strong> Questo è un test - nessun contratto vincolante è stato creato.</p>
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(156, 39, 176, 0.1); border-radius: 10px;">
+                        <h4 style="color: #9C27B0; margin-bottom: 10px;">🔧 Modalità Test Attiva</h4>
+                        <p style="margin: 5px 0; font-size: 14px;">• Firme multiple consentite</p>
+                        <p style="margin: 5px 0; font-size: 14px;">• Nessun salvataggio nel localStorage</p>
+                        <p style="margin: 5px 0; font-size: 14px;">• Email inviate agli indirizzi di test</p>
+                        <p style="margin: 5px 0; font-size: 14px;">• Timer di scadenza disabilitato</p>
+                    </div>
+                `;
+            }
+
             successMessage.classList.add('show');
 
             // Popola l'anteprima firma
@@ -2517,10 +2565,8 @@
         function populateSignaturePreview(data) {
             document.getElementById('signatureDate').textContent = data.date;
 
-            // Gestisce i dettagli del pagamento
             let paymentText = '';
             if (typeof data.paymentOption === 'string') {
-                // Compatibilità con vecchi dati
                 paymentText = data.paymentOption === 'rapid' ? 'Opzione A - Pagamento Rapido' : 'Opzione B - Rateizzazione Estesa';
             } else {
                 paymentText = data.paymentOption.description + ' (' + data.paymentOption.total + ')';
@@ -2534,8 +2580,10 @@
             preview.style.display = 'block';
         }
 
-        // Controlla se c'è già una firma salvata
+        // Controlla se c'è già una firma salvata (solo se NON in test mode)
         function checkStoredSignature() {
+            if (CONFIG.testMode) return; // 🧪 Salta controllo in test mode
+
             const storedSignature = localStorage.getItem('centrosinapsi_signature');
             if (storedSignature) {
                 const data = JSON.parse(storedSignature);
@@ -2545,7 +2593,6 @@
 
         // Animazioni al caricamento
         function animateElements() {
-            // Intersection Observer per animazioni scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -2555,7 +2602,6 @@
                 });
             }, { threshold: 0.1 });
 
-            // Osserva le sezioni per l'animazione
             document.querySelectorAll('.section, .service-category, .tech-item').forEach(el => {
                 el.style.opacity = '0';
                 el.style.transform = 'translateY(30px)';
@@ -2564,15 +2610,49 @@
             });
         }
 
-        // Funzione di reset per debug (da rimuovere in produzione)
+        // 🧪 FUNZIONI DI DEBUG PER TEST MODE
         function resetProposal() {
-            localStorage.removeItem('centrosinapsi_signature');
-            localStorage.removeItem('centrosinapsi_access');
+            if (CONFIG.testMode) {
+                console.log('🧪 RESET TEST: Pulisco localStorage e ricarico...');
+                localStorage.removeItem('centrosinapsi_signature');
+                localStorage.removeItem('centrosinapsi_access');
+                location.reload();
+            } else {
+                console.log('⚠️ Reset disponibile solo in modalità test');
+            }
+        }
+
+        function toggleTestMode() {
+            CONFIG.testMode = !CONFIG.testMode;
+            console.log(`🧪 Test Mode: ${CONFIG.testMode ? 'ATTIVATO' : 'DISATTIVATO'}`);
             location.reload();
         }
 
-        // Debug: aggiungi funzione globale per reset (rimuovi in produzione)
-        window.resetProposal = resetProposal;
+        function showTestInfo() {
+            if (CONFIG.testMode) {
+                console.log('🧪 INFORMAZIONI TEST MODE:');
+                console.log('• Password:', CONFIG.password);
+                console.log('• API Endpoint:', CONFIG.apiEndpoint);
+                console.log('• LocalStorage disabilitato: SÌ');
+                console.log('• Timer scadenza: DISABILITATO');
+                console.log('• Funzioni debug disponibili: resetProposal(), toggleTestMode()');
+            }
+        }
+
+        // 🧪 Espone funzioni globali per debug (solo in test mode)
+        if (CONFIG.testMode) {
+            window.resetProposal = resetProposal;
+            window.toggleTestMode = toggleTestMode;
+            window.showTestInfo = showTestInfo;
+
+            // Mostra info test all'avvio
+            console.log('🧪 TEST MODE ATTIVO');
+            console.log('Funzioni debug: resetProposal(), toggleTestMode(), showTestInfo()');
+        }
+
+        // 🧪 Auto-reset per facilitare i test (opzionale)
+        // Decommenta la riga sotto per auto-reset ogni 5 minuti in test mode
+        // if (CONFIG.testMode) setInterval(() => location.reload(), 300000);
     </script>
 </body>
 </html>
