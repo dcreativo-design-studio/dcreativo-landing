@@ -6,6 +6,11 @@
     <title>PWA Centro Sinapsi - Proposta Sviluppo</title>
     <meta name="description" content="Proposta sviluppo Progressive Web Application per Centro Sinapsi - Domenico Riccio Web & App Solutions">
     <meta name="robots" content="noindex, nofollow">
+
+    <!-- jsPDF per generazione PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -19,6 +24,135 @@
             color: #333;
             background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
             min-height: 100vh;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c5aa0, #4CAF50);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .login-card {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-card h2 {
+            color: #2c5aa0;
+            margin-bottom: 30px;
+            font-size: clamp(22px, 5vw, 28px);
+        }
+
+        .login-card p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: clamp(14px, 3vw, 16px);
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: clamp(14px, 3vw, 16px);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #2c5aa0;
+            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #2c5aa0, #4CAF50);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: clamp(14px, 3vw, 16px);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(44, 90, 160, 0.3);
+        }
+
+        .error-message {
+            color: #ff6b35;
+            margin-top: 15px;
+            font-size: clamp(12px, 2.5vw, 14px);
+            display: none;
+        }
+
+        /* Timer Display */
+        .timer-display {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin: -20px -20px 30px -20px;
+            font-weight: bold;
+            font-size: clamp(13px, 2.8vw, 15px);
+        }
+
+        .timer-display.expired {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #2c5aa0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            color: #2c5aa0;
+            font-size: clamp(14px, 3vw, 16px);
+            font-weight: bold;
         }
 
         .container {
@@ -471,11 +605,177 @@
             border: 3px solid #4CAF50;
             transition: all 0.3s ease;
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            position: relative;
         }
 
         .payment-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(76, 175, 80, 0.2);
+        }
+
+        .payment-card.selected {
+            border-color: #2c5aa0;
+            box-shadow: 0 15px 40px rgba(44, 90, 160, 0.3);
+        }
+
+        .payment-card-full {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            border: 3px solid #4CAF50;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            margin-top: 25px;
+            position: relative;
+        }
+
+        .payment-card-full.selected {
+            border-color: #2c5aa0;
+            box-shadow: 0 15px 40px rgba(44, 90, 160, 0.3);
+        }
+
+        .payment-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .payment-badge.extended {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+
+        .total-payment-row {
+            background: linear-gradient(135deg, #2c5aa0, #1e4080) !important;
+            color: white !important;
+            font-weight: bold !important;
+        }
+
+        .total-payment-row td {
+            color: white !important;
+            font-weight: bold !important;
+        }
+
+        .custom-payment-section {
+            margin-top: 20px;
+        }
+
+        .custom-payment-intro {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #2c5aa0;
+        }
+
+        .custom-payment-intro p {
+            margin-bottom: 10px;
+            font-size: clamp(13px, 2.8vw, 15px);
+            line-height: 1.5;
+        }
+
+        .custom-payment-intro p:last-child {
+            margin-bottom: 0;
+        }
+
+        .custom-payment-form {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #2c5aa0;
+            margin-bottom: 8px;
+            font-size: clamp(13px, 2.8vw, 15px);
+        }
+
+        .form-input {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: clamp(14px, 3vw, 16px);
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2c5aa0;
+            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+        }
+
+        .form-input:invalid {
+            border-color: #ff6b35;
+        }
+
+        .form-group small {
+            font-size: clamp(11px, 2.2vw, 12px);
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .calculation-result {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #4CAF50;
+            margin-top: 20px;
+        }
+
+        .calculation-table {
+            margin-bottom: 15px;
+        }
+
+        .validation-message {
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            font-size: clamp(13px, 2.8vw, 15px);
+        }
+
+        .validation-message.valid {
+            background: linear-gradient(135deg, #e8f5e8, #f0fff0);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+
+        .validation-message.invalid {
+            background: linear-gradient(135deg, #ffebee, #fce4ec);
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+
+        .custom-payment-footer {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #2c5aa0;
         }
 
         .payment-card h4 {
@@ -762,6 +1062,15 @@
                 gap: 20px;
             }
 
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .custom-payment-form {
+                padding: 20px;
+            }
+
             .timeline-item {
                 flex-direction: column;
                 text-align: center;
@@ -801,6 +1110,29 @@
                 padding: 20px;
             }
 
+            .payment-card,
+            .payment-card-full {
+                padding: 20px;
+            }
+
+            .custom-payment-form {
+                padding: 15px;
+            }
+
+            .custom-payment-intro {
+                padding: 15px;
+            }
+
+            .form-input {
+                padding: 10px 12px;
+            }
+
+            .payment-badge {
+                font-size: 10px;
+                padding: 6px 12px;
+                right: 15px;
+            }
+
             .price-table th,
             .price-table td {
                 padding: 12px 8px;
@@ -836,7 +1168,8 @@
             }
 
             .signature-section,
-            .success-message {
+            .success-message,
+            .timer-display {
                 display: none !important;
             }
 
@@ -881,7 +1214,6 @@
                 padding: 12px !important;
             }
 
-            /* Altri stili print ottimizzati come nella versione precedente */
             .header + .app-title {
                 page-break-before: avoid !important;
                 break-before: avoid !important;
@@ -898,7 +1230,28 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <h2>🔐 Accesso Riservato</h2>
+            <p>Proposta Centro Sinapsi PWA<br>Inserisci la password per accedere</p>
+            <input type="password" id="passwordInput" class="password-input" placeholder="Password" />
+            <button class="login-btn" onclick="checkPassword()">🚀 Accedi alla Proposta</button>
+            <div class="error-message" id="errorMessage">⚠️ Password errata. Riprova.</div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Invio proposta firmata in corso...</div>
+    </div>
+
+    <div class="container" id="proposalContainer" style="display: none;">
+        <div class="timer-display" id="timerDisplay">
+            ⏰ Tempo rimanente per firmare: <span id="timerText"></span>
+        </div>
+
         <div class="status-banner" id="statusBanner">
             ✅ PROPOSTA FIRMATA E ACCETTATA DIGITALMENTE
         </div>
@@ -1253,8 +1606,9 @@
                 <h3>Modalità flessibili per ogni esigenza di budget</h3>
 
                 <div class="payment-grid">
-                    <div class="payment-card">
+                    <div class="payment-card" data-option="rapid">
                         <h4>📅 Opzione A - Pagamento Rapido</h4>
+                        <div class="payment-badge">NESSUN COSTO AGGIUNTIVO</div>
                         <table class="payment-table">
                             <tr>
                                 <td><strong>Acconto alla firma (30%)</strong></td>
@@ -1268,12 +1622,19 @@
                                 <td>Alla consegna finale</td>
                                 <td>CHF 1'680</td>
                             </tr>
+                            <tr class="total-payment-row">
+                                <td><strong>TOTALE</strong></td>
+                                <td><strong>CHF 4'800</strong></td>
+                            </tr>
                         </table>
-                        <p style="font-size: 12px; margin-top: 10px; color: #666;">Pagamento in 3 rate per completamento veloce</p>
+                        <p style="font-size: 12px; margin-top: 10px; color: #666;">✅ Pagamento rapido senza costi amministrativi</p>
+                        <input type="radio" name="payment-choice" value="rapid" id="payment-rapid" style="margin-top: 15px; transform: scale(1.2);">
+                        <label for="payment-rapid" style="margin-left: 8px; font-weight: bold; cursor: pointer;">Scelgo questa opzione</label>
                     </div>
 
-                    <div class="payment-card">
+                    <div class="payment-card" data-option="extended">
                         <h4>📅 Opzione B - Rateizzazione Estesa</h4>
+                        <div class="payment-badge extended">+CHF 60 COSTI AMMINISTRATIVI</div>
                         <table class="payment-table">
                             <tr>
                                 <td><strong>Acconto alla firma (30%)</strong></td>
@@ -1287,12 +1648,77 @@
                                 <td><strong>Totale rateizzato</strong></td>
                                 <td><strong>CHF 3'420</strong></td>
                             </tr>
-                            <tr style="background: #f0f7ff;">
-                                <td><strong>Totale finale</strong></td>
+                            <tr class="total-payment-row">
+                                <td><strong>TOTALE FINALE</strong></td>
                                 <td><strong>CHF 4'860</strong></td>
                             </tr>
                         </table>
-                        <p style="font-size: 12px; margin-top: 10px; color: #666;">Include CHF 60 costi amministrativi rateizzazione</p>
+                        <p style="font-size: 12px; margin-top: 10px; color: #666;">⚠️ Include CHF 60 costi amministrativi rateizzazione</p>
+                        <input type="radio" name="payment-choice" value="extended" id="payment-extended" style="margin-top: 15px; transform: scale(1.2);">
+                        <label for="payment-extended" style="margin-left: 8px; font-weight: bold; cursor: pointer;">Scelgo questa opzione</label>
+                    </div>
+                </div>
+
+                <!-- Opzione C - Personalizzata -->
+                <div class="payment-card-full" data-option="custom">
+                    <h4>🎯 Opzione C - Rateizzazione Personalizzata</h4>
+                    <div class="payment-badge extended">+CHF 60 COSTI AMMINISTRATIVI</div>
+
+                    <div class="custom-payment-section">
+                        <div class="custom-payment-intro">
+                            <p><strong>Crea la tua rateizzazione personalizzata!</strong></p>
+                            <p>L'acconto del 30% (CHF 1'440) alla firma è obbligatorio. Puoi decidere come rateizzare il restante 70%.</p>
+                        </div>
+
+                        <div class="custom-payment-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="custom-installments">📊 Numero di Rate Mensili</label>
+                                    <input type="number" id="custom-installments" min="2" max="60" placeholder="Es. 12"
+                                           oninput="calculateCustomPayment()" class="form-input">
+                                    <small>Minimo 2 rate, massimo 60 rate</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="custom-amount">💰 Importo per Rata (CHF)</label>
+                                    <input type="number" id="custom-amount" min="50" step="5" placeholder="Es. 150"
+                                           oninput="calculateCustomPayment()" class="form-input">
+                                    <small>Minimo CHF 50 per rata</small>
+                                </div>
+                            </div>
+
+                            <div class="calculation-result" id="customCalculation" style="display: none;">
+                                <div class="calculation-table">
+                                    <table class="payment-table">
+                                        <tr>
+                                            <td><strong>Acconto alla firma (30%)</strong></td>
+                                            <td><strong>CHF 1'440</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="installment-description">Rate mensili</td>
+                                            <td id="installment-total">CHF 0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Costi amministrativi</td>
+                                            <td>CHF 60</td>
+                                        </tr>
+                                        <tr class="total-payment-row">
+                                            <td><strong>TOTALE FINALE</strong></td>
+                                            <td><strong id="custom-total">CHF 0</strong></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="validation-message" id="validationMessage"></div>
+                            </div>
+                        </div>
+
+                        <div class="custom-payment-footer">
+                            <input type="radio" name="payment-choice" value="custom" id="payment-custom" style="transform: scale(1.2);">
+                            <label for="payment-custom" style="margin-left: 8px; font-weight: bold; cursor: pointer;">
+                                Scelgo la mia rateizzazione personalizzata
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -1340,12 +1766,7 @@
                     <div class="checkbox-item">
                         <input type="checkbox" id="accept-payment" required>
                         <label for="accept-payment">
-                            <strong>Scelgo l'opzione di pagamento:</strong><br>
-                            <select id="payment-option" style="margin-top: 8px; padding: 8px; border-radius: 5px; border: 2px solid #4CAF50; font-size: clamp(12px, 2.5vw, 14px);">
-                                <option value="">Seleziona opzione di pagamento</option>
-                                <option value="rapid">Opzione A - Pagamento Rapido (3 rate)</option>
-                                <option value="extended">Opzione B - Rateizzazione Estesa (36 rate)</option>
-                            </select>
+                            <strong>Ho scelto la mia opzione di pagamento</strong> tra le tre disponibili nella sezione precedente
                         </label>
                     </div>
 
@@ -1385,7 +1806,7 @@
         <div class="success-message" id="successMessage">
             <h2>🎉 Proposta Firmata con Successo!</h2>
             <p>Grazie per aver accettato la proposta. Il contratto è ora vincolante e inizieremo subito i lavori di sviluppo.</p>
-            <p><strong>Ti contatteremo entro 24 ore per organizzare il primo incontro e l'acconto.</strong></p>
+            <p><strong>Ti abbiamo inviato una copia della proposta firmata via email. Ti contatteremo entro 24 ore per organizzare il primo incontro e l'acconto.</strong></p>
         </div>
 
         <!-- Anteprima Firma (visibile solo dopo la firma) -->
@@ -1418,27 +1839,81 @@
             <p style="font-size: clamp(16px, 3.5vw, 20px); margin-bottom: 15px;"><strong>Domenico Riccio</strong></p>
             <p>📱 WhatsApp: 076 781 01 94</p>
             <p>✉️ Email: info@dcreativo.ch</p>
-            <p style="margin-top: 25px; color: #666; font-size: clamp(12px, 2.5vw, 14px);">Questa proposta è valida per 30 giorni dalla data di presentazione.</p>
+            <p style="margin-top: 25px; color: #666; font-size: clamp(12px, 2.5vw, 14px);">Questa proposta è valida per 30 giorni dalla prima apertura.</p>
         </div>
     </div>
 
     <script>
+        // Configurazione
+        const CONFIG = {
+    password: 'centrosinapsi2025',
+    expiryDays: 30,
+    apiEndpoint: '/api/send-proposal' // Endpoint Vercel Function
+};
+
         // Variabili globali
         let canvas = null;
         let ctx = null;
         let isDrawing = false;
         let hasSignature = false;
+        let timerInterval = null;
+        let isExpired = false;
 
         // Inizializzazione
         document.addEventListener('DOMContentLoaded', function() {
+            setupPasswordScreen();
             updateCurrentDate();
+
+            // Controllo se l'utente ha già effettuato l'accesso
+            if (localStorage.getItem('centrosinapsi_access')) {
+                showProposal();
+            }
+        });
+
+        // Setup schermata password
+        function setupPasswordScreen() {
+            const passwordInput = document.getElementById('passwordInput');
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+        }
+
+        // Controllo password
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (password === CONFIG.password) {
+                // Salva l'accesso e la data della prima apertura
+                const accessData = {
+                    firstAccess: Date.now(),
+                    hasAccess: true
+                };
+                localStorage.setItem('centrosinapsi_access', JSON.stringify(accessData));
+
+                // Mostra la proposta
+                showProposal();
+            } else {
+                errorMessage.style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+
+        // Mostra la proposta
+        function showProposal() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('proposalContainer').style.display = 'block';
+
+            // Inizializza tutto
             initializeSignature();
             checkStoredSignature();
             setupEventListeners();
-
-            // Animazioni al caricamento
+            startTimer();
             animateElements();
-        });
+        }
 
         // Aggiorna la data corrente
         function updateCurrentDate() {
@@ -1454,6 +1929,61 @@
             const currentDateFormatted = formatter.format(now);
 
             document.getElementById('currentDate').textContent = currentDateFormatted;
+        }
+
+        // Avvia il timer di 30 giorni
+        function startTimer() {
+            const accessData = JSON.parse(localStorage.getItem('centrosinapsi_access'));
+            if (!accessData || !accessData.firstAccess) return;
+
+            const firstAccess = new Date(accessData.firstAccess);
+            const expiryDate = new Date(firstAccess.getTime() + (CONFIG.expiryDays * 24 * 60 * 60 * 1000));
+
+            timerInterval = setInterval(function() {
+                const now = new Date();
+                const timeLeft = expiryDate - now;
+
+                if (timeLeft <= 0) {
+                    // Scaduto
+                    clearInterval(timerInterval);
+                    showExpiredState();
+                    return;
+                }
+
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+
+                document.getElementById('timerText').textContent = `${days}d ${hours}h ${minutes}m`;
+            }, 60000); // Aggiorna ogni minuto
+
+            // Aggiorna subito
+            const now = new Date();
+            const timeLeft = expiryDate - now;
+            if (timeLeft > 0) {
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+
+                document.getElementById('timerText').textContent = `${days}d ${hours}h ${minutes}m`;
+            } else {
+                showExpiredState();
+            }
+        }
+
+        // Mostra stato scaduto
+        function showExpiredState() {
+            isExpired = true;
+            const timerDisplay = document.getElementById('timerDisplay');
+            timerDisplay.classList.add('expired');
+            timerDisplay.innerHTML = '⏰ <strong>PROPOSTA SCADUTA</strong> - Contatta Domenico Riccio per una nuova proposta';
+
+            // Disabilita la sezione firma
+            const signatureSection = document.getElementById('signatureSection');
+            if (signatureSection) {
+                signatureSection.style.opacity = '0.5';
+                signatureSection.style.pointerEvents = 'none';
+            }
         }
 
         // Inizializza il canvas per la firma
@@ -1505,6 +2035,7 @@
 
         // Inizia il disegno
         function startDrawing(e) {
+            if (isExpired) return;
             isDrawing = true;
             const rect = canvas.getBoundingClientRect();
             ctx.beginPath();
@@ -1513,7 +2044,7 @@
 
         // Disegna
         function draw(e) {
-            if (!isDrawing) return;
+            if (!isDrawing || isExpired) return;
 
             const rect = canvas.getBoundingClientRect();
             ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
@@ -1529,6 +2060,7 @@
 
         // Cancella la firma
         function clearSignature() {
+            if (isExpired) return;
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             hasSignature = false;
@@ -1542,14 +2074,110 @@
                 checkbox.addEventListener('change', checkFormValidity);
             });
 
-            // Payment option listener
-            document.getElementById('payment-option').addEventListener('change', checkFormValidity);
+            // Payment option listeners
+            document.querySelectorAll('input[name="payment-choice"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    updatePaymentSelection(this.value);
+                    checkFormValidity();
+                });
+            });
+
+            // Custom payment inputs
+            document.getElementById('custom-installments').addEventListener('input', calculateCustomPayment);
+            document.getElementById('custom-amount').addEventListener('input', calculateCustomPayment);
+        }
+
+        // Aggiorna la selezione del pagamento
+        function updatePaymentSelection(selectedOption) {
+            // Rimuove classe selected da tutte le card
+            document.querySelectorAll('.payment-card, .payment-card-full').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Aggiunge classe selected alla card scelta
+            const selectedCard = document.querySelector(`[data-option="${selectedOption}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+
+            // Mostra/nasconde sezione custom
+            const customSection = document.getElementById('customCalculation');
+            if (selectedOption === 'custom') {
+                calculateCustomPayment();
+            }
+        }
+
+        // Calcola rateizzazione personalizzata
+        function calculateCustomPayment() {
+            const installments = parseInt(document.getElementById('custom-installments').value) || 0;
+            const amount = parseFloat(document.getElementById('custom-amount').value) || 0;
+            const customSection = document.getElementById('customCalculation');
+            const validationMessage = document.getElementById('validationMessage');
+
+            if (installments === 0 || amount === 0) {
+                customSection.style.display = 'none';
+                return;
+            }
+
+            customSection.style.display = 'block';
+
+            // Calcoli
+            const downPayment = 1440; // 30% fisso
+            const adminCosts = 60;
+            const installmentTotal = installments * amount;
+            const grandTotal = downPayment + installmentTotal + adminCosts;
+            const minimumTotal = 4860; // CHF 4800 + CHF 60
+
+            // Aggiorna tabella
+            document.getElementById('installment-description').textContent = `${installments} rate da CHF ${amount}`;
+            document.getElementById('installment-total').textContent = `CHF ${installmentTotal.toLocaleString('de-CH')}`;
+            document.getElementById('custom-total').textContent = `CHF ${grandTotal.toLocaleString('de-CH')}`;
+
+            // Validazione
+            let isValid = false;
+            let message = '';
+
+            if (installments < 2) {
+                message = '⚠️ Numero minimo di rate: 2';
+                validationMessage.className = 'validation-message invalid';
+            } else if (installments > 60) {
+                message = '⚠️ Numero massimo di rate: 60';
+                validationMessage.className = 'validation-message invalid';
+            } else if (amount < 50) {
+                message = '⚠️ Importo minimo per rata: CHF 50';
+                validationMessage.className = 'validation-message invalid';
+            } else if (grandTotal < minimumTotal) {
+                const shortage = minimumTotal - grandTotal;
+                message = `⚠️ Importo insufficiente. Mancano CHF ${shortage.toLocaleString('de-CH')} per raggiungere il minimo di CHF ${minimumTotal.toLocaleString('de-CH')}`;
+                validationMessage.className = 'validation-message invalid';
+            } else {
+                message = `✅ Rateizzazione valida! Totale: CHF ${grandTotal.toLocaleString('de-CH')}`;
+                validationMessage.className = 'validation-message valid';
+                isValid = true;
+            }
+
+            validationMessage.textContent = message;
+
+            // Abilita/disabilita radio button
+            const customRadio = document.getElementById('payment-custom');
+            if (isValid) {
+                customRadio.disabled = false;
+                customRadio.parentElement.style.opacity = '1';
+            } else {
+                customRadio.disabled = true;
+                customRadio.checked = false;
+                customRadio.parentElement.style.opacity = '0.6';
+            }
+
+            checkFormValidity();
         }
 
         // Controlla la validità del form
         function checkFormValidity() {
+            if (isExpired) return;
+
             const checkboxes = document.querySelectorAll('input[type="checkbox"][required]');
-            const paymentOption = document.getElementById('payment-option');
+            const paymentRadios = document.querySelectorAll('input[name="payment-choice"]');
             const submitBtn = document.getElementById('submitBtn');
 
             let allChecked = true;
@@ -1559,7 +2187,12 @@
                 }
             });
 
-            const hasPaymentOption = paymentOption.value !== '';
+            let hasPaymentOption = false;
+            paymentRadios.forEach(radio => {
+                if (radio.checked && !radio.disabled) {
+                    hasPaymentOption = true;
+                }
+            });
 
             // Abilita il pulsante solo se tutto è compilato
             if (allChecked && hasPaymentOption && hasSignature) {
@@ -1575,7 +2208,7 @@
 
         // Invia la proposta
         async function submitProposal() {
-            if (!hasSignature) {
+            if (!hasSignature || isExpired) {
                 alert('⚠️ Per favore, inserisci la tua firma prima di procedere.');
                 return;
             }
@@ -1584,20 +2217,269 @@
             const confirmSubmit = confirm('🤝 Sei sicuro di voler firmare e accettare questa proposta? Una volta confermata, sarà vincolante.');
             if (!confirmSubmit) return;
 
-            // Raccoglie i dati
-            const signatureData = {
-                date: new Date().toLocaleString('it-IT'),
-                paymentOption: document.getElementById('payment-option').value,
-                signatureImage: canvas.toDataURL(),
-                clientIP: await getClientIP(),
-                timestamp: Date.now()
-            };
+            // Mostra loading
+            document.getElementById('loadingScreen').style.display = 'flex';
 
-            // Salva in localStorage
-            localStorage.setItem('centrosinapsi_signature', JSON.stringify(signatureData));
+            try {
+                // Raccoglie opzione di pagamento selezionata
+                const selectedPayment = document.querySelector('input[name="payment-choice"]:checked');
+                let paymentDetails = {};
 
-            // Mostra il successo
-            showSuccess(signatureData);
+                if (selectedPayment.value === 'rapid') {
+                    paymentDetails = {
+                        option: 'rapid',
+                        description: 'Opzione A - Pagamento Rapido',
+                        total: 'CHF 4\'800',
+                        details: '3 rate: CHF 1\'440 + CHF 1\'680 + CHF 1\'680'
+                    };
+                } else if (selectedPayment.value === 'extended') {
+                    paymentDetails = {
+                        option: 'extended',
+                        description: 'Opzione B - Rateizzazione Estesa',
+                        total: 'CHF 4\'860',
+                        details: 'CHF 1\'440 + 36 rate da CHF 95/mese'
+                    };
+                } else if (selectedPayment.value === 'custom') {
+                    const installments = document.getElementById('custom-installments').value;
+                    const amount = document.getElementById('custom-amount').value;
+                    const total = 1440 + (installments * amount) + 60;
+
+                    paymentDetails = {
+                        option: 'custom',
+                        description: 'Opzione C - Rateizzazione Personalizzata',
+                        total: `CHF ${total.toLocaleString('de-CH')}`,
+                        details: `CHF 1'440 + ${installments} rate da CHF ${amount}/mese + CHF 60 costi amministrativi`,
+                        installments: installments,
+                        monthlyAmount: amount
+                    };
+                }
+
+                // Raccoglie i dati
+                const signatureData = {
+                    date: new Date().toLocaleString('it-IT'),
+                    paymentOption: paymentDetails,
+                    signatureImage: canvas.toDataURL(),
+                    clientIP: await getClientIP(),
+                    timestamp: Date.now()
+                };
+
+                // Genera PDF
+                const pdfBlob = await generatePDF(signatureData);
+
+                // Invia email
+                await sendSignedProposal(signatureData, pdfBlob);
+
+                // Salva in localStorage
+                localStorage.setItem('centrosinapsi_signature', JSON.stringify(signatureData));
+
+                // Mostra il successo
+                showSuccess(signatureData);
+
+            } catch (error) {
+                console.error('Errore nell\'invio:', error);
+                alert('⚠️ Si è verificato un errore durante l\'invio. Riprova o contatta Domenico Riccio.');
+            } finally {
+                // Nascondi loading
+                document.getElementById('loadingScreen').style.display = 'none';
+            }
+        }
+
+        // Genera PDF
+        async function generatePDF(signatureData) {
+            return new Promise((resolve, reject) => {
+                try {
+                    // Crea una copia pulita del contenuto
+                    const originalContainer = document.getElementById('proposalContainer');
+                    const cleanContainer = originalContainer.cloneNode(true);
+
+                    // Rimuove elementi non necessari per il PDF
+                    const elementsToRemove = [
+                        '.signature-section',
+                        '.success-message',
+                        '.timer-display',
+                        '.loading-screen',
+                        '.status-banner',
+                        'script',
+                        '.login-screen'
+                    ];
+
+                    elementsToRemove.forEach(selector => {
+                        const elements = cleanContainer.querySelectorAll(selector);
+                        elements.forEach(el => el.remove());
+                    });
+
+                    // Aggiunge la sezione firma al PDF
+                    const signatureSection = document.createElement('div');
+                    signatureSection.style.cssText = `
+                        background: #f8f9fa;
+                        padding: 25px;
+                        border-radius: 15px;
+                        margin: 30px 0;
+                        border: 2px solid #4CAF50;
+                        page-break-inside: avoid;
+                    `;
+
+                    signatureSection.innerHTML = `
+                        <h3 style="color: #2c5aa0; margin-bottom: 20px; font-size: 18px;">✅ Proposta Firmata Digitalmente</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 15px 0; font-size: 14px;">
+                            <div><strong>Data e Ora:</strong> ${signatureData.date}</div>
+                            <div><strong>Cliente:</strong> Centro Sinapsi - Shote</div>
+                            <div><strong>Opzione Pagamento:</strong> ${signatureData.paymentOption.description || 'Opzione selezionata'}</div>
+                            <div><strong>IP Address:</strong> ${signatureData.clientIP}</div>
+                        </div>
+                        <div style="margin-top: 20px; text-align: center;">
+                            <strong>Firma Digitale:</strong><br>
+                            <img src="${signatureData.signatureImage}" style="border: 1px solid #ddd; border-radius: 5px; max-width: 300px; height: auto; margin-top: 10px;">
+                        </div>
+                    `;
+
+                    cleanContainer.appendChild(signatureSection);
+
+                    // Applica stili per la stampa
+                    cleanContainer.style.cssText = `
+                        background: white;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        font-size: 12px;
+                        line-height: 1.4;
+                        color: #333;
+                        max-width: 210mm;
+                        margin: 0 auto;
+                        padding: 15mm;
+                    `;
+
+                    // Crea un container temporaneo nascosto
+                    const tempContainer = document.createElement('div');
+                    tempContainer.style.cssText = `
+                        position: absolute;
+                        top: -10000px;
+                        left: -10000px;
+                        width: 210mm;
+                        background: white;
+                        z-index: -1;
+                    `;
+                    tempContainer.appendChild(cleanContainer);
+                    document.body.appendChild(tempContainer);
+
+                    // Aspetta che il DOM sia pronto
+                    setTimeout(() => {
+                        html2canvas(cleanContainer, {
+                            scale: 1.2,
+                            useCORS: true,
+                            allowTaint: false,
+                            backgroundColor: '#ffffff',
+                            width: 800,
+                            height: cleanContainer.scrollHeight,
+                            scrollX: 0,
+                            scrollY: 0,
+                            windowWidth: 800,
+                            windowHeight: cleanContainer.scrollHeight
+                        }).then(canvas => {
+                            try {
+                                // Rimuove il container temporaneo
+                                document.body.removeChild(tempContainer);
+
+                                // Genera PDF
+                                const { jsPDF } = window.jspdf;
+                                const pdf = new jsPDF('p', 'mm', 'a4');
+
+                                const imgData = canvas.toDataURL('image/png', 0.8);
+                                const imgWidth = 210; // A4 width
+                                const pageHeight = 297; // A4 height
+                                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                                let heightLeft = imgHeight;
+                                let position = 0;
+
+                                // Prima pagina
+                                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+                                heightLeft -= pageHeight;
+
+                                // Pagine successive se necessario
+                                while (heightLeft >= 0) {
+                                    position = heightLeft - imgHeight;
+                                    pdf.addPage();
+                                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+                                    heightLeft -= pageHeight;
+                                }
+
+                                const pdfBlob = pdf.output('blob');
+                                resolve(pdfBlob);
+
+                            } catch (pdfError) {
+                                console.error('Errore generazione PDF:', pdfError);
+                                document.body.removeChild(tempContainer);
+                                reject(pdfError);
+                            }
+                        }).catch(canvasError => {
+                            console.error('Errore html2canvas:', canvasError);
+                            document.body.removeChild(tempContainer);
+                            reject(canvasError);
+                        });
+                    }, 1000);
+
+                } catch (error) {
+                    console.error('Errore generale PDF:', error);
+                    reject(error);
+                }
+            });
+        }
+
+        // Invia email con proposta firmata
+        async function sendSignedProposal(signatureData, pdfBlob) {
+            try {
+                // Debug info
+                console.log('📧 Preparazione invio email...');
+                console.log('Dati firma:', signatureData);
+                console.log('PDF size:', pdfBlob.size, 'bytes');
+
+                // Converte il PDF in base64
+                const pdfBase64 = await blobToBase64(pdfBlob);
+                console.log('📎 PDF convertito in base64, lunghezza:', pdfBase64.length);
+
+                // Prepara i dati per l'API
+                const payload = {
+                    signatureData: signatureData,
+                    pdfBase64: pdfBase64
+                };
+
+                console.log('📤 Invio richiesta all\'API...');
+
+                // Chiama la Vercel Function
+                const response = await fetch(CONFIG.apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Errore HTTP: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    console.log('✅ Email inviate con successo!');
+                    console.log('🎉 Processo completato!');
+                } else {
+                    throw new Error(result.error || 'Errore sconosciuto');
+                }
+
+            } catch (error) {
+                console.error('❌ Errore nell\'invio email:', error);
+                throw error;
+            }
+        }
+
+        // Converte blob in base64
+        function blobToBase64(blob) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
         }
 
         // Ottiene l'IP del cliente
@@ -1629,16 +2511,22 @@
 
             // Scroll al messaggio di successo
             successMessage.scrollIntoView({ behavior: 'smooth' });
-
-            // Invia notifica (simulata)
-            sendNotification(signatureData);
         }
 
         // Popola l'anteprima della firma
         function populateSignaturePreview(data) {
             document.getElementById('signatureDate').textContent = data.date;
-            document.getElementById('selectedPayment').textContent =
-                data.paymentOption === 'rapid' ? 'Opzione A - Pagamento Rapido' : 'Opzione B - Rateizzazione Estesa';
+
+            // Gestisce i dettagli del pagamento
+            let paymentText = '';
+            if (typeof data.paymentOption === 'string') {
+                // Compatibilità con vecchi dati
+                paymentText = data.paymentOption === 'rapid' ? 'Opzione A - Pagamento Rapido' : 'Opzione B - Rateizzazione Estesa';
+            } else {
+                paymentText = data.paymentOption.description + ' (' + data.paymentOption.total + ')';
+            }
+
+            document.getElementById('selectedPayment').textContent = paymentText;
             document.getElementById('clientIP').textContent = data.clientIP;
             document.getElementById('signatureImage').src = data.signatureImage;
 
@@ -1653,20 +2541,6 @@
                 const data = JSON.parse(storedSignature);
                 showSuccess(data);
             }
-        }
-
-        // Invia notifica (simulata)
-        function sendNotification(data) {
-            console.log('📧 Notifica inviata a Domenico Riccio:', {
-                cliente: 'Centro Sinapsi - Shote',
-                data: data.date,
-                importo: 'CHF 4\'800',
-                pagamento: data.paymentOption,
-                ip: data.clientIP
-            });
-
-            // In un'implementazione reale, qui invieresti i dati al server
-            // fetch('/api/proposal-signed', { method: 'POST', body: JSON.stringify(data) })
         }
 
         // Animazioni al caricamento
@@ -1690,9 +2564,10 @@
             });
         }
 
-        // Funzione per testare (da rimuovere in produzione)
+        // Funzione di reset per debug (da rimuovere in produzione)
         function resetProposal() {
             localStorage.removeItem('centrosinapsi_signature');
+            localStorage.removeItem('centrosinapsi_access');
             location.reload();
         }
 
