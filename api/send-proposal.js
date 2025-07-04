@@ -1,4 +1,4 @@
-// api/send-proposal.js - Soluzione ottimizzata per PDF
+// api/send-proposal.js - Soluzione semplice e affidabile
 const nodemailer = require('nodemailer');
 
 export default async function handler(req, res) {
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { signatureData, pdfBase64, pdfSize, pdfQuality } = req.body;
+    const { signatureData, pdfBase64, pdfQuality } = req.body;
 
     console.log('📧 Ricevuta richiesta invio email per Centro Sinapsi');
     console.log('📊 Dati firma ricevuti:', {
@@ -24,24 +24,6 @@ export default async function handler(req, res) {
       clientIP: signatureData.clientIP,
       paymentOption: signatureData.paymentOption?.description || 'N/A'
     });
-    console.log('📄 PDF ricevuto - Dimensione:', pdfSize, 'KB, Base64 lunghezza:', pdfBase64?.length || 0);
-
-    // ✅ VERIFICA VALIDITÀ PDF BASE64
-    if (!pdfBase64 || pdfBase64.length < 1000) {
-      throw new Error('PDF base64 non valido o troppo piccolo');
-    }
-
-    // Verifica che sia base64 valido
-    try {
-      const testBuffer = Buffer.from(pdfBase64, 'base64');
-      if (testBuffer.length < 500) {
-        throw new Error('PDF decodificato troppo piccolo');
-      }
-      console.log('✅ PDF base64 validato - Dimensione decodificata:', Math.round(testBuffer.length / 1024), 'KB');
-    } catch (error) {
-      console.error('❌ Errore validazione PDF:', error);
-      throw new Error('PDF base64 corrotto o non valido');
-    }
 
     // Configurazione email transporter
     const transporter = nodemailer.createTransport({
@@ -85,12 +67,12 @@ export default async function handler(req, res) {
       currency: 'CHF',
       reference: paymentReference,
       creditor: {
-        name: 'Anna Maria Riccio',
-        address: 'Via Ol Mött 6',
-        postalCode: '6703',
-        city: 'Osogna',
-        country: 'CH'
-      },
+  name: 'Anna Maria Riccio',
+  address: 'Via Ol Mött 6',
+  postalCode: '6703',
+  city: 'Osogna',
+  country: 'CH'
+},
       debtor: {
         name: 'Centro Sinapsi',
         address: 'Via Toron d\'Örz 7',
@@ -98,7 +80,7 @@ export default async function handler(req, res) {
         city: 'Osogna',
         country: 'CH'
       },
-      iban: 'CH93 3076 4227 8465 4200 1', // QR-IBAN Domenico Riccio
+      iban: 'CH93 3076 4227 8465 4200 1', // QR-IBAN Domenico Riccio // ⚠️ SOSTITUISCI CON IBAN REALE
       message: `Acconto 30% - Sviluppo PWA Centro Sinapsi - Servizi Domenico Riccio - Proposta firmata ${new Date().toLocaleDateString('it-IT')}`
     });
 
@@ -182,8 +164,8 @@ export default async function handler(req, res) {
                           <div style="background: rgba(255,255,255,0.15); padding: 20px; border-radius: 8px; margin: 15px 0;">
                             <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #ffffff;">📋 Dati per il Bonifico:</h4>
                             <table style="width: 100%; color: #ffffff; font-size: 14px;">
-                              <tr><td style="padding: 4px 0;"><strong>Beneficiario:</strong></td><td>Anna Maria Riccio</td></tr>
-                              <tr><td style="padding: 4px 0;"><strong>IBAN:</strong></td><td style="font-family: monospace; font-weight: bold;">CH93 3076 4227 8465 4200 1</td></tr>
+                              <tr><td style="padding: 4px 0;"><strong>Beneficiario:</strong></td><td>Domenico Riccio</td></tr>
+                              <tr><td style="padding: 4px 0;"><strong>IBAN:</strong></td><td style="font-family: monospace; font-weight: bold;">CH93 0076 2011 6238 5295 7</td></tr>
                               <tr><td style="padding: 4px 0;"><strong>Importo:</strong></td><td style="font-weight: bold;">CHF ${paymentAmount}</td></tr>
                               <tr><td style="padding: 4px 0;"><strong>Riferimento:</strong></td><td style="font-family: monospace; font-weight: bold;">${paymentReference}</td></tr>
                               <tr><td style="padding: 4px 0;"><strong>Causale:</strong></td><td>Acconto 30% PWA Centro Sinapsi</td></tr>
@@ -206,7 +188,7 @@ export default async function handler(req, res) {
                         <td style="text-align: center;">
                           <div style="font-size: 24px; margin-bottom: 8px;">📎</div>
                           <h3 style="margin: 0 0 5px 0; font-size: 16px; font-weight: 600;">Allegati Inclusi</h3>
-                          <p style="margin: 0; font-size: 14px; opacity: 0.95;">✓ Proposta firmata (PDF ottimizzato - ${pdfSize}KB)<br>✓ Istruzioni dettagliate pagamento con QR code</p>
+                          <p style="margin: 0; font-size: 14px; opacity: 0.95;">✓ Proposta firmata (PDF)<br>✓ Istruzioni dettagliate pagamento con QR code</p>
                         </td>
                       </tr>
                     </table>
@@ -312,7 +294,6 @@ export default async function handler(req, res) {
                             <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Riferimento pagamento:</strong> ${paymentReference}</td></tr>
                             <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Opzione pagamento:</strong> ${paymentDescription}</td></tr>
                             <tr><td style="padding: 6px 0; font-size: 14px;"><strong>IP cliente:</strong> ${signatureData.clientIP}</td></tr>
-                            <tr><td style="padding: 6px 0; font-size: 14px;"><strong>PDF allegato:</strong> ${pdfSize}KB (ottimizzato)</td></tr>
                           </table>
                         </td>
                       </tr>
@@ -323,7 +304,7 @@ export default async function handler(req, res) {
                       <tr>
                         <td>
                           <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #2c5aa0;">💳 Dati Pagamento Inviati:</h4>
-                          <p style="margin: 5px 0; font-size: 14px;"><strong>IBAN:</strong> CH93 3076 4227 8465 4200 1</p>
+                          <p style="margin: 5px 0; font-size: 14px;"><strong>IBAN:</strong> CH93 0076 2011 6238 5295 7</p>
                           <p style="margin: 5px 0; font-size: 14px;"><strong>Importo:</strong> CHF ${paymentAmount}</p>
                           <p style="margin: 5px 0; font-size: 14px;"><strong>Riferimento:</strong> ${paymentReference}</p>
                           <p style="margin: 15px 0 0 0; font-size: 13px; color: #666;"><strong>Nota:</strong> Monitorare l'arrivo del pagamento</p>
@@ -338,7 +319,7 @@ export default async function handler(req, res) {
                           <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #2c5aa0;">📞 Contatti Cliente:</h4>
                           <p style="margin: 5px 0; font-size: 14px;"><strong>Email:</strong> info@centrosinapsi.ch</p>
                           <p style="margin: 5px 0; font-size: 14px;"><strong>Tel:</strong> 078 846 06 87</p>
-                          <p style="margin: 15px 0 0 0; font-size: 13px; color: #666;"><strong>Allegati:</strong> PDF firmato ottimizzato (${pdfSize}KB) + Istruzioni pagamento</p>
+                          <p style="margin: 15px 0 0 0; font-size: 13px; color: #666;"><strong>Allegati:</strong> PDF firmato + Istruzioni pagamento</p>
                         </td>
                       </tr>
                     </table>
@@ -352,32 +333,27 @@ export default async function handler(req, res) {
       </html>
     `;
 
-    // ✅ ALLEGATI EMAIL CON PDF OTTIMIZZATO
-    const emailAttachments = [
-      {
-        filename: 'proposta_centro_sinapsi_firmata.pdf',
-        content: pdfBase64, // ✅ Base64 pulito senza prefisso
-        encoding: 'base64',
-        contentType: 'application/pdf'
-      },
-      {
-        filename: `Informazioni_Pagamento_${paymentReference}.txt`,
-        content: paymentSlipData,
-        encoding: 'base64',
-        contentType: 'text/plain; charset=utf-8'
-      }
-    ];
-
-    console.log('📎 Allegati preparati - PDF:', Math.round(Buffer.from(pdfBase64, 'base64').length / 1024), 'KB');
-
-    // Opzioni email per la cliente
+    // Opzioni email per la cliente (con file di testo leggibile)
     const clientMailOptions = {
       from: `"Domenico Riccio" <${process.env.EMAIL_USER}>`,
       replyTo: 'info@dcreativo.ch',
       to: 'd8572229@gmail.com', // email della cliente info@centrosinapsi.ch
       subject: '✅ Proposta Centro Sinapsi PWA - Firmata + Istruzioni Pagamento',
       html: clientEmailHTML,
-      attachments: emailAttachments
+      attachments: [
+        {
+          filename: 'proposta_centro_sinapsi_firmata.pdf',
+          content: pdfBase64,
+          encoding: 'base64',
+          contentType: 'application/pdf'
+        },
+        {
+          filename: `Informazioni_Pagamento_${paymentReference}.txt`,
+          content: paymentSlipData,
+          encoding: 'base64',
+          contentType: 'text/plain; charset=utf-8'
+        }
+      ]
     };
 
     // Opzioni email per il programmatore
@@ -387,7 +363,20 @@ export default async function handler(req, res) {
       to: 'info@dcreativo.ch',
       subject: '🎉 Nuova Proposta Firmata - Centro Sinapsi + Dati Pagamento',
       html: developerEmailHTML,
-      attachments: emailAttachments
+      attachments: [
+        {
+          filename: 'proposta_centro_sinapsi_firmata.pdf',
+          content: pdfBase64,
+          encoding: 'base64',
+          contentType: 'application/pdf'
+        },
+        {
+          filename: `Informazioni_Pagamento_${paymentReference}.txt`,
+          content: paymentSlipData,
+          encoding: 'base64',
+          contentType: 'text/plain; charset=utf-8'
+        }
+      ]
     };
 
     // Invio email alla cliente
@@ -400,15 +389,13 @@ export default async function handler(req, res) {
     const developerResult = await transporter.sendMail(developerMailOptions);
     console.log('✅ Email programmatore inviata:', developerResult.messageId);
 
-    // Risposta di successo con verifica PDF
+    // Risposta di successo
     res.status(200).json({
       success: true,
-      message: 'Email inviate con successo con PDF ottimizzato!',
+      message: 'Email inviate con successo con istruzioni pagamento!',
       clientMessageId: clientResult.messageId,
       developerMessageId: developerResult.messageId,
-      paymentReference: paymentReference,
-      pdfAttached: true,
-      pdfSize: pdfSize + 'KB'
+      paymentReference: paymentReference
     });
 
   } catch (error) {

@@ -2075,7 +2075,7 @@
     </div>
 
     <script>
-   // 🧪 CONFIGURAZIONE TEST MODE
+    // 🧪 CONFIGURAZIONE TEST MODE
 const CONFIG = {
     password: 'centrosinapsi2025',
     expiryDays: 30,
@@ -2894,28 +2894,23 @@ async function submitProposal() {
         console.log('📄 Generazione PDF di alta qualità...');
         const pdf = await generatePDF();
 
-        // 💾 PREPARA PDF PER DOWNLOAD E EMAIL (STESSO IDENTICO FILE)
+        // 💾 PREPARA PDF PER DOWNLOAD E EMAIL (STESSA VERSIONE)
         const pdfBlob = pdf.output('blob');
-
-        // ✅ CONVERTI PDF IN BASE64 PULITO (SENZA PREFISSO DATA:)
-        const pdfArrayBuffer = await pdfBlob.arrayBuffer();
-        const pdfUint8Array = new Uint8Array(pdfArrayBuffer);
-        const pdfBase64Clean = btoa(String.fromCharCode.apply(null, pdfUint8Array));
+        const pdfBase64 = pdf.output('datauristring');
 
         console.log('✅ PDF generato - Dimensione:', Math.round(pdfBlob.size / 1024), 'KB');
-        console.log('✅ Base64 generato - Lunghezza:', pdfBase64Clean.length, 'caratteri');
 
         // 📧 INVIA EMAIL CON PDF OTTIMIZZATO (STESSO DEL DOWNLOAD)
         console.log('📧 Invio email con PDF ottimizzato...');
         const emailData = {
             signatureData: signatureData,
-            pdfBase64: pdfBase64Clean, // ✅ Base64 pulito senza prefisso
-            pdfSize: Math.round(pdfBlob.size / 1024), // ✅ Dimensione per verifica
+            pdfData: pdfBase64, // ✅ Stesso PDF ottimizzato del download
+            pdfBlob: pdfBlob,   // ✅ Aggiungo anche blob per compatibilità
             proposal: {
                 client: 'Centro Sinapsi - Shote',
                 amount: 'CHF 4\'800',
                 services: 'PWA Completa Centro Sinapsi',
-                payment: signatureData.paymentOption.description
+                payment: signatureData.paymentOption.description // ✅ Uso la descrizione dall'oggetto
             }
         };
 
@@ -3038,7 +3033,6 @@ async function sendProposalEmail(emailData) {
             total: emailData.signatureData.paymentOption.total,
             clientIP: emailData.signatureData.ipAddress
         });
-        console.log('📄 PDF per email - Dimensione:', emailData.pdfSize, 'KB, Base64 lunghezza:', emailData.pdfBase64.length);
 
         // ✅ Prepara dati ottimizzati per l'API
         const apiData = {
@@ -3052,9 +3046,8 @@ async function sendProposalEmail(emailData) {
                     total: emailData.signatureData.paymentOption.total
                 }
             },
-            pdfBase64: emailData.pdfBase64, // ✅ PDF ottimizzato in base64 pulito
-            pdfSize: emailData.pdfSize,     // ✅ Dimensione per verifica
-            pdfQuality: 'optimized'         // ✅ Flag per l'API
+            pdfBase64: emailData.pdfData, // ✅ PDF ottimizzato già generato
+            pdfQuality: 'optimized'       // ✅ Flag per l'API
         };
 
         const response = await fetch('/api/send-proposal', {
@@ -3076,7 +3069,6 @@ async function sendProposalEmail(emailData) {
             console.log('📧 ID Cliente:', result.clientMessageId);
             console.log('📧 ID Programmatore:', result.developerMessageId);
             console.log('💳 Riferimento Pagamento:', result.paymentReference);
-            console.log('📄 PDF allegato verificato:', result.pdfAttached ? '✅' : '❌');
             return result;
         } else {
             throw new Error(result.error || 'Errore invio email');
