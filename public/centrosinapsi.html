@@ -2075,7 +2075,7 @@
     </div>
 
     <script>
-     // 🧪 CONFIGURAZIONE TEST MODE
+    // 🧪 CONFIGURAZIONE TEST MODE
 const CONFIG = {
     password: 'centrosinapsi2025',
     expiryDays: 30,
@@ -2870,7 +2870,8 @@ async function submitProposal() {
     try {
         // Prepara dati firma
         const signatureData = {
-            timestamp: new Date().toLocaleString('it-IT'),
+            date: new Date().toLocaleString('it-IT'), // ✅ Cambiato da 'timestamp' a 'date'
+            timestamp: new Date().toLocaleString('it-IT'), // ✅ Mantengo anche timestamp per compatibilità
             paymentOption: getPaymentOptionText(paymentSelected.value),
             signatureData: canvas.toDataURL('image/png'),
             ipAddress: await getClientIP(),
