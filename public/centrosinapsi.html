@@ -2075,7 +2075,7 @@
     </div>
 
     <script>
-        // 🧪 CONFIGURAZIONE TEST MODE
+      // 🧪 CONFIGURAZIONE TEST MODE
 const CONFIG = {
     password: 'centrosinapsi2025',
     expiryDays: 30,
@@ -2548,40 +2548,54 @@ async function generatePDF() {
 
             currentY = 35;
 
-            // 📋 INFORMAZIONI AZIENDE
+            // 📋 INFORMAZIONI AZIENDE - LAYOUT CORRETTO
             pdf.setTextColor(0, 0, 0);
 
-            // Sviluppatore (sinistra)
+            // Reset posizione Y dopo header
+            currentY = 35;
+
+            // Colonna sinistra - Sviluppatore
+            let leftY = currentY;
             pdf.setFontSize(14);
             pdf.setFont('helvetica', 'bold');
-            pdf.text('Domenico Riccio', margin, currentY);
+            pdf.text('Domenico Riccio', margin, leftY);
 
+            leftY += 6;
             pdf.setFontSize(11);
             pdf.setFont('helvetica', 'normal');
-            currentY += 5;
-            pdf.text('Web & App Solutions', margin, currentY);
-            currentY += 4;
-            pdf.text('Via Ol Mött 6, 6703 Osogna, Svizzera', margin, currentY);
-            currentY += 4;
-            pdf.text('Tel: 076 781 01 94 | Email: info@dcreativo.ch', margin, currentY);
+            pdf.text('Web & App Solutions', margin, leftY);
 
-            // Cliente (destra)
-            const clientX = pageWidth - margin - 80;
+            leftY += 4;
+            pdf.text('Via Ol Mött 6, 6703 Osogna, Svizzera', margin, leftY);
+
+            leftY += 4;
+            pdf.text('Tel: 076 781 01 94 | Email: info@dcreativo.ch', margin, leftY);
+
+            // Colonna destra - Cliente
+            let rightY = currentY;
+            const rightX = pageWidth - margin;
+
             pdf.setFontSize(14);
             pdf.setFont('helvetica', 'bold');
-            pdf.text('Centro Sinapsi', clientX, 35, { align: 'right' });
+            pdf.text('Centro Sinapsi', rightX, rightY, { align: 'right' });
 
+            rightY += 6;
             pdf.setFontSize(11);
             pdf.setFont('helvetica', 'normal');
-            pdf.text('Shote - Proprietaria', clientX, 40, { align: 'right' });
-            pdf.text('Via Toron d\'Örz 7, 6703 Osogna', clientX, 44, { align: 'right' });
-            pdf.text('Tel: 078 846 06 87', clientX, 48, { align: 'right' });
+            pdf.text('Shote - Proprietaria', rightX, rightY, { align: 'right' });
 
-            // Data
+            rightY += 4;
+            pdf.text('Via Toron d\'Örz 7, 6703 Osogna', rightX, rightY, { align: 'right' });
+
+            rightY += 4;
+            pdf.text('Tel: 078 846 06 87', rightX, rightY, { align: 'right' });
+
+            rightY += 4;
             const today = new Date().toLocaleDateString('it-IT');
-            pdf.text(`Data: ${today}`, clientX, 52, { align: 'right' });
+            pdf.text(`Data: ${today}`, rightX, rightY, { align: 'right' });
 
-            currentY = 65;
+            // Posiziona Y dopo le informazioni aziendali
+            currentY = Math.max(leftY, rightY) + 10;
 
             // 🎯 SEZIONE SERVIZI
             currentY = addSection('SERVIZI DI SVILUPPO INCLUSI', '', currentY);

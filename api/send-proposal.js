@@ -67,12 +67,12 @@ export default async function handler(req, res) {
       currency: 'CHF',
       reference: paymentReference,
       creditor: {
-        name: 'Domenico Riccio',
-        address: 'Via Ol Mött 6',
-        postalCode: '6703',
-        city: 'Osogna',
-        country: 'CH'
-      },
+  name: 'Anna Maria Riccio',
+  address: 'Via Ol Mött 6',
+  postalCode: '6703',
+  city: 'Osogna',
+  country: 'CH'
+},
       debtor: {
         name: 'Centro Sinapsi',
         address: 'Via Toron d\'Örz 7',
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
         country: 'CH'
       },
       iban: 'CH93 3076 4227 8465 4200 1', // QR-IBAN Domenico Riccio // ⚠️ SOSTITUISCI CON IBAN REALE
-      message: `Acconto 30% - Sviluppo PWA Centro Sinapsi - Proposta firmata ${new Date().toLocaleDateString('it-IT')}`
+      message: `Acconto 30% - Sviluppo PWA Centro Sinapsi - Servizi Domenico Riccio - Proposta firmata ${new Date().toLocaleDateString('it-IT')}`
     });
 
     // Template email professionale per la cliente (CON INFORMAZIONI PAGAMENTO INTEGRATE)
