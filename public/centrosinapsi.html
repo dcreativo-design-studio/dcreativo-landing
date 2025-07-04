@@ -2845,6 +2845,7 @@ async function generatePDF() {
 }
 
 // 🚀 SOTTOMISSIONE PROPOSTA COMPLETA
+// 🚀 SOTTOMISSIONE PROPOSTA COMPLETA - VERSIONE CORRETTA
 async function submitProposal() {
     if (!hasSignature || isExpired) return;
 
@@ -2873,7 +2874,7 @@ async function submitProposal() {
         const signatureData = {
             date: new Date().toLocaleString('it-IT'),
             timestamp: new Date().toLocaleString('it-IT'),
-            paymentOption: paymentOptionDetails, // ✅ Oggetto completo invece di stringa
+            paymentOption: paymentOptionDetails,
             signatureData: canvas.toDataURL('image/png'),
             ipAddress: await getClientIP(),
             userAgent: navigator.userAgent,
@@ -2894,27 +2895,29 @@ async function submitProposal() {
         console.log('📄 Generazione PDF di alta qualità...');
         const pdf = await generatePDF();
 
-        // 💾 PREPARA PDF PER DOWNLOAD E EMAIL (STESSA VERSIONE)
+        // 💾 PREPARA PDF PER DOWNLOAD E EMAIL
         const pdfBlob = pdf.output('blob');
-        const pdfBase64 = pdf.output('datauristring');
+
+        // ✅ CORREZIONE: Usa output('datauristring') e rimuovi header
+        const pdfDataUri = pdf.output('datauristring');
+        const pdfBase64Pure = pdfDataUri.split(',')[1]; // Rimuove "data:application/pdf;base64,"
 
         console.log('✅ PDF generato - Dimensione:', Math.round(pdfBlob.size / 1024), 'KB');
 
-        // 📧 INVIA EMAIL CON PDF OTTIMIZZATO (STESSO DEL DOWNLOAD)
-        console.log('📧 Invio email con PDF ottimizzato...');
+        // 📧 INVIA EMAIL CON PDF CORRETTO
+        console.log('📧 Invio email con PDF corretto...');
         const emailData = {
             signatureData: signatureData,
-            pdfData: pdfBase64, // ✅ Stesso PDF ottimizzato del download
-            pdfBlob: pdfBlob,   // ✅ Aggiungo anche blob per compatibilità
+            pdfBase64: pdfBase64Pure, // ✅ Solo base64 puro, senza header
             proposal: {
                 client: 'Centro Sinapsi - Shote',
                 amount: 'CHF 4\'800',
                 services: 'PWA Completa Centro Sinapsi',
-                payment: signatureData.paymentOption.description // ✅ Uso la descrizione dall'oggetto
+                payment: signatureData.paymentOption.description
             }
         };
 
-        // Invio email con PDF ottimizzato
+        // Invio email con PDF corretto
         const emailResult = await sendProposalEmail(emailData);
 
         // 📥 DOWNLOAD AUTOMATICO PDF (STESSA VERSIONE)
@@ -2961,7 +2964,6 @@ async function submitProposal() {
         alert(errorMessage + '\n\nSe il problema persiste, contatta:\n📞 076 781 01 94\n📧 info@dcreativo.ch');
     }
 }
-
 // 🔧 FUNZIONE DETTAGLI OPZIONE PAGAMENTO COMPLETA
 function getPaymentOptionDetails(option) {
     switch(option) {
@@ -3024,6 +3026,7 @@ async function getClientIP() {
 }
 
 // 📧 INVIO EMAIL REALE TRAMITE API - VERSIONE OTTIMIZZATA
+// 📧 INVIO EMAIL REALE TRAMITE API - VERSIONE CORRETTA
 async function sendProposalEmail(emailData) {
     try {
         console.log('📧 Invio email tramite API...');
@@ -3034,7 +3037,7 @@ async function sendProposalEmail(emailData) {
             clientIP: emailData.signatureData.ipAddress
         });
 
-        // ✅ Prepara dati ottimizzati per l'API
+        // ✅ Prepara dati per l'API - pdfBase64 è già pulito
         const apiData = {
             signatureData: {
                 date: emailData.signatureData.date,
@@ -3046,8 +3049,8 @@ async function sendProposalEmail(emailData) {
                     total: emailData.signatureData.paymentOption.total
                 }
             },
-            pdfBase64: emailData.pdfData, // ✅ PDF ottimizzato già generato
-            pdfQuality: 'optimized'       // ✅ Flag per l'API
+            pdfBase64: emailData.pdfBase64, // ✅ Base64 puro, pronto per allegato
+            pdfQuality: 'optimized'
         };
 
         const response = await fetch('/api/send-proposal', {
@@ -3089,7 +3092,6 @@ async function sendProposalEmail(emailData) {
         }
     }
 }
-
 // Animazioni elementi
 function animateElements() {
     const sections = document.querySelectorAll('.section');
