@@ -80,7 +80,7 @@ export default async function handler(req, res) {
         city: 'Osogna',
         country: 'CH'
       },
-      iban: 'CH93 0076 2011 6238 5295 7', // ⚠️ SOSTITUISCI CON IBAN REALE
+      iban: 'CH93 3076 4227 8465 4200 1', // QR-IBAN Domenico Riccio // ⚠️ SOSTITUISCI CON IBAN REALE
       message: `Acconto 30% - Sviluppo PWA Centro Sinapsi - Proposta firmata ${new Date().toLocaleDateString('it-IT')}`
     });
 
