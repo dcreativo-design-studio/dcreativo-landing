@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { signatureData, pdfBase64 } = req.body;
+    const { signatureData, pdfBase64, pdfQuality } = req.body;
 
     console.log('📧 Ricevuta richiesta invio email per Centro Sinapsi');
     console.log('📊 Dati firma ricevuti:', {
@@ -138,7 +138,7 @@ export default async function handler(req, res) {
                               <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Data:</strong> ${signatureData.date}</td>
                             </tr>
                             <tr>
-                              <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Opzione pagamento:</strong> ${paymentDescription}</td>
+                              <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Opzione pagamento:</strong> ${signatureData.paymentOption.description}</td>
                             </tr>
                             <tr>
                               <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Importo:</strong> ${totalAmount}</td>
