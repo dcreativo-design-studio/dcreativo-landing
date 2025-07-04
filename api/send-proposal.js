@@ -41,7 +41,7 @@ export default async function handler(req, res) {
     console.log('📄 PDF ricevuto - Dimensione base64:', Math.round(cleanPdfBase64.length * 0.75 / 1024), 'KB stimati');
 
     // Configurazione email transporter
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
@@ -402,6 +402,8 @@ export default async function handler(req, res) {
   }
 }
 
+// ✅ FUNZIONI HELPER INVARIATE (generateSimplePaymentSlip, generateSwissQRCodeStable)
+// Resta il codice precedente...
 // ✅ FUNZIONI HELPER INVARIATE (generateSimplePaymentSlip, generateSwissQRCodeStable)
 // 🎯 GENERA FILE DI TESTO CON ISTRUZIONI PAGAMENTO COMPLETE
 async function generateSimplePaymentSlip(paymentData) {
