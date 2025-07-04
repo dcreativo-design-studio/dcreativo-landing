@@ -2868,11 +2868,12 @@ async function submitProposal() {
     document.getElementById('loadingScreen').style.display = 'flex';
 
     try {
-        // Prepara dati firma
+        // Prepara dati firma con struttura corretta per email
+        const paymentOptionDetails = getPaymentOptionDetails(paymentSelected.value);
         const signatureData = {
-            date: new Date().toLocaleString('it-IT'), // ✅ Cambiato da 'timestamp' a 'date'
-            timestamp: new Date().toLocaleString('it-IT'), // ✅ Mantengo anche timestamp per compatibilità
-            paymentOption: getPaymentOptionText(paymentSelected.value),
+            date: new Date().toLocaleString('it-IT'),
+            timestamp: new Date().toLocaleString('it-IT'),
+            paymentOption: paymentOptionDetails, // ✅ Oggetto completo invece di stringa
             signatureData: canvas.toDataURL('image/png'),
             ipAddress: await getClientIP(),
             userAgent: navigator.userAgent,
@@ -2899,20 +2900,21 @@ async function submitProposal() {
 
         console.log('✅ PDF generato - Dimensione:', Math.round(pdfBlob.size / 1024), 'KB');
 
-        // 📧 INVIA EMAIL CON PDF DI ALTA QUALITÀ
-        console.log('📧 Invio email con PDF di alta qualità...');
+        // 📧 INVIA EMAIL CON PDF OTTIMIZZATO (STESSO DEL DOWNLOAD)
+        console.log('📧 Invio email con PDF ottimizzato...');
         const emailData = {
             signatureData: signatureData,
-            pdfData: pdfBase64, // Stesso PDF di alta qualità
+            pdfData: pdfBase64, // ✅ Stesso PDF ottimizzato del download
+            pdfBlob: pdfBlob,   // ✅ Aggiungo anche blob per compatibilità
             proposal: {
                 client: 'Centro Sinapsi - Shote',
                 amount: 'CHF 4\'800',
                 services: 'PWA Completa Centro Sinapsi',
-                payment: signatureData.paymentOption
+                payment: signatureData.paymentOption.description // ✅ Uso la descrizione dall'oggetto
             }
         };
 
-        // Invio email reale tramite API
+        // Invio email con PDF ottimizzato
         const emailResult = await sendProposalEmail(emailData);
 
         // 📥 DOWNLOAD AUTOMATICO PDF (STESSA VERSIONE)
@@ -2960,20 +2962,55 @@ async function submitProposal() {
     }
 }
 
-// Funzioni helper
-function getPaymentOptionText(option) {
+// 🔧 FUNZIONE DETTAGLI OPZIONE PAGAMENTO COMPLETA
+function getPaymentOptionDetails(option) {
     switch(option) {
         case 'rapid':
-            return 'Pagamento Rapido (3 rate)';
+            return {
+                type: 'rapid',
+                description: 'Opzione A - Pagamento Rapido',
+                details: 'Acconto CHF 1\'440 + 2 rate (CHF 1\'680 ciascuna)',
+                total: 'CHF 4\'800',
+                installments: '3 rate totali',
+                adminCosts: 'CHF 0 (nessun costo aggiuntivo)'
+            };
         case 'extended':
-            return 'Rateizzazione Estesa (36 rate)';
+            return {
+                type: 'extended',
+                description: 'Opzione B - Rateizzazione Estesa',
+                details: 'Acconto CHF 1\'440 + 36 rate mensili da CHF 95',
+                total: 'CHF 4\'860',
+                installments: '37 rate totali',
+                adminCosts: 'CHF 60 (costi amministrativi)'
+            };
         case 'custom':
             const installments = document.getElementById('custom-installments').value;
             const amount = document.getElementById('custom-amount').value;
-            return `Rateizzazione Personalizzata (${installments} rate da CHF ${amount})`;
+            const totalCustom = 1440 + (installments * amount) + 60;
+            return {
+                type: 'custom',
+                description: 'Opzione C - Rateizzazione Personalizzata',
+                details: `Acconto CHF 1\'440 + ${installments} rate mensili da CHF ${amount}`,
+                total: `CHF ${totalCustom}`,
+                installments: `${parseInt(installments) + 1} rate totali`,
+                adminCosts: 'CHF 60 (costi amministrativi)'
+            };
         default:
-            return 'Non specificato';
+            return {
+                type: 'unknown',
+                description: 'Opzione non specificata',
+                details: 'Contattare per chiarimenti',
+                total: 'CHF 4\'800',
+                installments: 'Da definire',
+                adminCosts: 'Da definire'
+            };
     }
+}
+
+// Funzioni helper - mantieni per compatibilità
+function getPaymentOptionText(option) {
+    const details = getPaymentOptionDetails(option);
+    return details.description;
 }
 
 async function getClientIP() {
@@ -2986,20 +3023,39 @@ async function getClientIP() {
     }
 }
 
-// 📧 INVIO EMAIL REALE TRAMITE API
+// 📧 INVIO EMAIL REALE TRAMITE API - VERSIONE OTTIMIZZATA
 async function sendProposalEmail(emailData) {
     try {
         console.log('📧 Invio email tramite API...');
+        console.log('📊 Dati firma:', {
+            date: emailData.signatureData.date,
+            paymentOption: emailData.signatureData.paymentOption.description,
+            total: emailData.signatureData.paymentOption.total,
+            clientIP: emailData.signatureData.ipAddress
+        });
+
+        // ✅ Prepara dati ottimizzati per l'API
+        const apiData = {
+            signatureData: {
+                date: emailData.signatureData.date,
+                timestamp: emailData.signatureData.timestamp,
+                clientIP: emailData.signatureData.ipAddress,
+                paymentOption: {
+                    description: emailData.signatureData.paymentOption.description,
+                    details: emailData.signatureData.paymentOption.details,
+                    total: emailData.signatureData.paymentOption.total
+                }
+            },
+            pdfBase64: emailData.pdfData, // ✅ PDF ottimizzato già generato
+            pdfQuality: 'optimized'       // ✅ Flag per l'API
+        };
 
         const response = await fetch('/api/send-proposal', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                signatureData: emailData.signatureData,
-                pdfBase64: emailData.pdfData
-            })
+            body: JSON.stringify(apiData)
         });
 
         if (!response.ok) {
