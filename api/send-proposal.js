@@ -1,4 +1,4 @@
-// api/send-proposal.js - Soluzione corretta per PDF
+// api/send-proposal.js - 🚀 VERSIONE PRODUZIONE COMPLETA
 const nodemailer = require('nodemailer');
 
 export default async function handler(req, res) {
@@ -18,14 +18,8 @@ export default async function handler(req, res) {
   try {
     const { signatureData, pdfBase64, pdfQuality } = req.body;
 
-    // 🏦 CONFIGURAZIONE IBAN DISTINTI
-    const PAYMENT_CONFIG = {
-      normalIBAN: 'CH71 0076 4227 8465 4200 1',  // Per email e bonifici manuali
-      qrIBAN: 'CH93 0076 4227 8465 4200 1',      // Per QR code svizzero
-      beneficiary: 'Domenico Riccio'
-    };
-
-    console.log('📧 Ricevuta richiesta invio email per Centro Sinapsi');
+    // 🚀 LOG PRODUZIONE
+    console.log('🚀 PRODUZIONE - Ricevuta richiesta invio email per Centro Sinapsi');
     console.log('📊 Dati firma ricevuti:', {
       date: signatureData.date,
       clientIP: signatureData.clientIP,
@@ -45,6 +39,13 @@ export default async function handler(req, res) {
 
     console.log('📄 PDF ricevuto - Dimensione base64:', Math.round(cleanPdfBase64.length * 0.75 / 1024), 'KB stimati');
 
+    // 🏦 CONFIGURAZIONE IBAN DISTINTI - PRODUZIONE
+    const PAYMENT_CONFIG = {
+      normalIBAN: 'CH71 0076 4227 8465 4200 1',  // Per email e bonifici manuali
+      qrIBAN: 'CH93 0076 4227 8465 4200 1',      // Per QR code svizzero
+      beneficiary: 'Domenico Riccio'
+    };
+
     // Configurazione email transporter
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -56,6 +57,7 @@ export default async function handler(req, res) {
       },
     });
 
+    // Verifica configurazione
     await transporter.verify();
     console.log('✅ Configurazione email verificata');
 
@@ -74,6 +76,7 @@ export default async function handler(req, res) {
       }
     }
 
+    // Genera riferimento unico per il pagamento
     const timestamp = new Date().getTime();
     paymentReference = `CS-${timestamp.toString().slice(-8)}`;
 
@@ -103,7 +106,7 @@ export default async function handler(req, res) {
       message: `Acconto 30% - Sviluppo PWA Centro Sinapsi - Servizi Domenico Riccio - Proposta firmata ${new Date().toLocaleDateString('it-IT')}`
     });
 
-    // ✅ Template email cliente con IBAN NORMALE
+    // ✅ Template email cliente con IBAN NORMALE - PRODUZIONE
     const clientEmailHTML = `
       <!DOCTYPE html>
       <html>
@@ -113,7 +116,6 @@ export default async function handler(req, res) {
         <title>Proposta Centro Sinapsi Firmata</title>
       </head>
       <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5;">
-        <!-- Header e Success Banner invariati -->
         <table role="presentation" style="width: 100%; margin: 0; padding: 20px 0; background-color: #f0f2f5;" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td align="center">
@@ -202,9 +204,47 @@ export default async function handler(req, res) {
                       </tr>
                     </table>
 
-                    <!-- Resto del template invariato -->
+                    <!-- Attachment Notice -->
+                    <table role="presentation" style="width: 100%; background: linear-gradient(135deg, #FFB946 0%, #FF8C42 100%); color: #ffffff; border-radius: 8px; margin: 25px 0;" cellpadding="18" cellspacing="0" border="0">
+                      <tr>
+                        <td style="text-align: center;">
+                          <div style="font-size: 24px; margin-bottom: 8px;">📎</div>
+                          <h3 style="margin: 0 0 5px 0; font-size: 16px; font-weight: 600;">Allegati Inclusi</h3>
+                          <p style="margin: 0; font-size: 14px; opacity: 0.95;">✓ Proposta firmata (PDF)<br>✓ Istruzioni dettagliate pagamento con QR code</p>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <p style="margin: 20px 0; font-size: 15px; line-height: 1.6; color: #333;">
+                      <strong>Prossimi passi:</strong><br>
+                      1. Effettua il pagamento dell'acconto usando i dati sopra riportati<br>
+                      2. Ti contatteremo entro 24 ore per organizzare il primo incontro<br>
+                      3. Inizieremo subito lo sviluppo della tua PWA
+                    </p>
+
+                    <!-- Contact Info -->
+                    <table role="presentation" style="width: 100%; background: #f7f8fa; border-radius: 8px; margin: 25px 0;" cellpadding="25" cellspacing="0" border="0">
+                      <tr>
+                        <td style="text-align: center;">
+                          <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #1c1e21;">📞 Contatti Diretti</h4>
+                          <p style="margin: 5px 0; font-size: 14px; color: #333;"><strong>WhatsApp:</strong> +41 76 781 01 94</p>
+                          <p style="margin: 5px 0; font-size: 14px; color: #333;"><strong>Email:</strong> info@dcreativo.ch</p>
+                          <p style="margin: 5px 0; font-size: 14px; color: #333;"><strong>Web:</strong> dcreativo.ch</p>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
+
+                <!-- Footer -->
+                <tr>
+                  <td style="background: #1c1e21; color: #e4e6ea; padding: 30px 25px; text-align: center;">
+                    <h3 style="margin: 0 0 10px 0; font-size: 18px; color: #1877F2;">Domenico Riccio</h3>
+                    <p style="margin: 0 0 15px 0; font-size: 13px; opacity: 0.8;">Web & App Solutions</p>
+                    <p style="margin: 0; font-size: 12px; opacity: 0.6;">Sviluppatore Full-Stack Senior • Next.js • React • TypeScript</p>
+                  </td>
+                </tr>
+
               </table>
             </td>
           </tr>
@@ -213,7 +253,7 @@ export default async function handler(req, res) {
       </html>
     `;
 
-    // Template email per il programmatore (INVARIATO)
+    // Template email per il programmatore
     const developerEmailHTML = `
       <!DOCTYPE html>
       <html>
@@ -272,6 +312,19 @@ export default async function handler(req, res) {
                       </tr>
                     </table>
 
+                    <!-- Payment Info for Developer -->
+                    <table role="presentation" style="width: 100%; background: #e3f2fd; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
+                      <tr>
+                        <td>
+                          <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #2c5aa0;">💳 Dati Pagamento Inviati:</h4>
+                          <p style="margin: 5px 0; font-size: 14px;"><strong>IBAN:</strong> ${PAYMENT_CONFIG.normalIBAN}</p>
+                          <p style="margin: 5px 0; font-size: 14px;"><strong>Importo:</strong> CHF ${paymentAmount}</p>
+                          <p style="margin: 5px 0; font-size: 14px;"><strong>Riferimento:</strong> ${paymentReference}</p>
+                          <p style="margin: 15px 0 0 0; font-size: 13px; color: #666;"><strong>Nota:</strong> Monitorare l'arrivo del pagamento</p>
+                        </td>
+                      </tr>
+                    </table>
+
                     <!-- Contact Info -->
                     <table role="presentation" style="width: 100%; background: #e3f2fd; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
                       <tr>
@@ -293,52 +346,61 @@ export default async function handler(req, res) {
       </html>
     `;
 
-    // ✅ OPZIONI EMAIL CON PDF CORRETTO
-    const clientMailOptions = {
-      from: `"Domenico Riccio" <${process.env.EMAIL_USER}>`,
-      replyTo: 'info@dcreativo.ch',
-      to: '	d8572229@gmail.com', // email della cliente info@centrosinapsi.ch
-      subject: '✅ Proposta Centro Sinapsi PWA - Firmata + Istruzioni Pagamento',
-      html: clientEmailHTML,
-      attachments: [
-        {
-          filename: 'proposta_centro_sinapsi_firmata.pdf',
-          content: cleanPdfBase64, // ✅ PDF base64 pulito
-          encoding: 'base64',
-          contentType: 'application/pdf'
-        },
-        {
-          filename: `Informazioni_Pagamento_${paymentReference}.txt`,
-          content: paymentSlipData,
-          encoding: 'base64',
-          contentType: 'text/plain; charset=utf-8'
-        }
-      ]
-    };
+    // 🧪 VERSIONE TEST TEMPORANEA - send-proposal.js
+// Sostituisci SOLO questa sezione per il test:
 
-    // ✅ OPZIONI EMAIL PROGRAMMATORE CON PDF CORRETTO
-    const developerMailOptions = {
-      from: `"Centro Sinapsi PWA" <${process.env.EMAIL_USER}>`,
-      replyTo: 'info@dcreativo.ch',
-      to: 'timm81379@gmail.com', // email del programmatore
-      subject: '🎉 Nuova Proposta Firmata - Centro Sinapsi + Dati Pagamento',
-      html: developerEmailHTML,
-      attachments: [
-        {
-          filename: 'proposta_centro_sinapsi_firmata.pdf',
-          content: cleanPdfBase64, // ✅ PDF base64 pulito
-          encoding: 'base64',
-          contentType: 'application/pdf'
-        },
-        {
-          filename: `Informazioni_Pagamento_${paymentReference}.txt`,
-          content: paymentSlipData,
-          encoding: 'base64',
-          contentType: 'text/plain; charset=utf-8'
-        }
-      ]
-    };
+// ✅ OPZIONI EMAIL CLIENTE - TEST TEMPORANEO
+const clientMailOptions = {
+  from: `"Domenico Riccio" <${process.env.EMAIL_USER}>`,
+  replyTo: 'info@dcreativo.ch',
+  to: 'd8572229@gmail.com', // 🧪 TUA EMAIL PER TEST
+  subject: '🧪 TEST - Proposta Centro Sinapsi PWA - Firmata + Istruzioni Pagamento',
+  html: clientEmailHTML,
+  attachments: [
+    {
+      filename: 'proposta_centro_sinapsi_firmata.pdf',
+      content: cleanPdfBase64,
+      encoding: 'base64',
+      contentType: 'application/pdf'
+    },
+    {
+      filename: `Informazioni_Pagamento_${paymentReference}.txt`,
+      content: paymentSlipData,
+      encoding: 'base64',
+      contentType: 'text/plain; charset=utf-8'
+    }
+  ]
+};
 
+// ✅ OPZIONI EMAIL PROGRAMMATORE - TEST
+const developerMailOptions = {
+  from: `"Centro Sinapsi PWA" <${process.env.EMAIL_USER}>`,
+  replyTo: 'info@dcreativo.ch',
+  to: 'timm81379@gmail.com', // Email programmatore
+  subject: '🧪 TEST - Nuova Proposta Firmata - Centro Sinapsi + Dati Pagamento',
+  html: developerEmailHTML,
+  attachments: [
+    {
+      filename: 'proposta_centro_sinapsi_firmata.pdf',
+      content: cleanPdfBase64,
+      encoding: 'base64',
+      contentType: 'application/pdf'
+    },
+    {
+      filename: `Informazioni_Pagamento_${paymentReference}.txt`,
+      content: paymentSlipData,
+      encoding: 'base64',
+      contentType: 'text/plain; charset=utf-8'
+    }
+  ]
+};
+
+// 🧪 LOG TEST
+console.log('🧪 MODALITÀ TEST PRODUZIONE ATTIVA');
+console.log('📧 Email test cliente:', clientMailOptions.to);
+console.log('📧 Email programmatore:', developerMailOptions.to);
+console.log('💰 Importo acconto: CHF', paymentAmount);
+console.log('🔗 Riferimento pagamento:', paymentReference);
     // Invio email alla cliente
     console.log('📤 Invio email alla cliente...');
     const clientResult = await transporter.sendMail(clientMailOptions);
@@ -352,27 +414,25 @@ export default async function handler(req, res) {
     // Risposta di successo
     res.status(200).json({
       success: true,
-      message: 'Email inviate con successo con PDF corretto!',
+      message: 'Email inviate con successo con PDF corretto! - PRODUZIONE',
       clientMessageId: clientResult.messageId,
       developerMessageId: developerResult.messageId,
       paymentReference: paymentReference,
-      pdfSize: Math.round(cleanPdfBase64.length * 0.75 / 1024) + 'KB'
+      pdfSize: Math.round(cleanPdfBase64.length * 0.75 / 1024) + 'KB',
+      mode: 'PRODUCTION'
     });
 
   } catch (error) {
-    console.error('❌ Errore invio email:', error);
+    console.error('❌ Errore invio email PRODUZIONE:', error);
     res.status(500).json({
       success: false,
       error: error.message,
-      details: error.toString()
+      details: error.toString(),
+      mode: 'PRODUCTION'
     });
   }
 }
 
-// ✅ FUNZIONI HELPER INVARIATE (generateSimplePaymentSlip, generateSwissQRCodeStable)
-// Resta il codice precedente...
-// ✅ FUNZIONI HELPER INVARIATE (generateSimplePaymentSlip, generateSwissQRCodeStable)
-// 🎯 GENERA FILE DI TESTO CON ISTRUZIONI PAGAMENTO COMPLETE
 // 🎯 GENERA FILE DI TESTO CON IBAN NORMALE E QR-IBAN DISTINTI
 async function generateSimplePaymentSlip(paymentData) {
   try {

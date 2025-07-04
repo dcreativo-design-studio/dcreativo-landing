@@ -2166,13 +2166,13 @@
         </div>
     </div>
 
-    <script>
-    // 🧪 CONFIGURAZIONE TEST MODE
+   <script>
+    // 🚀 CONFIGURAZIONE PRODUZIONE
 const CONFIG = {
     password: 'centrosinapsi2025',
     expiryDays: 30,
     apiEndpoint: '/api/send-proposal',
-    testMode: true  // 🧪 MODALITÀ TEST ATTIVA
+    testMode: false  // 🚀 MODALITÀ PRODUZIONE ATTIVA
 };
 
 // Variabili globali
@@ -2188,16 +2188,9 @@ document.addEventListener('DOMContentLoaded', function() {
     setupPasswordScreen();
     updateCurrentDate();
 
-    // 🧪 IN TEST MODE: Accesso automatico senza controllo localStorage
-    if (CONFIG.testMode) {
-        console.log('🧪 Modalità Test: Accesso diretto senza controlli');
-        // Non controlla localStorage per firme precedenti
+    // 🚀 PRODUZIONE: Controlli normali attivi
+    if (localStorage.getItem('centrosinapsi_access')) {
         showProposal();
-    } else {
-        // Controllo normale per produzione
-        if (localStorage.getItem('centrosinapsi_access')) {
-            showProposal();
-        }
     }
 });
 
@@ -2217,14 +2210,12 @@ function checkPassword() {
     const errorMessage = document.getElementById('errorMessage');
 
     if (password === CONFIG.password) {
-        // 🧪 IN TEST MODE: Non salva nel localStorage
-        if (!CONFIG.testMode) {
-            const accessData = {
-                firstAccess: Date.now(),
-                hasAccess: true
-            };
-            localStorage.setItem('centrosinapsi_access', JSON.stringify(accessData));
-        }
+        // 🚀 PRODUZIONE: Salva accesso nel localStorage
+        const accessData = {
+            firstAccess: Date.now(),
+            hasAccess: true
+        };
+        localStorage.setItem('centrosinapsi_access', JSON.stringify(accessData));
 
         showProposal();
     } else {
@@ -2242,10 +2233,8 @@ function showProposal() {
     // Inizializza tutto
     initializeSignature();
 
-    // 🧪 IN TEST MODE: Non controlla firme precedenti
-    if (!CONFIG.testMode) {
-        checkStoredSignature();
-    }
+    // 🚀 PRODUZIONE: Controlla firme precedenti
+    checkStoredSignature();
 
     setupEventListeners();
     startTimer();
@@ -2270,12 +2259,7 @@ function updateCurrentDate() {
 
 // Avvia il timer di 30 giorni
 function startTimer() {
-    // 🧪 IN TEST MODE: Timer disabilitato
-    if (CONFIG.testMode) {
-        document.getElementById('timerDisplay').style.display = 'none';
-        return;
-    }
-
+    // 🚀 PRODUZIONE: Timer attivo
     const accessData = JSON.parse(localStorage.getItem('centrosinapsi_access'));
     if (!accessData || !accessData.firstAccess) return;
 
@@ -2531,6 +2515,7 @@ function checkFormValidity() {
 
 // Controlla se c'è una firma salvata
 function checkStoredSignature() {
+    // 🚀 PRODUZIONE: Controllo firme precedenti attivo
     const storedData = localStorage.getItem('centrosinapsi_signature');
     if (storedData) {
         const signatureData = JSON.parse(storedData);
@@ -2538,7 +2523,6 @@ function checkStoredSignature() {
     }
 }
 
-// Mostra stato firmato
 // 📱 MOSTRA STATO FIRMATO CON ORDINE CORRETTO PER MOBILE
 function showSignedState(signatureData) {
     // 1. Mostra banner di stato nella parte superiore
@@ -2990,8 +2974,7 @@ async function generatePDF() {
     });
 }
 
-// 🚀 SOTTOMISSIONE PROPOSTA COMPLETA
-// 🚀 SOTTOMISSIONE PROPOSTA COMPLETA - VERSIONE CORRETTA
+// 🚀 SOTTOMISSIONE PROPOSTA - VERSIONE PRODUZIONE
 async function submitProposal() {
     if (!hasSignature || isExpired) return;
 
@@ -3015,7 +2998,7 @@ async function submitProposal() {
     document.getElementById('loadingScreen').style.display = 'flex';
 
     try {
-        // Prepara dati firma con struttura corretta per email
+        // Prepara dati firma
         const paymentOptionDetails = getPaymentOptionDetails(paymentSelected.value);
         const signatureData = {
             date: new Date().toLocaleString('it-IT'),
@@ -3032,29 +3015,24 @@ async function submitProposal() {
             }
         };
 
-        // 🧪 IN TEST MODE: Permetti multiple firme
-        if (!CONFIG.testMode) {
-            localStorage.setItem('centrosinapsi_signature', JSON.stringify(signatureData));
-        }
+        // 🚀 PRODUZIONE: Salva firma nel localStorage
+        localStorage.setItem('centrosinapsi_signature', JSON.stringify(signatureData));
 
-        // 📄 GENERA UN SOLO PDF DI ALTA QUALITÀ
+        // Genera PDF
         console.log('📄 Generazione PDF di alta qualità...');
         const pdf = await generatePDF();
 
-        // 💾 PREPARA PDF PER DOWNLOAD E EMAIL
         const pdfBlob = pdf.output('blob');
-
-        // ✅ CORREZIONE: Usa output('datauristring') e rimuovi header
         const pdfDataUri = pdf.output('datauristring');
-        const pdfBase64Pure = pdfDataUri.split(',')[1]; // Rimuove "data:application/pdf;base64,"
+        const pdfBase64Pure = pdfDataUri.split(',')[1];
 
         console.log('✅ PDF generato - Dimensione:', Math.round(pdfBlob.size / 1024), 'KB');
 
-        // 📧 INVIA EMAIL CON PDF CORRETTO
+        // Invia email
         console.log('📧 Invio email con PDF corretto...');
         const emailData = {
             signatureData: signatureData,
-            pdfBase64: pdfBase64Pure, // ✅ Solo base64 puro, senza header
+            pdfBase64: pdfBase64Pure,
             proposal: {
                 client: 'Centro Sinapsi - Shote',
                 amount: 'CHF 4\'800',
@@ -3063,10 +3041,9 @@ async function submitProposal() {
             }
         };
 
-        // Invio email con PDF corretto
         const emailResult = await sendProposalEmail(emailData);
 
-        // 📥 DOWNLOAD AUTOMATICO PDF (STESSA VERSIONE)
+        // Download automatico PDF
         console.log('📥 Download automatico PDF...');
         const downloadLink = document.createElement('a');
         downloadLink.href = URL.createObjectURL(pdfBlob);
@@ -3075,7 +3052,6 @@ async function submitProposal() {
         downloadLink.click();
         document.body.removeChild(downloadLink);
 
-        // Cleanup URL object
         setTimeout(() => URL.revokeObjectURL(downloadLink.href), 1000);
 
         // Nascondi loading
@@ -3084,7 +3060,6 @@ async function submitProposal() {
         // Mostra successo
         showSignedState(signatureData);
 
-        // Log successo con dati reali
         console.log('✅ Proposta inviata con successo');
         console.log('📧 Email cliente inviata:', emailResult.clientMessageId);
         console.log('📧 Email programmatore inviata:', emailResult.developerMessageId);
@@ -3094,7 +3069,6 @@ async function submitProposal() {
         console.error('❌ Errore invio proposta:', error);
         document.getElementById('loadingScreen').style.display = 'none';
 
-        // Messaggi di errore specifici
         let errorMessage = '❌ Errore durante l\'invio della proposta.';
 
         if (error.message.includes('connessione')) {
@@ -3110,6 +3084,7 @@ async function submitProposal() {
         alert(errorMessage + '\n\nSe il problema persiste, contatta:\n📞 076 781 01 94\n📧 info@dcreativo.ch');
     }
 }
+
 // 🔧 FUNZIONE DETTAGLI OPZIONE PAGAMENTO COMPLETA
 function getPaymentOptionDetails(option) {
     switch(option) {
@@ -3155,7 +3130,7 @@ function getPaymentOptionDetails(option) {
     }
 }
 
-// Funzioni helper - mantieni per compatibilità
+// Funzioni helper
 function getPaymentOptionText(option) {
     const details = getPaymentOptionDetails(option);
     return details.description;
@@ -3171,8 +3146,7 @@ async function getClientIP() {
     }
 }
 
-// 📧 INVIO EMAIL REALE TRAMITE API - VERSIONE OTTIMIZZATA
-// 📧 INVIO EMAIL REALE TRAMITE API - VERSIONE CORRETTA
+// 📧 INVIO EMAIL TRAMITE API - VERSIONE PRODUZIONE
 async function sendProposalEmail(emailData) {
     try {
         console.log('📧 Invio email tramite API...');
@@ -3183,7 +3157,6 @@ async function sendProposalEmail(emailData) {
             clientIP: emailData.signatureData.ipAddress
         });
 
-        // ✅ Prepara dati per l'API - pdfBase64 è già pulito
         const apiData = {
             signatureData: {
                 date: emailData.signatureData.date,
@@ -3195,7 +3168,7 @@ async function sendProposalEmail(emailData) {
                     total: emailData.signatureData.paymentOption.total
                 }
             },
-            pdfBase64: emailData.pdfBase64, // ✅ Base64 puro, pronto per allegato
+            pdfBase64: emailData.pdfBase64,
             pdfQuality: 'optimized'
         };
 
@@ -3226,7 +3199,6 @@ async function sendProposalEmail(emailData) {
     } catch (error) {
         console.error('❌ Errore invio email:', error);
 
-        // Gestione errori specifici
         if (error.name === 'TypeError' && error.message.includes('fetch')) {
             throw new Error('Errore di connessione. Verifica la connessione internet e riprova.');
         } else if (error.message.includes('500')) {
@@ -3238,6 +3210,7 @@ async function sendProposalEmail(emailData) {
         }
     }
 }
+
 // Animazioni elementi
 function animateElements() {
     const sections = document.querySelectorAll('.section');
@@ -3263,22 +3236,14 @@ window.addEventListener('beforeprint', function() {
 
 window.addEventListener('afterprint', function() {
     document.getElementById('signatureSection').style.display = 'block';
-    if (!CONFIG.testMode) {
-        document.getElementById('timerDisplay').style.display = 'block';
-    }
+    // 🚀 PRODUZIONE: Riattiva timer dopo stampa
+    document.getElementById('timerDisplay').style.display = 'block';
 });
 
-// 🔧 Utility per debug
-if (CONFIG.testMode) {
-    window.debugFunctions = {
-        clearSignature: () => localStorage.removeItem('centrosinapsi_signature'),
-        clearAccess: () => localStorage.removeItem('centrosinapsi_access'),
-        showData: () => console.log({
-            signature: localStorage.getItem('centrosinapsi_signature'),
-            access: localStorage.getItem('centrosinapsi_access')
-        }),
-        testPDF: generatePDF
-    };
-    console.log('🧪 Test Mode: Funzioni debug disponibili in window.debugFunctions');
-}
-    </script>
+// 🚀 Log di produzione
+console.log('🚀 Centro Sinapsi PWA - MODALITÀ PRODUZIONE ATTIVA');
+console.log('⏰ Timer di scadenza: 30 giorni dal primo accesso');
+console.log('🔐 Password: centrosinapsi2025');
+console.log('📧 Email cliente: info@centrosinapsi.ch');
+console.log('💰 Investimento: CHF 4\'800');
+</script>
