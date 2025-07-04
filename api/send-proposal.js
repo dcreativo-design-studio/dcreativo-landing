@@ -353,8 +353,8 @@ export default async function handler(req, res) {
 const clientMailOptions = {
   from: `"Domenico Riccio" <${process.env.EMAIL_USER}>`,
   replyTo: 'info@dcreativo.ch',
-  to: 'd8572229@gmail.com', // 🧪 TUA EMAIL PER TEST
-  subject: '🧪 TEST - Proposta Centro Sinapsi PWA - Firmata + Istruzioni Pagamento',
+  to: 'info@centrosinapsi.ch', // 🚀 EMAIL CLIENTE REALE
+  subject: '✅ Proposta Centro Sinapsi PWA - Firmata + Istruzioni Pagamento',
   html: clientEmailHTML,
   attachments: [
     {
@@ -372,12 +372,11 @@ const clientMailOptions = {
   ]
 };
 
-// ✅ OPZIONI EMAIL PROGRAMMATORE - TEST
 const developerMailOptions = {
   from: `"Centro Sinapsi PWA" <${process.env.EMAIL_USER}>`,
   replyTo: 'info@dcreativo.ch',
   to: 'timm81379@gmail.com', // Email programmatore
-  subject: '🧪 TEST - Nuova Proposta Firmata - Centro Sinapsi + Dati Pagamento',
+  subject: '🎉 Nuova Proposta Firmata - Centro Sinapsi + Dati Pagamento',
   html: developerEmailHTML,
   attachments: [
     {
@@ -395,12 +394,10 @@ const developerMailOptions = {
   ]
 };
 
-// 🧪 LOG TEST
-console.log('🧪 MODALITÀ TEST PRODUZIONE ATTIVA');
-console.log('📧 Email test cliente:', clientMailOptions.to);
+// 🚀 LOG PRODUZIONE FINALE
+console.log('🚀 MODALITÀ PRODUZIONE FINALE ATTIVA');
+console.log('📧 Email cliente REALE:', clientMailOptions.to);
 console.log('📧 Email programmatore:', developerMailOptions.to);
-console.log('💰 Importo acconto: CHF', paymentAmount);
-console.log('🔗 Riferimento pagamento:', paymentReference);
     // Invio email alla cliente
     console.log('📤 Invio email alla cliente...');
     const clientResult = await transporter.sendMail(clientMailOptions);
