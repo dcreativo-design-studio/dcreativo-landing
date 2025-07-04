@@ -1453,6 +1453,97 @@
                 keep-with-next: always !important;
             }
         }
+        /* 📱 OTTIMIZZAZIONI MOBILE PER ORDINE ELEMENTI */
+.success-message {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    margin: 30px 0;
+    display: none;
+    box-shadow: 0 15px 40px rgba(76, 175, 80, 0.3);
+    position: relative;
+    z-index: 100; /* Assicura che sia sopra altri elementi */
+}
+
+.success-message.show {
+    display: block;
+    animation: slideInDown 0.5s ease-out;
+}
+
+.signature-preview {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid #4CAF50;
+    margin-top: 20px;
+    position: relative;
+    z-index: 90; /* Sotto il messaggio di successo */
+}
+
+/* 📱 RESPONSIVE PER MOBILE */
+@media (max-width: 768px) {
+    .success-message {
+        margin: 20px 0;
+        padding: 25px 20px;
+        border-radius: 12px;
+    }
+
+    .success-message h2 {
+        font-size: clamp(18px, 5vw, 24px);
+        margin-bottom: 15px;
+    }
+
+    .success-message p {
+        font-size: clamp(14px, 3.5vw, 16px);
+        line-height: 1.5;
+        margin-bottom: 12px;
+    }
+
+    .signature-preview {
+        padding: 20px;
+        margin-top: 15px;
+        border-radius: 12px;
+    }
+
+    .signature-preview h4 {
+        font-size: clamp(16px, 4vw, 20px);
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .signature-details {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        font-size: clamp(13px, 3vw, 15px);
+    }
+
+    .signature-details div {
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .signature-details div:last-child {
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .success-message {
+        margin: 15px 0;
+        padding: 20px 15px;
+    }
+
+    .signature-preview {
+        padding: 15px;
+        margin-top: 10px;
+    }
+
+    .signature-details {
+        font-size: clamp(12px, 2.8vw, 14px);
+    }
+}
     </style>
 </head>
 <body>
@@ -2034,28 +2125,29 @@
         </div>
 
         <!-- Messaggio di Successo -->
-        <div class="success-message" id="successMessage">
-            <h2>🎉 Proposta Firmata con Successo!</h2>
-            <p>Grazie per aver accettato la proposta. Il contratto è ora vincolante e inizieremo subito i lavori di sviluppo.</p>
-            <p><strong>Ti abbiamo inviato una copia della proposta firmata via email. Ti contatteremo entro 24 ore per organizzare il primo incontro e l'acconto.</strong></p>
-        </div>
+        <!-- Messaggio di Successo (DEVE ESSERE PRIMA) -->
+<div class="success-message" id="successMessage">
+    <h2>🎉 Proposta Firmata con Successo!</h2>
+    <p>Grazie per aver accettato la proposta. Il contratto è ora vincolante e inizieremo subito i lavori di sviluppo.</p>
+    <p><strong>Ti abbiamo inviato una copia della proposta firmata via email. Ti contatteremo entro 24 ore per organizzare il primo incontro e l'acconto.</strong></p>
+</div>
 
-        <!-- Anteprima Firma (visibile solo dopo la firma) -->
-        <div class="signature-preview" id="signaturePreview" style="display: none;">
-            <h4>📋 Dettagli Firma Digitale</h4>
-            <div class="signature-details">
-                <div><strong>Data e Ora:</strong> <span id="signatureDate"></span></div>
-                <div><strong>Cliente:</strong> Centro Sinapsi - Shote</div>
-                <div><strong>Sviluppatore:</strong> Domenico Riccio</div>
-                <div><strong>Importo:</strong> CHF 4'800</div>
-                <div><strong>Opzione Pagamento:</strong> <span id="selectedPayment"></span></div>
-                <div><strong>IP Address:</strong> <span id="clientIP"></span></div>
-            </div>
-            <div style="margin-top: 15px;">
-                <strong>Firma:</strong><br>
-                <img id="signatureImage" style="border: 1px solid #ddd; border-radius: 5px; max-width: 100%; height: auto;">
-            </div>
-        </div>
+<!-- Anteprima Firma (DEVE ESSERE DOPO) -->
+<div class="signature-preview" id="signaturePreview" style="display: none;">
+    <h4>📋 Dettagli Firma Digitale</h4>
+    <div class="signature-details">
+        <div><strong>Data e Ora:</strong> <span id="signatureDate"></span></div>
+        <div><strong>Cliente:</strong> Centro Sinapsi - Shote</div>
+        <div><strong>Sviluppatore:</strong> Domenico Riccio</div>
+        <div><strong>Importo:</strong> CHF 4'800</div>
+        <div><strong>Opzione Pagamento:</strong> <span id="selectedPayment"></span></div>
+        <div><strong>IP Address:</strong> <span id="clientIP"></span></div>
+    </div>
+    <div style="margin-top: 15px;">
+        <strong>Firma:</strong><br>
+        <img id="signatureImage" style="border: 1px solid #ddd; border-radius: 5px; max-width: 100%; height: auto;">
+    </div>
+</div>
 
         <div class="cta-section">
             <h2>🚀 Trasformiamo Insieme il Centro Sinapsi!</h2>
@@ -2447,19 +2539,73 @@ function checkStoredSignature() {
 }
 
 // Mostra stato firmato
+// 📱 MOSTRA STATO FIRMATO CON ORDINE CORRETTO PER MOBILE
 function showSignedState(signatureData) {
+    // 1. Mostra banner di stato nella parte superiore
     document.getElementById('statusBanner').style.display = 'block';
+
+    // 2. Nasconde la sezione di firma
     document.getElementById('signatureSection').style.display = 'none';
-    document.getElementById('successMessage').classList.add('show');
 
-    const preview = document.getElementById('signaturePreview');
-    preview.style.display = 'block';
+    // 3. PRIMA: Mostra il messaggio di successo (priorità su mobile)
+    const successMessage = document.getElementById('successMessage');
+    successMessage.classList.add('show');
 
-    document.getElementById('signatureDate').textContent = signatureData.timestamp;
-    document.getElementById('selectedPayment').textContent = signatureData.paymentOption;
-    document.getElementById('clientIP').textContent = signatureData.ipAddress || 'N/A';
-    document.getElementById('signatureImage').src = signatureData.signatureData;
+    // 4. DOPO 500ms: Mostra i dettagli della firma
+    setTimeout(() => {
+        const preview = document.getElementById('signaturePreview');
+        preview.style.display = 'block';
+
+        // Popola i dettagli
+        document.getElementById('signatureDate').textContent = signatureData.timestamp;
+        document.getElementById('selectedPayment').textContent = signatureData.paymentOption.description || 'Opzione selezionata';
+        document.getElementById('clientIP').textContent = signatureData.ipAddress || 'N/A';
+        document.getElementById('signatureImage').src = signatureData.signatureData;
+
+        // Animazione di entrata per i dettagli
+        preview.style.opacity = '0';
+        preview.style.transform = 'translateY(20px)';
+        preview.style.transition = 'all 0.5s ease-out';
+
+        setTimeout(() => {
+            preview.style.opacity = '1';
+            preview.style.transform = 'translateY(0)';
+        }, 100);
+
+    }, 500);
+
+    // 5. Scroll automatico al messaggio di successo su mobile
+    if (window.innerWidth <= 768) {
+        setTimeout(() => {
+            successMessage.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }, 200);
+    }
 }
+
+// 📱 FUNZIONE PER OTTIMIZZARE LA VISUALIZZAZIONE SU MOBILE
+function optimizeForMobile() {
+    if (window.innerWidth <= 768) {
+        // Aggiungi classe mobile per ottimizzazioni specifiche
+        document.body.classList.add('mobile-view');
+
+        // Assicura che il messaggio di successo sia sempre visibile
+        const successMessage = document.getElementById('successMessage');
+        if (successMessage.classList.contains('show')) {
+            // Maggiore padding su mobile per il successo
+            successMessage.style.marginTop = '20px';
+            successMessage.style.marginBottom = '20px';
+        }
+    }
+}
+
+// 📱 ASCOLTA RESIZE PER ADATTAMENTO MOBILE
+window.addEventListener('resize', optimizeForMobile);
+
+// 📱 VERIFICA INIZIALE MOBILE
+document.addEventListener('DOMContentLoaded', optimizeForMobile);
 
 // 🚀 GENERA PDF PROFESSIONALE - VERSIONE COMPLETA OTTIMIZZATA
 async function generatePDF() {

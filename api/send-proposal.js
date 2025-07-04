@@ -330,7 +330,7 @@ export default async function handler(req, res) {
     const clientMailOptions = {
       from: `"Domenico Riccio" <${process.env.EMAIL_USER}>`,
       replyTo: 'info@dcreativo.ch',
-      to: 'd8572229@gmail.com', // email della cliente info@centrosinapsi.ch
+      to: '	d8572229@gmail.com', // email della cliente info@centrosinapsi.ch
       subject: '✅ Proposta Centro Sinapsi PWA - Firmata + Istruzioni Pagamento',
       html: clientEmailHTML,
       attachments: [
