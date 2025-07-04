@@ -2075,7 +2075,7 @@
     </div>
 
     <script>
-      // 🧪 CONFIGURAZIONE TEST MODE
+     // 🧪 CONFIGURAZIONE TEST MODE
 const CONFIG = {
     password: 'centrosinapsi2025',
     expiryDays: 30,
@@ -2888,17 +2888,21 @@ async function submitProposal() {
             localStorage.setItem('centrosinapsi_signature', JSON.stringify(signatureData));
         }
 
-        // Genera PDF
+        // 📄 GENERA UN SOLO PDF DI ALTA QUALITÀ
+        console.log('📄 Generazione PDF di alta qualità...');
         const pdf = await generatePDF();
 
-        // Salva PDF
+        // 💾 PREPARA PDF PER DOWNLOAD E EMAIL (STESSA VERSIONE)
         const pdfBlob = pdf.output('blob');
         const pdfBase64 = pdf.output('datauristring');
 
-        // 📧 INVIA EMAIL CON PDF TRAMITE API
+        console.log('✅ PDF generato - Dimensione:', Math.round(pdfBlob.size / 1024), 'KB');
+
+        // 📧 INVIA EMAIL CON PDF DI ALTA QUALITÀ
+        console.log('📧 Invio email con PDF di alta qualità...');
         const emailData = {
             signatureData: signatureData,
-            pdfData: pdfBase64,
+            pdfData: pdfBase64, // Stesso PDF di alta qualità
             proposal: {
                 client: 'Centro Sinapsi - Shote',
                 amount: 'CHF 4\'800',
@@ -2910,8 +2914,17 @@ async function submitProposal() {
         // Invio email reale tramite API
         const emailResult = await sendProposalEmail(emailData);
 
-        // Download automatico PDF
-        pdf.save('Proposta_Centro_Sinapsi_Firmata.pdf');
+        // 📥 DOWNLOAD AUTOMATICO PDF (STESSA VERSIONE)
+        console.log('📥 Download automatico PDF...');
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(pdfBlob);
+        downloadLink.download = 'Proposta_Centro_Sinapsi_Firmata.pdf';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        // Cleanup URL object
+        setTimeout(() => URL.revokeObjectURL(downloadLink.href), 1000);
 
         // Nascondi loading
         document.getElementById('loadingScreen').style.display = 'none';
