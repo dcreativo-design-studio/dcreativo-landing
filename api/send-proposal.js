@@ -62,19 +62,20 @@ export default async function handler(req, res) {
     console.log('✅ Configurazione email verificata');
 
     // Prepara descrizione pagamento
-    let paymentDescription = 'Opzione selezionata';
-    let totalAmount = 'CHF 4\'800+';
-    let paymentAmount = '1440.00';
-    let paymentReference = '';
+    // Prepara descrizione pagamento AGGIORNATA
+let paymentDescription = 'Opzione selezionata';
+let totalAmount = 'CHF 6\'400'; // ✅ Aggiornato
+let paymentAmount = '1920.00'; // ✅ Nuovo acconto 30%
+let paymentReference = '';
 
-    if (signatureData.paymentOption && signatureData.paymentOption.description) {
-      paymentDescription = signatureData.paymentOption.description;
-      totalAmount = signatureData.paymentOption.total || totalAmount;
+if (signatureData.paymentOption && signatureData.paymentOption.description) {
+  paymentDescription = signatureData.paymentOption.description;
+  totalAmount = signatureData.paymentOption.total || totalAmount;
 
-      if (signatureData.paymentOption.details) {
-        paymentDescription += ' - ' + signatureData.paymentOption.details;
-      }
-    }
+  if (signatureData.paymentOption.details) {
+    paymentDescription += ' - ' + signatureData.paymentOption.details;
+  }
+}
 
     // Genera riferimento unico per il pagamento
     const timestamp = new Date().getTime();
@@ -103,7 +104,7 @@ export default async function handler(req, res) {
       },
       iban: PAYMENT_CONFIG.qrIBAN,        // ✅ QR-IBAN per il QR code
       normalIban: PAYMENT_CONFIG.normalIBAN, // ✅ IBAN normale per bonifici
-      message: `Acconto 30% - Sviluppo PWA Centro Sinapsi - Servizi Domenico Riccio - Proposta firmata ${new Date().toLocaleDateString('it-IT')}`
+      message: `Acconto 30% - Sviluppo PWA Centro Sinapsi - Servizi Domenico Riccio - Proposta firmata ${new Date().toLocaleDateString('it-IT')} - Totale CHF 6'400`
     });
 
     // ✅ Template email cliente con IBAN NORMALE - PRODUZIONE
@@ -163,8 +164,8 @@ export default async function handler(req, res) {
                               <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Opzione pagamento:</strong> ${signatureData.paymentOption.description}</td>
                             </tr>
                             <tr>
-                              <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Importo:</strong> ${totalAmount}</td>
-                            </tr>
+    <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Importo:</strong> CHF 6'400</td>
+  </tr>
                             <tr>
                               <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Riferimento:</strong> ${paymentReference}</td>
                             </tr>
@@ -178,20 +179,20 @@ export default async function handler(req, res) {
                       <tr>
                         <td>
                           <div style="text-align: center; margin-bottom: 20px;">
-                            <div style="font-size: 32px; margin-bottom: 8px;">💳</div>
-                            <h3 style="margin: 0 0 8px 0; font-size: 20px; font-weight: 600;">Pagamento Acconto</h3>
-                            <p style="margin: 0 0 15px 0; font-size: 24px; font-weight: bold;">CHF ${paymentAmount}</p>
-                          </div>
+    <div style="font-size: 32px; margin-bottom: 8px;">💳</div>
+    <h3 style="margin: 0 0 8px 0; font-size: 20px; font-weight: 600;">Pagamento Acconto</h3>
+    <p style="margin: 0 0 15px 0; font-size: 24px; font-weight: bold;">CHF 1'920</p>
+  </div>
 
                           <div style="background: rgba(255,255,255,0.15); padding: 20px; border-radius: 8px; margin: 15px 0;">
                             <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #ffffff;">📋 Dati per il Bonifico:</h4>
                             <table style="width: 100%; color: #ffffff; font-size: 14px;">
-                              <tr><td style="padding: 4px 0;"><strong>Beneficiario:</strong></td><td>${PAYMENT_CONFIG.beneficiary}</td></tr>
-                              <tr><td style="padding: 4px 0;"><strong>IBAN:</strong></td><td style="font-family: monospace; font-weight: bold;">${PAYMENT_CONFIG.normalIBAN}</td></tr>
-                              <tr><td style="padding: 4px 0;"><strong>Importo:</strong></td><td style="font-weight: bold;">CHF ${paymentAmount}</td></tr>
-                              <tr><td style="padding: 4px 0;"><strong>Riferimento:</strong></td><td style="font-family: monospace; font-weight: bold;">${paymentReference}</td></tr>
-                              <tr><td style="padding: 4px 0;"><strong>Causale:</strong></td><td>Acconto 30% PWA Centro Sinapsi</td></tr>
-                            </table>
+    <tr><td style="padding: 4px 0;"><strong>Beneficiario:</strong></td><td>Domenico Riccio</td></tr>
+    <tr><td style="padding: 4px 0;"><strong>IBAN:</strong></td><td style="font-family: monospace; font-weight: bold;">CH71 0076 4227 8465 4200 1</td></tr>
+    <tr><td style="padding: 4px 0;"><strong>Importo:</strong></td><td style="font-weight: bold;">CHF 1'920</td></tr>
+    <tr><td style="padding: 4px 0;"><strong>Riferimento:</strong></td><td style="font-family: monospace; font-weight: bold;">${paymentReference}</td></tr>
+    <tr><td style="padding: 4px 0;"><strong>Causale:</strong></td><td>Acconto 30% PWA Centro Sinapsi</td></tr>
+  </table>
                           </div>
 
                           <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 8px; margin: 15px 0;">
@@ -302,9 +303,9 @@ export default async function handler(req, res) {
                           <table role="presentation" style="width: 100%;" cellpadding="0" cellspacing="0" border="0">
                             <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Cliente:</strong> Centro Sinapsi - Shote</td></tr>
                             <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Data firma:</strong> ${signatureData.date}</td></tr>
-                            <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Importo:</strong> ${totalAmount}</td></tr>
-                            <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Acconto richiesto:</strong> CHF ${paymentAmount}</td></tr>
-                            <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Riferimento pagamento:</strong> ${paymentReference}</td></tr>
+                           <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Importo:</strong> CHF 6'400</td></tr>
+  <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Acconto richiesto:</strong> CHF 1'920</td></tr>
+  <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Riferimento pagamento:</strong> ${paymentReference}</td></tr>
                             <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Opzione pagamento:</strong> ${paymentDescription}</td></tr>
                             <tr><td style="padding: 6px 0; font-size: 14px;"><strong>IP cliente:</strong> ${signatureData.clientIP}</td></tr>
                           </table>
@@ -317,9 +318,9 @@ export default async function handler(req, res) {
                       <tr>
                         <td>
                           <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #2c5aa0;">💳 Dati Pagamento Inviati:</h4>
-                          <p style="margin: 5px 0; font-size: 14px;"><strong>IBAN:</strong> ${PAYMENT_CONFIG.normalIBAN}</p>
-                          <p style="margin: 5px 0; font-size: 14px;"><strong>Importo:</strong> CHF ${paymentAmount}</p>
-                          <p style="margin: 5px 0; font-size: 14px;"><strong>Riferimento:</strong> ${paymentReference}</p>
+                          <p style="margin: 5px 0; font-size: 14px;"><strong>IBAN:</strong> CH71 0076 4227 8465 4200 1</p>
+  <p style="margin: 5px 0; font-size: 14px;"><strong>Importo:</strong> CHF 1'920</p>
+  <p style="margin: 5px 0; font-size: 14px;"><strong>Riferimento:</strong> ${paymentReference}</p>
                           <p style="margin: 15px 0 0 0; font-size: 13px; color: #666;"><strong>Nota:</strong> Monitorare l'arrivo del pagamento</p>
                         </td>
                       </tr>
