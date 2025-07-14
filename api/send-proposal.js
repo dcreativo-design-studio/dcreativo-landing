@@ -61,7 +61,7 @@ async function handleCentroSinapsiProposal(req, res, requestBody) {
     }
 
     // Configurazione email
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
