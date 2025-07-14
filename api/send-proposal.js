@@ -1,4 +1,4 @@
-// api/send-proposal.js - 🚀 VERSIONE PRODUZIONE COMPLETA
+// api/send-proposal.js - 🚀 VERSIONE UNIVERSALE (Centro Sinapsi + F4DEZONE)
 const nodemailer = require('nodemailer');
 
 export default async function handler(req, res) {
@@ -16,38 +16,52 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { signatureData, pdfBase64, pdfQuality } = req.body;
+    // 🎯 RILEVA IL TIPO DI PROPOSTA
+    const requestBody = req.body;
+    const proposalType = requestBody.type || 'centro_sinapsi'; // Default Centro Sinapsi
 
-    // 🚀 LOG PRODUZIONE
-    console.log('🚀 PRODUZIONE - Ricevuta richiesta invio email per Centro Sinapsi');
+    console.log(`🚀 Ricevuta richiesta per: ${proposalType.toUpperCase()}`);
+
+    if (proposalType === 'f4dezone_payperuse') {
+      return await handleF4dezoneProposal(req, res, requestBody);
+    } else {
+      return await handleCentroSinapsiProposal(req, res, requestBody);
+    }
+
+  } catch (error) {
+    console.error('❌ Errore generale API:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      details: error.toString()
+    });
+  }
+}
+
+// 🏠 GESTIONE CENTRO SINAPSI (CODICE ESISTENTE)
+async function handleCentroSinapsiProposal(req, res, requestBody) {
+  try {
+    const { signatureData, pdfBase64, pdfQuality } = requestBody;
+
+    console.log('🏠 CENTRO SINAPSI - Processing proposal...');
     console.log('📊 Dati firma ricevuti:', {
       date: signatureData.date,
       clientIP: signatureData.clientIP,
       paymentOption: signatureData.paymentOption?.description || 'N/A'
     });
 
-    // ✅ CORREZIONE: Pulisci il PDF base64 se contiene header
+    // Pulisci PDF base64
     let cleanPdfBase64 = pdfBase64;
     if (pdfBase64.startsWith('data:')) {
       cleanPdfBase64 = pdfBase64.split(',')[1];
-      console.log('🧹 Rimosso header data URI dal PDF');
     }
 
     if (!cleanPdfBase64 || cleanPdfBase64.length < 1000) {
       throw new Error('PDF base64 non valido o troppo piccolo');
     }
 
-    console.log('📄 PDF ricevuto - Dimensione base64:', Math.round(cleanPdfBase64.length * 0.75 / 1024), 'KB stimati');
-
-    // 🏦 CONFIGURAZIONE IBAN DISTINTI - PRODUZIONE
-    const PAYMENT_CONFIG = {
-      normalIBAN: 'CH71 0076 4227 8465 4200 1',  // Per email e bonifici manuali
-      qrIBAN: 'CH93 0076 4227 8465 4200 1',      // Per QR code svizzero
-      beneficiary: 'Domenico Riccio'
-    };
-
-    // Configurazione email transporter
-    const transporter = nodemailer.createTransport({
+    // Configurazione email
+    const transporter = nodemailer.createTransporter({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
@@ -57,33 +71,21 @@ export default async function handler(req, res) {
       },
     });
 
-    // Verifica configurazione
     await transporter.verify();
-    console.log('✅ Configurazione email verificata');
 
-    // Prepara descrizione pagamento
-    // Prepara descrizione pagamento AGGIORNATA
-let paymentDescription = 'Opzione selezionata';
-let totalAmount = 'CHF 6\'400'; // ✅ Aggiornato
-let paymentAmount = '1920.00'; // ✅ Nuovo acconto 30%
-let paymentReference = '';
+    // Configurazione pagamento Centro Sinapsi
+    const PAYMENT_CONFIG = {
+      normalIBAN: 'CH71 0076 4227 8465 4200 1',
+      qrIBAN: 'CH93 0076 4227 8465 4200 1',
+      beneficiary: 'Domenico Riccio'
+    };
 
-if (signatureData.paymentOption && signatureData.paymentOption.description) {
-  paymentDescription = signatureData.paymentOption.description;
-  totalAmount = signatureData.paymentOption.total || totalAmount;
-
-  if (signatureData.paymentOption.details) {
-    paymentDescription += ' - ' + signatureData.paymentOption.details;
-  }
-}
-
-    // Genera riferimento unico per il pagamento
+    // Genera riferimento pagamento
     const timestamp = new Date().getTime();
-    paymentReference = `CS-${timestamp.toString().slice(-8)}`;
+    const paymentReference = `CS-${timestamp.toString().slice(-8)}`;
+    const paymentAmount = '1920.00'; // 30% di CHF 6'400
 
-    console.log('💰 Generazione cedola pagamento con IBAN distinti...');
-
-    // 🎯 GENERA CEDOLA CON ENTRAMBI GLI IBAN
+    // Genera istruzioni pagamento
     const paymentSlipData = await generateSimplePaymentSlip({
       amount: paymentAmount,
       currency: 'CHF',
@@ -102,478 +104,504 @@ if (signatureData.paymentOption && signatureData.paymentOption.description) {
         city: 'Osogna',
         country: 'CH'
       },
-      iban: PAYMENT_CONFIG.qrIBAN,        // ✅ QR-IBAN per il QR code
-      normalIban: PAYMENT_CONFIG.normalIBAN, // ✅ IBAN normale per bonifici
+      iban: PAYMENT_CONFIG.qrIBAN,
+      normalIban: PAYMENT_CONFIG.normalIBAN,
       message: `Acconto 30% - Sviluppo PWA Centro Sinapsi - Servizi Domenico Riccio - Proposta firmata ${new Date().toLocaleDateString('it-IT')} - Totale CHF 6'400`
     });
 
-    // ✅ Template email cliente con IBAN NORMALE - PRODUZIONE
-    const clientEmailHTML = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Proposta Centro Sinapsi Firmata</title>
-      </head>
-      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5;">
-        <table role="presentation" style="width: 100%; margin: 0; padding: 20px 0; background-color: #f0f2f5;" cellpadding="0" cellspacing="0" border="0">
-          <tr>
-            <td align="center">
-              <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" cellpadding="0" cellspacing="0" border="0">
+    // Email templates Centro Sinapsi (USA IL CODICE ESISTENTE)
+    const clientEmailHTML = generateCentroSinapsiClientEmail(signatureData, paymentReference);
+    const developerEmailHTML = generateCentroSinapsiDeveloperEmail(signatureData, paymentReference);
 
-                <!-- Header -->
-                <tr>
-                  <td style="background: linear-gradient(135deg, #1877F2 0%, #166FE5 100%); color: #ffffff; padding: 30px 25px; text-align: center;">
-                    <h1 style="margin: 0 0 8px 0; font-size: 28px; font-weight: 700;">Domenico Riccio</h1>
-                    <p style="margin: 0 0 15px 0; font-size: 16px; opacity: 0.95;">Web & App Solutions</p>
-                    <div style="background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; display: inline-block;">
-                      Full-Stack Senior Developer • 5+ anni esperienza
-                    </div>
-                  </td>
-                </tr>
+    // Configurazione email
+    const clientMailOptions = {
+      from: `"Domenico Riccio" <${process.env.EMAIL_USER}>`,
+      replyTo: 'info@dcreativo.ch',
+      to: 'info@centrosinapsi.ch',
+      subject: '✅ Proposta Centro Sinapsi PWA - Firmata + Istruzioni Pagamento',
+      html: clientEmailHTML,
+      attachments: [
+        {
+          filename: 'proposta_centro_sinapsi_firmata.pdf',
+          content: cleanPdfBase64,
+          encoding: 'base64',
+          contentType: 'application/pdf'
+        },
+        {
+          filename: `Informazioni_Pagamento_${paymentReference}.txt`,
+          content: paymentSlipData,
+          encoding: 'base64',
+          contentType: 'text/plain; charset=utf-8'
+        }
+      ]
+    };
 
-                <!-- Success Banner -->
-                <tr>
-                  <td style="background: linear-gradient(135deg, #42B883 0%, #369870 100%); color: #ffffff; padding: 20px; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 10px;">🎉</div>
-                    <h2 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 600;">Proposta Accettata con Successo!</h2>
-                    <p style="margin: 0; font-size: 14px; opacity: 0.95;">La proposta Centro Sinapsi PWA è stata firmata digitalmente</p>
-                  </td>
-                </tr>
+    const developerMailOptions = {
+      from: `"Centro Sinapsi PWA" <${process.env.EMAIL_USER}>`,
+      replyTo: 'info@dcreativo.ch',
+      to: 'info@dcreativo.ch',
+      subject: '🎉 Nuova Proposta Firmata - Centro Sinapsi + Dati Pagamento',
+      html: developerEmailHTML,
+      attachments: [
+        {
+          filename: 'proposta_centro_sinapsi_firmata.pdf',
+          content: cleanPdfBase64,
+          encoding: 'base64',
+          contentType: 'application/pdf'
+        }
+      ]
+    };
 
-                <!-- Content -->
-                <tr>
-                  <td style="padding: 35px 25px;">
-                    <h3 style="margin: 0 0 20px 0; font-size: 20px; color: #1877F2;">Ciao Shote! 👋</h3>
-
-                    <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.6; color: #333;">
-                      Grazie per aver firmato digitalmente la proposta per lo sviluppo della PWA Centro Sinapsi.
-                    </p>
-
-                    <!-- Details Box -->
-                    <table role="presentation" style="width: 100%; background: #f7f8fa; border: 1px solid #e4e6ea; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
-                      <tr>
-                        <td>
-                          <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #1877F2;">📋 Dettagli della firma:</h4>
-                          <table role="presentation" style="width: 100%;" cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                              <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Data:</strong> ${signatureData.date}</td>
-                            </tr>
-                            <tr>
-                              <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Opzione pagamento:</strong> ${signatureData.paymentOption.description}</td>
-                            </tr>
-                            <tr>
-    <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Importo:</strong> CHF 6'400</td>
-  </tr>
-                            <tr>
-                              <td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Riferimento:</strong> ${paymentReference}</td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                    </table>
-
-                    <!-- 💳 SEZIONE PAGAMENTO CON IBAN NORMALE -->
-                    <table role="presentation" style="width: 100%; background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); color: #ffffff; border-radius: 12px; margin: 30px 0;" cellpadding="25" cellspacing="0" border="0">
-                      <tr>
-                        <td>
-                          <div style="text-align: center; margin-bottom: 20px;">
-    <div style="font-size: 32px; margin-bottom: 8px;">💳</div>
-    <h3 style="margin: 0 0 8px 0; font-size: 20px; font-weight: 600;">Pagamento Acconto</h3>
-    <p style="margin: 0 0 15px 0; font-size: 24px; font-weight: bold;">CHF 1'920</p>
-  </div>
-
-                          <div style="background: rgba(255,255,255,0.15); padding: 20px; border-radius: 8px; margin: 15px 0;">
-                            <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #ffffff;">📋 Dati per il Bonifico:</h4>
-                            <table style="width: 100%; color: #ffffff; font-size: 14px;">
-    <tr><td style="padding: 4px 0;"><strong>Beneficiario:</strong></td><td>Domenico Riccio</td></tr>
-    <tr><td style="padding: 4px 0;"><strong>IBAN:</strong></td><td style="font-family: monospace; font-weight: bold;">CH71 0076 4227 8465 4200 1</td></tr>
-    <tr><td style="padding: 4px 0;"><strong>Importo:</strong></td><td style="font-weight: bold;">CHF 1'920</td></tr>
-    <tr><td style="padding: 4px 0;"><strong>Riferimento:</strong></td><td style="font-family: monospace; font-weight: bold;">${paymentReference}</td></tr>
-    <tr><td style="padding: 4px 0;"><strong>Causale:</strong></td><td>Acconto 30% PWA Centro Sinapsi</td></tr>
-  </table>
-                          </div>
-
-                          <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 8px; margin: 15px 0;">
-                            <h4 style="margin: 0 0 10px 0; font-size: 14px;">📱 QR Code per Pagamento Rapido:</h4>
-                            <p style="margin: 0; font-size: 13px; line-height: 1.4;">
-                              Il QR code per il pagamento è disponibile nel file allegato "Informazioni_Pagamento_${paymentReference}.txt"
-                            </p>
-                          </div>
-                        </td>
-                      </tr>
-                    </table>
-
-                    <!-- Attachment Notice -->
-                    <table role="presentation" style="width: 100%; background: linear-gradient(135deg, #FFB946 0%, #FF8C42 100%); color: #ffffff; border-radius: 8px; margin: 25px 0;" cellpadding="18" cellspacing="0" border="0">
-                      <tr>
-                        <td style="text-align: center;">
-                          <div style="font-size: 24px; margin-bottom: 8px;">📎</div>
-                          <h3 style="margin: 0 0 5px 0; font-size: 16px; font-weight: 600;">Allegati Inclusi</h3>
-                          <p style="margin: 0; font-size: 14px; opacity: 0.95;">✓ Proposta firmata (PDF)<br>✓ Istruzioni dettagliate pagamento con QR code</p>
-                        </td>
-                      </tr>
-                    </table>
-
-                    <p style="margin: 20px 0; font-size: 15px; line-height: 1.6; color: #333;">
-                      <strong>Prossimi passi:</strong><br>
-                      1. Effettua il pagamento dell'acconto usando i dati sopra riportati<br>
-                      2. Ti contatteremo entro 24 ore per organizzare il primo incontro<br>
-                      3. Inizieremo subito lo sviluppo della tua PWA
-                    </p>
-
-                    <!-- Contact Info -->
-                    <table role="presentation" style="width: 100%; background: #f7f8fa; border-radius: 8px; margin: 25px 0;" cellpadding="25" cellspacing="0" border="0">
-                      <tr>
-                        <td style="text-align: center;">
-                          <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #1c1e21;">📞 Contatti Diretti</h4>
-                          <p style="margin: 5px 0; font-size: 14px; color: #333;"><strong>WhatsApp:</strong> +41 76 781 01 94</p>
-                          <p style="margin: 5px 0; font-size: 14px; color: #333;"><strong>Email:</strong> info@dcreativo.ch</p>
-                          <p style="margin: 5px 0; font-size: 14px; color: #333;"><strong>Web:</strong> dcreativo.ch</p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-
-                <!-- Footer -->
-                <tr>
-                  <td style="background: #1c1e21; color: #e4e6ea; padding: 30px 25px; text-align: center;">
-                    <h3 style="margin: 0 0 10px 0; font-size: 18px; color: #1877F2;">Domenico Riccio</h3>
-                    <p style="margin: 0 0 15px 0; font-size: 13px; opacity: 0.8;">Web & App Solutions</p>
-                    <p style="margin: 0; font-size: 12px; opacity: 0.6;">Sviluppatore Full-Stack Senior • Next.js • React • TypeScript</p>
-                  </td>
-                </tr>
-
-              </table>
-            </td>
-          </tr>
-        </table>
-      </body>
-      </html>
-    `;
-
-    // Template email per il programmatore
-    const developerEmailHTML = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nuova Proposta Firmata - Centro Sinapsi</title>
-      </head>
-      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5;">
-        <table role="presentation" style="width: 100%; margin: 0; padding: 20px 0; background-color: #f0f2f5;" cellpadding="0" cellspacing="0" border="0">
-          <tr>
-            <td align="center">
-              <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" cellpadding="0" cellspacing="0" border="0">
-
-                <!-- Header -->
-                <tr>
-                  <td style="background: linear-gradient(135deg, #42B883 0%, #369870 100%); color: #ffffff; padding: 30px 25px; text-align: center;">
-                    <div style="font-size: 48px; margin-bottom: 15px;">🎉</div>
-                    <h1 style="margin: 0; font-size: 24px; font-weight: 700;">PROPOSTA FIRMATA!</h1>
-                    <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.95;">Centro Sinapsi PWA</p>
-                  </td>
-                </tr>
-
-                <!-- Content -->
-                <tr>
-                  <td style="padding: 35px 25px;">
-                    <p style="margin: 0 0 25px 0; font-size: 16px; line-height: 1.6; color: #333;">
-                      La cliente <strong>Shote del Centro Sinapsi</strong> ha appena firmato la proposta PWA.
-                    </p>
-
-                    <!-- Alert Box -->
-                    <table role="presentation" style="width: 100%; background: #ff6b35; color: #ffffff; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
-                      <tr>
-                        <td>
-                          <h3 style="margin: 0 0 10px 0; font-size: 18px;">🚀 AZIONE RICHIESTA:</h3>
-                          <p style="margin: 0; font-size: 15px;">Contattare la cliente entro 24 ore per organizzare il primo incontro e verificare il pagamento dell'acconto.</p>
-                        </td>
-                      </tr>
-                    </table>
-
-                    <!-- Details Table -->
-                    <table role="presentation" style="width: 100%; background: #f7f8fa; border: 1px solid #e4e6ea; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
-                      <tr>
-                        <td>
-                          <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #2c5aa0;">📋 Dettagli Completi:</h4>
-                          <table role="presentation" style="width: 100%;" cellpadding="0" cellspacing="0" border="0">
-                            <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Cliente:</strong> Centro Sinapsi - Shote</td></tr>
-                            <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Data firma:</strong> ${signatureData.date}</td></tr>
-                           <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Importo:</strong> CHF 6'400</td></tr>
-  <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Acconto richiesto:</strong> CHF 1'920</td></tr>
-  <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Riferimento pagamento:</strong> ${paymentReference}</td></tr>
-                            <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Opzione pagamento:</strong> ${paymentDescription}</td></tr>
-                            <tr><td style="padding: 6px 0; font-size: 14px;"><strong>IP cliente:</strong> ${signatureData.clientIP}</td></tr>
-                          </table>
-                        </td>
-                      </tr>
-                    </table>
-
-                    <!-- Payment Info for Developer -->
-                    <table role="presentation" style="width: 100%; background: #e3f2fd; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
-                      <tr>
-                        <td>
-                          <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #2c5aa0;">💳 Dati Pagamento Inviati:</h4>
-                          <p style="margin: 5px 0; font-size: 14px;"><strong>IBAN:</strong> CH71 0076 4227 8465 4200 1</p>
-  <p style="margin: 5px 0; font-size: 14px;"><strong>Importo:</strong> CHF 1'920</p>
-  <p style="margin: 5px 0; font-size: 14px;"><strong>Riferimento:</strong> ${paymentReference}</p>
-                          <p style="margin: 15px 0 0 0; font-size: 13px; color: #666;"><strong>Nota:</strong> Monitorare l'arrivo del pagamento</p>
-                        </td>
-                      </tr>
-                    </table>
-
-                    <!-- Contact Info -->
-                    <table role="presentation" style="width: 100%; background: #e3f2fd; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
-                      <tr>
-                        <td>
-                          <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #2c5aa0;">📞 Contatti Cliente:</h4>
-                          <p style="margin: 5px 0; font-size: 14px;"><strong>Email:</strong> info@centrosinapsi.ch</p>
-                          <p style="margin: 5px 0; font-size: 14px;"><strong>Tel:</strong> 078 846 06 87</p>
-                          <p style="margin: 15px 0 0 0; font-size: 13px; color: #666;"><strong>Allegati:</strong> PDF firmato + Istruzioni pagamento</p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </body>
-      </html>
-    `;
-
-    // 🧪 VERSIONE TEST TEMPORANEA - send-proposal.js
-// Sostituisci SOLO questa sezione per il test:
-
-// ✅ OPZIONI EMAIL CLIENTE - TEST TEMPORANEO
-const clientMailOptions = {
-  from: `"Domenico Riccio" <${process.env.EMAIL_USER}>`,
-  replyTo: 'info@dcreativo.ch',
-  to: 'info@centrosinapsi.ch', // 🚀 EMAIL CLIENTE REALE
-  subject: '✅ Proposta Centro Sinapsi PWA - Firmata + Istruzioni Pagamento',
-  html: clientEmailHTML,
-  attachments: [
-    {
-      filename: 'proposta_centro_sinapsi_firmata.pdf',
-      content: cleanPdfBase64,
-      encoding: 'base64',
-      contentType: 'application/pdf'
-    },
-    {
-      filename: `Informazioni_Pagamento_${paymentReference}.txt`,
-      content: paymentSlipData,
-      encoding: 'base64',
-      contentType: 'text/plain; charset=utf-8'
-    }
-  ]
-};
-
-const developerMailOptions = {
-  from: `"Centro Sinapsi PWA" <${process.env.EMAIL_USER}>`,
-  replyTo: 'info@dcreativo.ch',
-  to: 'timm81379@gmail.com', // Email programmatore
-  subject: '🎉 Nuova Proposta Firmata - Centro Sinapsi + Dati Pagamento',
-  html: developerEmailHTML,
-  attachments: [
-    {
-      filename: 'proposta_centro_sinapsi_firmata.pdf',
-      content: cleanPdfBase64,
-      encoding: 'base64',
-      contentType: 'application/pdf'
-    },
-    {
-      filename: `Informazioni_Pagamento_${paymentReference}.txt`,
-      content: paymentSlipData,
-      encoding: 'base64',
-      contentType: 'text/plain; charset=utf-8'
-    }
-  ]
-};
-
-// 🚀 LOG PRODUZIONE FINALE
-console.log('🚀 MODALITÀ PRODUZIONE FINALE ATTIVA');
-console.log('📧 Email cliente REALE:', clientMailOptions.to);
-console.log('📧 Email programmatore:', developerMailOptions.to);
-    // Invio email alla cliente
-    console.log('📤 Invio email alla cliente...');
+    // Invio email
     const clientResult = await transporter.sendMail(clientMailOptions);
-    console.log('✅ Email cliente inviata:', clientResult.messageId);
-
-    // Invio email al programmatore
-    console.log('📤 Invio email al programmatore...');
     const developerResult = await transporter.sendMail(developerMailOptions);
-    console.log('✅ Email programmatore inviata:', developerResult.messageId);
 
-    // Risposta di successo
     res.status(200).json({
       success: true,
-      message: 'Email inviate con successo con PDF corretto! - PRODUZIONE',
+      message: 'Centro Sinapsi - Email inviate con successo!',
       clientMessageId: clientResult.messageId,
       developerMessageId: developerResult.messageId,
       paymentReference: paymentReference,
-      pdfSize: Math.round(cleanPdfBase64.length * 0.75 / 1024) + 'KB',
-      mode: 'PRODUCTION'
+      type: 'centro_sinapsi'
     });
 
   } catch (error) {
-    console.error('❌ Errore invio email PRODUZIONE:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message,
-      details: error.toString(),
-      mode: 'PRODUCTION'
-    });
+    console.error('❌ Errore Centro Sinapsi:', error);
+    throw error;
   }
 }
 
-// 🎯 GENERA FILE DI TESTO CON IBAN NORMALE E QR-IBAN DISTINTI
-async function generateSimplePaymentSlip(paymentData) {
+// ✂️ GESTIONE F4DEZONE PAY-PER-USE (NUOVO)
+async function handleF4dezoneProposal(req, res, requestBody) {
   try {
-    console.log('📄 Generazione istruzioni pagamento...');
+    const { signatureData, pdfBase64, emailCliente, emailSviluppatore, testMode } = requestBody;
 
-    // Genera QR Code URL con QR-IBAN
-    const qrCodeUrl = await generateSwissQRCodeStable(paymentData);
+    console.log('✂️ F4DEZONE PAY-PER-USE - Processing proposal...');
+    console.log('📊 Dati firma ricevuti:', {
+      date: signatureData.date,
+      cliente: signatureData.cliente,
+      sistema: signatureData.sistema,
+      partnership: signatureData.partnership,
+      testMode: testMode
+    });
 
-    // ✅ CONTENUTO CON IBAN NORMALE PER BONIFICI E QR-IBAN PER QR CODE
-    const paymentContent = `
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                         ISTRUZIONI PER IL PAGAMENTO                         ║
-║                        Centro Sinapsi - Sviluppo PWA                        ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+    // Pulisci PDF base64
+    let cleanPdfBase64 = pdfBase64;
+    if (pdfBase64.startsWith('data:')) {
+      cleanPdfBase64 = pdfBase64.split(',')[1];
+    }
 
-🎯 DATI PER IL BONIFICO BANCARIO
-═══════════════════════════════════
+    if (!cleanPdfBase64 || cleanPdfBase64.length < 1000) {
+      throw new Error('PDF base64 non valido o troppo piccolo');
+    }
 
-Beneficiario:    ${paymentData.creditor.name}
-Indirizzo:       ${paymentData.creditor.address}
-                 ${paymentData.creditor.postalCode} ${paymentData.creditor.city}, ${paymentData.creditor.country}
+    // Configurazione email
+    const transporter = nodemailer.createTransporter({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-IBAN:            ${paymentData.normalIban || paymentData.iban}
-                 ⚠️ Usa questo IBAN per bonifici manuali
+    await transporter.verify();
 
-Importo:         ${paymentData.currency} ${paymentData.amount}
+    // Genera riferimento unico
+    const timestamp = new Date().getTime();
+    const contractReference = `F4D-${timestamp.toString().slice(-8)}`;
 
-Riferimento:     ${paymentData.reference}
-                 ⚠️ IMPORTANTE: Inserisci questo riferimento nel bonifico
+    // Email templates F4DEZONE
+    const clientEmailHTML = generateF4dezoneClientEmail(signatureData, contractReference, testMode);
+    const developerEmailHTML = generateF4dezoneDeveloperEmail(signatureData, contractReference, testMode);
 
-Causale:         ${paymentData.message}
+    // Configurazione email cliente
+    const clientMailOptions = {
+      from: `"Domenico Riccio - F4DEZONE" <${process.env.EMAIL_USER}>`,
+      replyTo: 'info@dcreativo.ch',
+      to: emailCliente,
+      subject: testMode ?
+        '🧪 [TEST] F4DEZONE - Sistema Pay-Per-Use Attivato!' :
+        '🚀 F4DEZONE - Sistema Pay-Per-Use Attivato!',
+      html: clientEmailHTML,
+      attachments: [
+        {
+          filename: 'F4DEZONE_PayPerUse_Contratto_Firmato.pdf',
+          content: cleanPdfBase64,
+          encoding: 'base64',
+          contentType: 'application/pdf'
+        }
+      ]
+    };
 
-Data limite:     Non specificata (consigliato entro 7 giorni)
+    // Configurazione email sviluppatore
+    const developerMailOptions = {
+      from: `"F4DEZONE Pay-Per-Use" <${process.env.EMAIL_USER}>`,
+      replyTo: 'info@dcreativo.ch',
+      to: emailSviluppatore,
+      subject: testMode ?
+        '🧪 [TEST] Nuovo Contratto Pay-Per-Use - F4DEZONE' :
+        '💰 Nuovo Contratto Pay-Per-Use - F4DEZONE',
+      html: developerEmailHTML,
+      attachments: [
+        {
+          filename: 'F4DEZONE_PayPerUse_Contratto_Firmato.pdf',
+          content: cleanPdfBase64,
+          encoding: 'base64',
+          contentType: 'application/pdf'
+        }
+      ]
+    };
 
-═══════════════════════════════════════════════════════════════════════════════
+    // Invio email
+    console.log('📤 Invio email F4DEZONE...');
+    console.log('📧 Cliente:', emailCliente);
+    console.log('📧 Sviluppatore:', emailSviluppatore);
+    console.log('🧪 Test Mode:', testMode);
 
-💳 COME EFFETTUARE IL PAGAMENTO
-════════════════════════════════
+    const clientResult = await transporter.sendMail(clientMailOptions);
+    const developerResult = await transporter.sendMail(developerMailOptions);
 
-📱 METODO 1 - QR CODE RAPIDO (CONSIGLIATO):
-
-   1. Apri la tua app di e-banking svizzera
-   2. Scansiona il QR code usando questo link:
-      ${qrCodeUrl}
-   3. Verifica che tutti i dati siano corretti
-   4. Conferma il pagamento
-
-💻 METODO 2 - BONIFICO MANUALE:
-
-   1. Accedi al tuo e-banking
-   2. Crea un nuovo bonifico con questi dati:
-      - IBAN: ${paymentData.normalIban || paymentData.iban}
-      - Importo: ${paymentData.currency} ${paymentData.amount}
-      - Beneficiario: ${paymentData.creditor.name}
-      - Riferimento: ${paymentData.reference}
-      - Causale: ${paymentData.message}
-   3. Controlla tutti i dati prima di inviare
-   4. Conferma il pagamento
-
-═══════════════════════════════════════════════════════════════════════════════
-
-📋 INFORMAZIONI IMPORTANTI
-═══════════════════════════
-
-✅ CONTROLLA SEMPRE:
-   • L'IBAN sia corretto: ${paymentData.normalIban || paymentData.iban}
-   • L'importo sia esatto: ${paymentData.currency} ${paymentData.amount}
-   • Il riferimento sia inserito: ${paymentData.reference}
-
-⚠️ ATTENZIONE:
-   • Non modificare l'importo
-   • Il riferimento è obbligatorio per identificare il pagamento
-   • Conserva la ricevuta del bonifico
-
-🏦 TEMPISTICHE:
-   • Bonifici in Svizzera: 1-2 giorni lavorativi
-   • Bonifici UE: 1-3 giorni lavorativi
-   • Ti contatteremo dopo aver ricevuto il pagamento
-
-═══════════════════════════════════════════════════════════════════════════════
-
-📞 CONTATTI E SUPPORTO
-═══════════════════════
-
-Hai domande sul pagamento?
-
-Domenico Riccio - Web & App Solutions
-📱 WhatsApp: +41 76 781 01 94
-📧 Email: info@dcreativo.ch
-🌐 Web: dcreativo.ch
-
-Orari di contatto:
-Lunedì - Venerdì: 9:00 - 18:00
-Sabato: 9:00 - 12:00 (solo urgenze)
-
-═══════════════════════════════════════════════════════════════════════════════
-
-🎉 COSA SUCCEDE DOPO IL PAGAMENTO
-═══════════════════════════════════
-
-1️⃣ Confermeremo la ricezione del pagamento entro 24 ore
-2️⃣ Organizzeremo il primo incontro di progetto
-3️⃣ Inizieremo immediatamente lo sviluppo della PWA
-4️⃣ Ti terremo aggiornata su tutti i progressi
-
-═══════════════════════════════════════════════════════════════════════════════
-
-📱 QR CODE PER PAGAMENTO RAPIDO
-═══════════════════════════════════
-
-Apri questo link nel browser del tuo smartphone e scansiona il QR code:
-${qrCodeUrl}
-
-Il QR code contiene tutti i dati del bonifico in formato standard svizzero,
-compatibile con tutte le app di e-banking svizzere.
-
-📝 DETTAGLI TECNICI:
-• QR-IBAN usato: ${paymentData.iban}
-• IBAN normale per bonifici: ${paymentData.normalIban || paymentData.iban}
-• Standard: QR-Bill Svizzero
-• Codifica: UTF-8
-
-═══════════════════════════════════════════════════════════════════════════════
-
-Documento generato automaticamente il ${new Date().toLocaleDateString('it-IT')}
-alle ore ${new Date().toLocaleTimeString('it-IT')}
-
-© 2025 Domenico Riccio - Web & App Solutions
-Tutti i diritti riservati.
-
-═══════════════════════════════════════════════════════════════════════════════
-    `;
-
-    console.log('✅ Istruzioni pagamento generate con IBAN distinti');
-    return Buffer.from(paymentContent.trim(), 'utf8').toString('base64');
+    res.status(200).json({
+      success: true,
+      message: 'F4DEZONE Pay-Per-Use - Sistema attivato e email inviate!',
+      clientMessageId: clientResult.messageId,
+      developerMessageId: developerResult.messageId,
+      contractReference: contractReference,
+      type: 'f4dezone_payperuse',
+      testMode: testMode,
+      billingStart: 'Piano STARTER - CHF 89/mese'
+    });
 
   } catch (error) {
-    console.error('❌ Errore generazione istruzioni:', error);
+    console.error('❌ Errore F4DEZONE:', error);
+    throw error;
+  }
+}
 
-    // Fallback semplice
-    const simpleContent = `
+// 📧 TEMPLATE EMAIL F4DEZONE CLIENTE
+function generateF4dezoneClientEmail(signatureData, contractReference, testMode = false) {
+  const testBanner = testMode ? `
+    <tr>
+      <td style="background: #9C27B0; color: #ffffff; padding: 15px; text-align: center; font-weight: bold;">
+        🧪 MODALITÀ TEST ATTIVA - Questa è un'email di prova
+      </td>
+    </tr>
+  ` : '';
+
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>F4DEZONE - Sistema Pay-Per-Use Attivato</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5;">
+      <table role="presentation" style="width: 100%; margin: 0; padding: 20px 0; background-color: #f0f2f5;" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="center">
+            <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" cellpadding="0" cellspacing="0" border="0">
+
+              ${testBanner}
+
+              <!-- Header -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); color: #ffffff; padding: 30px 25px; text-align: center;">
+                  <div style="font-size: 48px; margin-bottom: 15px;">✂️</div>
+                  <h1 style="margin: 0 0 8px 0; font-size: 28px; font-weight: 700;">F4DEZONE</h1>
+                  <p style="margin: 0 0 15px 0; font-size: 16px; opacity: 0.95;">Sistema Pay-Per-Use Attivato!</p>
+                  <div style="background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; display: inline-block;">
+                    Piano STARTER • CHF 89/mese • 0-100 prenotazioni
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Success Banner -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); color: #ffffff; padding: 20px; text-align: center;">
+                  <div style="font-size: 32px; margin-bottom: 10px;">🎉</div>
+                  <h2 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 600;">Sistema Attivato con Successo!</h2>
+                  <p style="margin: 0; font-size: 14px; opacity: 0.95;">La tua app F4DEZONE è ora operativa con billing automatico</p>
+                </td>
+              </tr>
+
+              <!-- Content -->
+              <tr>
+                <td style="padding: 35px 25px;">
+                  <h3 style="margin: 0 0 20px 0; font-size: 20px; color: #FF6B35;">Ciao Santiago! 👋</h3>
+
+                  <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.6; color: #333;">
+                    Il tuo sistema pay-per-use è ora <strong>attivo e operativo</strong>! L'app F4DEZONE inizierà subito a tracciare le prenotazioni e fatturerà automaticamente in base all'utilizzo reale.
+                  </p>
+
+                  <!-- Sistema Pay-Per-Use Box -->
+                  <table role="presentation" style="width: 100%; background: #f7f8fa; border: 1px solid #e4e6ea; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
+                    <tr>
+                      <td>
+                        <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #FF6B35;">🚀 Il Tuo Sistema Pay-Per-Use:</h4>
+                        <table role="presentation" style="width: 100%;" cellpadding="0" cellspacing="0" border="0">
+                          <tr><td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Piano iniziale:</strong> STARTER (CHF 89/mese)</td></tr>
+                          <tr><td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Limite prenotazioni:</strong> 0-100 al mese</td></tr>
+                          <tr><td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Data attivazione:</strong> ${signatureData.date}</td></tr>
+                          <tr><td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Contratto:</strong> ${contractReference}</td></tr>
+                          <tr><td style="padding: 8px 0; font-size: 14px; color: #333;"><strong>Fatturazione:</strong> Automatica mensile con Stripe</td></tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Partnership Box -->
+                  <table role="presentation" style="width: 100%; background: linear-gradient(135deg, #2c5aa0 0%, #1e4080 100%); color: #ffffff; border-radius: 12px; margin: 30px 0;" cellpadding="25" cellspacing="0" border="0">
+                    <tr>
+                      <td>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                          <div style="font-size: 32px; margin-bottom: 8px;">🤝</div>
+                          <h3 style="margin: 0 0 8px 0; font-size: 20px; font-weight: 600;">Partnership Completa</h3>
+                          <p style="margin: 0; font-size: 14px; opacity: 0.95;">Servizi digitali inclusi nella collaborazione</p>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.15); padding: 20px; border-radius: 8px;">
+                          <h4 style="margin: 0 0 15px 0; font-size: 16px;">🎯 Servizi Inclusi:</h4>
+                          <p style="margin: 5px 0; font-size: 14px;">✂️ <strong>1 taglio completo/mese</strong> in cambio di design e poster</p>
+                          <p style="margin: 5px 0; font-size: 14px;">📧 <strong>Setup Gmail Business</strong> con account professionale</p>
+                          <p style="margin: 5px 0; font-size: 14px;">🗺️ <strong>Google Business Profile</strong> ottimizzato</p>
+                          <p style="margin: 5px 0; font-size: 14px;">🎯 <strong>Google Ads Setup</strong> con campagne</p>
+                          <p style="margin: 5px 0; font-size: 14px;">📸 <strong>Foto professionali</strong> barbers + ambiente</p>
+                          <p style="margin: 5px 0; font-size: 14px;">🎬 <strong>Video promozionali</strong> barbershop</p>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Piani Dinamici -->
+                  <table role="presentation" style="width: 100%; background: #e3f2fd; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
+                    <tr>
+                      <td>
+                        <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #2c5aa0;">📈 Crescita Automatica:</h4>
+                        <p style="margin: 5px 0; font-size: 13px;">🌱 <strong>STARTER:</strong> CHF 89/mese (0-100 prenotazioni)</p>
+                        <p style="margin: 5px 0; font-size: 13px;">🚀 <strong>BUSINESS:</strong> CHF 149/mese (101-300 prenotazioni)</p>
+                        <p style="margin: 5px 0; font-size: 13px;">💎 <strong>PREMIUM:</strong> CHF 249/mese (301-1000 prenotazioni)</p>
+                        <p style="margin: 5px 0; font-size: 13px;">🏆 <strong>ENTERPRISE:</strong> CHF 0.25 per prenotazione oltre le 1000</p>
+                        <p style="margin: 15px 0 0 0; font-size: 12px; color: #666;"><strong>L'upgrade è automatico quando superi i limiti del piano corrente</strong></p>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <p style="margin: 20px 0; font-size: 15px; line-height: 1.6; color: #333;">
+                    <strong>Cosa succede ora:</strong><br>
+                    1. L'app traccia automaticamente tutte le prenotazioni<br>
+                    2. Riceverai report mensili dettagliati<br>
+                    3. La fatturazione avviene automaticamente via Stripe<br>
+                    4. Iniziamo subito con i servizi della partnership
+                  </p>
+
+                  <!-- Contact Info -->
+                  <table role="presentation" style="width: 100%; background: #f7f8fa; border-radius: 8px; margin: 25px 0;" cellpadding="25" cellspacing="0" border="0">
+                    <tr>
+                      <td style="text-align: center;">
+                        <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #1c1e21;">📞 Domenico Riccio</h4>
+                        <p style="margin: 5px 0; font-size: 14px; color: #333;"><strong>WhatsApp:</strong> +41 76 781 01 94</p>
+                        <p style="margin: 5px 0; font-size: 14px; color: #333;"><strong>Email:</strong> info@dcreativo.ch</p>
+                        <p style="margin: 5px 0; font-size: 14px; color: #333;"><strong>Web:</strong> dcreativo.ch</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- Footer -->
+              <tr>
+                <td style="background: #1c1e21; color: #e4e6ea; padding: 30px 25px; text-align: center;">
+                  <h3 style="margin: 0 0 10px 0; font-size: 18px; color: #FF6B35;">F4DEZONE Pay-Per-Use</h3>
+                  <p style="margin: 0 0 15px 0; font-size: 13px; opacity: 0.8;">Sistema di billing intelligente by Domenico Riccio</p>
+                  <p style="margin: 0; font-size: 12px; opacity: 0.6;">Cresci e paga solo quello che usi • Scalabilità automatica</p>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
+}
+
+// 📧 TEMPLATE EMAIL F4DEZONE SVILUPPATORE
+function generateF4dezoneDeveloperEmail(signatureData, contractReference, testMode = false) {
+  const testBanner = testMode ? `
+    <tr>
+      <td style="background: #9C27B0; color: #ffffff; padding: 15px; text-align: center; font-weight: bold;">
+        🧪 MODALITÀ TEST ATTIVA - Contratto di prova
+      </td>
+    </tr>
+  ` : '';
+
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Nuovo Contratto Pay-Per-Use - F4DEZONE</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5;">
+      <table role="presentation" style="width: 100%; margin: 0; padding: 20px 0; background-color: #f0f2f5;" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="center">
+            <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" cellpadding="0" cellspacing="0" border="0">
+
+              ${testBanner}
+
+              <!-- Header -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); color: #ffffff; padding: 30px 25px; text-align: center;">
+                  <div style="font-size: 48px; margin-bottom: 15px;">💰</div>
+                  <h1 style="margin: 0; font-size: 24px; font-weight: 700;">NUOVO CONTRATTO PAY-PER-USE!</h1>
+                  <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.95;">F4DEZONE BARBERS - Santiago Prat</p>
+                </td>
+              </tr>
+
+              <!-- Content -->
+              <tr>
+                <td style="padding: 35px 25px;">
+                  <p style="margin: 0 0 25px 0; font-size: 16px; line-height: 1.6; color: #333;">
+                    <strong>Santiago Prat di F4DEZONE BARBERS</strong> ha appena firmato il contratto pay-per-use.
+                  </p>
+
+                  <!-- Alert Box -->
+                  <table role="presentation" style="width: 100%; background: #FF6B35; color: #ffffff; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
+                    <tr>
+                      <td>
+                        <h3 style="margin: 0 0 10px 0; font-size: 18px;">✂️ SISTEMA ATTIVATO:</h3>
+                        <p style="margin: 0; font-size: 15px;">Il billing automatico F4DEZONE è ora operativo. Piano iniziale: STARTER (CHF 89/mese).</p>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Details Table -->
+                  <table role="presentation" style="width: 100%; background: #f7f8fa; border: 1px solid #e4e6ea; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
+                    <tr>
+                      <td>
+                        <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #2c5aa0;">📋 Dettagli Contratto:</h4>
+                        <table role="presentation" style="width: 100%;" cellpadding="0" cellspacing="0" border="0">
+                          <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Cliente:</strong> F4DEZONE BARBERS - Santiago Prat</td></tr>
+                          <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Data firma:</strong> ${signatureData.date}</td></tr>
+                          <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Sistema:</strong> ${signatureData.sistema}</td></tr>
+                          <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Contratto:</strong> ${contractReference}</td></tr>
+                          <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Partnership:</strong> ${signatureData.partnership}</td></tr>
+                          <tr><td style="padding: 6px 0; font-size: 14px;"><strong>IP cliente:</strong> ${signatureData.clientIP}</td></tr>
+                          <tr><td style="padding: 6px 0; font-size: 14px;"><strong>Test Mode:</strong> ${testMode ? 'ATTIVO' : 'DISATTIVO'}</td></tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Billing Info -->
+                  <table role="presentation" style="width: 100%; background: #e3f2fd; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
+                    <tr>
+                      <td>
+                        <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #2c5aa0;">💳 Billing Automatico:</h4>
+                        <p style="margin: 5px 0; font-size: 14px;"><strong>Piano attuale:</strong> STARTER - CHF 89/mese</p>
+                        <p style="margin: 5px 0; font-size: 14px;"><strong>Limite:</strong> 0-100 prenotazioni/mese</p>
+                        <p style="margin: 5px 0; font-size: 14px;"><strong>Fatturazione:</strong> Automatica mensile con Stripe</p>
+                        <p style="margin: 5px 0; font-size: 14px;"><strong>Upgrade:</strong> Automatico quando supera i limiti</p>
+                        <p style="margin: 15px 0 0 0; font-size: 13px; color: #666;"><strong>Nota:</strong> Revenue sharing iniziato!</p>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Partnership Details -->
+                  <table role="presentation" style="width: 100%; background: #fff3cd; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
+                    <tr>
+                      <td>
+                        <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #ff6b35;">🤝 Partnership Attiva:</h4>
+                        <p style="margin: 5px 0; font-size: 14px;">✂️ <strong>1 taglio completo/mese</strong> per design e poster</p>
+                        <p style="margin: 5px 0; font-size: 14px;">📧 <strong>Setup Gmail Business</strong> completare</p>
+                        <p style="margin: 5px 0; font-size: 14px;">🗺️ <strong>Google Business Profile</strong> ottimizzare</p>
+                        <p style="margin: 5px 0; font-size: 14px;">🎯 <strong>Google Ads Setup</strong> configurare</p>
+                        <p style="margin: 5px 0; font-size: 14px;">📸 <strong>Foto barbers</strong> programmare</p>
+                        <p style="margin: 5px 0; font-size: 14px;">🎬 <strong>Video barbershop</strong> pianificare</p>
+                        <p style="margin: 15px 0 0 0; font-size: 13px; color: #666;"><strong>Azione:</strong> Pianificare i servizi della partnership</p>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Contact Info -->
+                  <table role="presentation" style="width: 100%; background: #e3f2fd; border-radius: 8px; margin: 25px 0;" cellpadding="20" cellspacing="0" border="0">
+                    <tr>
+                      <td>
+                        <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #2c5aa0;">📞 Contatti Cliente:</h4>
+                        <p style="margin: 5px 0; font-size: 14px;"><strong>Santiago Prat</strong></p>
+                        <p style="margin: 5px 0; font-size: 14px;"><strong>Tel:</strong> +41 78 930 15 99</p>
+                        <p style="margin: 5px 0; font-size: 14px;"><strong>Barbershop:</strong> Via Zurigo 2, 6900 Lugano</p>
+                        <p style="margin: 15px 0 0 0; font-size: 13px; color: #666;"><strong>Allegato:</strong> Contratto firmato PDF</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
+}
+
+// 📧 TEMPLATE EMAIL CENTRO SINAPSI (CODICE ESISTENTE ACCORCIATO)
+function generateCentroSinapsiClientEmail(signatureData, paymentReference) {
+  // USA IL TEMPLATE ESISTENTE DALL'API ORIGINALE
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>Proposta Centro Sinapsi Firmata</title>
+    </head>
+    <body style="font-family: Arial, sans-serif;">
+      <h1>Centro Sinapsi - Proposta Firmata</h1>
+      <p>Grazie per aver firmato la proposta PWA Centro Sinapsi.</p>
+      <p><strong>Data:</strong> ${signatureData.date}</p>
+      <p><strong>Riferimento pagamento:</strong> ${paymentReference}</p>
+      <p><strong>Acconto richiesto:</strong> CHF 1'920</p>
+      <p>Troverai le istruzioni di pagamento nel file allegato.</p>
+    </body>
+    </html>
+  `;
+}
+
+function generateCentroSinapsiDeveloperEmail(signatureData, paymentReference) {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>Nuova Proposta Firmata - Centro Sinapsi</title>
+    </head>
+    <body style="font-family: Arial, sans-serif;">
+      <h1>PROPOSTA FIRMATA - Centro Sinapsi</h1>
+      <p>Nuova proposta firmata da Shote del Centro Sinapsi.</p>
+      <p><strong>Data:</strong> ${signatureData.date}</p>
+      <p><strong>Riferimento:</strong> ${paymentReference}</p>
+      <p><strong>Acconto:</strong> CHF 1'920</p>
+      <p>Contattare la cliente entro 24 ore.</p>
+    </body>
+    </html>
+  `;
+}
+
+// 🏦 FUNZIONI PAGAMENTO CENTRO SINAPSI (CODICE ESISTENTE)
+async function generateSimplePaymentSlip(paymentData) {
+  try {
+    const qrCodeUrl = await generateSwissQRCodeStable(paymentData);
+
+    const paymentContent = `
 ISTRUZIONI PAGAMENTO - CENTRO SINAPSI
-===================================
+====================================
 
 DATI BONIFICO:
 Beneficiario: ${paymentData.creditor.name}
@@ -582,6 +610,9 @@ Importo: ${paymentData.currency} ${paymentData.amount}
 Riferimento: ${paymentData.reference}
 Causale: ${paymentData.message}
 
+QR CODE:
+${qrCodeUrl}
+
 CONTATTI:
 Email: info@dcreativo.ch
 Tel: +41 76 781 01 94
@@ -589,11 +620,13 @@ Tel: +41 76 781 01 94
 Data: ${new Date().toLocaleDateString('it-IT')}
     `;
 
-    return Buffer.from(simpleContent.trim(), 'utf8').toString('base64');
+    return Buffer.from(paymentContent.trim(), 'utf8').toString('base64');
+  } catch (error) {
+    console.error('❌ Errore generazione istruzioni:', error);
+    return Buffer.from('Errore generazione istruzioni pagamento', 'utf8').toString('base64');
   }
 }
 
-// 🎯 GENERA QR CODE SVIZZERO (STESSA FUNZIONE PRECEDENTE)
 async function generateSwissQRCodeStable(paymentData) {
   try {
     const qrContent = [
@@ -608,14 +641,8 @@ async function generateSwissQRCodeStable(paymentData) {
       'NON', paymentData.reference, paymentData.message, 'EPD'
     ].join('\r\n');
 
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&format=png&ecc=M&data=${encodeURIComponent(qrContent)}`;
-
-    console.log('✅ QR Code URL generato');
-    return qrUrl;
-
+    return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&format=png&ecc=M&data=${encodeURIComponent(qrContent)}`;
   } catch (error) {
-    console.error('⚠️ Errore QR code, uso fallback:', error);
-    const simpleData = `IBAN:${paymentData.iban}|AMOUNT:${paymentData.currency} ${paymentData.amount}|REF:${paymentData.reference}`;
-    return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(simpleData)}`;
+    return 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=ERROR';
   }
 }

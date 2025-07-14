@@ -20,7 +20,9 @@
     { "source": "/ebook2", "destination": "/ebook2.html" },
     { "source": "/ebook3", "destination": "/ebook3.html" },
     { "source": "/centrosinapsi1", "destination": "/centrosinapsi1.html" },
-    { "source": "/centrosinapsi", "destination": "/centrosinapsi.html" }
+    { "source": "/centrosinapsi", "destination": "/centrosinapsi.html" },
+   { "source": "/f4dezone",
+      "destination": "/f4dezone.html"}
 
   ],
   "headers": [
