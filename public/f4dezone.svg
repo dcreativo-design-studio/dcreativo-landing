@@ -1,0 +1,94 @@
+<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient per effetto premium -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f4d03f;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Gradient per l'antracite -->
+    <linearGradient id="anthraciteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3a3a3a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2d2d2d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Filtro per ombra -->
+    <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Cerchio esterno decorativo -->
+  <circle cx="200" cy="100" r="98" fill="none" stroke="url(#goldGradient)" stroke-width="1" opacity="0.6"/>
+
+  <!-- Cerchio principale background -->
+  <circle cx="200" cy="100" r="90" fill="url(#anthraciteGradient)" stroke="url(#goldGradient)" stroke-width="2" filter="url(#dropShadow)"/>
+
+  <!-- Cerchio interno decorativo -->
+  <circle cx="200" cy="100" r="85" fill="none" stroke="url(#goldGradient)" stroke-width="0.5" opacity="0.4"/>
+
+  <!-- F4DEZONE text principale -->
+  <text x="200" y="75" font-family="Arial Black, sans-serif" font-size="26" font-weight="900" fill="url(#goldGradient)" text-anchor="middle" letter-spacing="1.5px">
+    F4DEZ<tspan fill="url(#goldGradient)">Ø</tspan>NE
+  </text>
+
+  <!-- Linea decorativa sopra BARBERS -->
+  <line x1="160" y1="87" x2="240" y2="87" stroke="url(#goldGradient)" stroke-width="1" opacity="0.8"/>
+
+  <!-- BARBERS text -->
+  <text x="200" y="100" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="6px">
+    BARBERS
+  </text>
+
+  <!-- Linea decorativa sotto BARBERS -->
+  <line x1="160" y1="107" x2="240" y2="107" stroke="url(#goldGradient)" stroke-width="1" opacity="0.8"/>
+
+  <!-- LVGA Premium Badge - posizionato elegantemente -->
+  <g transform="translate(200, 130)">
+    <!-- Sfondo del badge -->
+    <rect x="-18" y="-8" width="36" height="16" fill="url(#goldGradient)" stroke="url(#anthraciteGradient)" stroke-width="1" rx="2"/>
+
+    <!-- Sfondo interno -->
+    <rect x="-16" y="-6" width="32" height="12" fill="url(#anthraciteGradient)" rx="1"/>
+
+    <!-- Griglia per le lettere LVGA -->
+    <g font-family="Arial, sans-serif" font-size="5" font-weight="bold" fill="url(#goldGradient)">
+      <!-- L - top left -->
+      <text x="-10" y="-1" text-anchor="middle">L</text>
+      <!-- V - top right -->
+      <text x="10" y="-1" text-anchor="middle">V</text>
+      <!-- G - bottom left -->
+      <text x="-10" y="4" text-anchor="middle">G</text>
+      <!-- A - bottom right -->
+      <text x="10" y="4" text-anchor="middle">A</text>
+    </g>
+
+    <!-- Separatori decorativi nel badge -->
+    <line x1="0" y1="-6" x2="0" y2="6" stroke="url(#goldGradient)" stroke-width="0.3" opacity="0.6"/>
+    <line x1="-16" y1="0" x2="16" y2="0" stroke="url(#goldGradient)" stroke-width="0.3" opacity="0.6"/>
+  </g>
+
+  <!-- Elementi decorativi laterali -->
+  <g transform="translate(200, 150)">
+    <!-- Ornamento sinistro -->
+    <g transform="translate(-50, 0)">
+      <rect x="-12" y="-0.5" width="24" height="1" fill="url(#goldGradient)" opacity="0.8"/>
+      <polygon points="-14,0 -10,-2 -10,2" fill="url(#goldGradient)" opacity="0.8"/>
+    </g>
+
+    <!-- Ornamento destro -->
+    <g transform="translate(50, 0)">
+      <rect x="-12" y="-0.5" width="24" height="1" fill="url(#goldGradient)" opacity="0.8"/>
+      <polygon points="14,0 10,-2 10,2" fill="url(#goldGradient)" opacity="0.8"/>
+    </g>
+
+    <!-- Diamante centrale -->
+    <polygon points="0,-4 4,0 0,4 -4,0" fill="url(#goldGradient)" opacity="0.9"/>
+    <polygon points="0,-2 2,0 0,2 -2,0" fill="url(#anthraciteGradient)" opacity="0.8"/>
+  </g>
+
+  <!-- Accenti di luce sui bordi -->
+  <circle cx="200" cy="100" r="90" fill="none" stroke="url(#goldGradient)" stroke-width="0.5" opacity="0.3" stroke-dasharray="5,5"/>
+</svg>
