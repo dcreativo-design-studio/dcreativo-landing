@@ -1,0 +1,177 @@
+<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Premium Gold Gradient -->
+    <linearGradient id="premiumGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#b8860b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#996f00;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Deep Anthracite -->
+    <linearGradient id="deepAnthracite" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0d0d0d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Subtle Light -->
+    <linearGradient id="subtleLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.05" />
+    </linearGradient>
+
+    <!-- Swiss Precision Shadow -->
+    <filter id="precisionShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+
+    <!-- Inner Glow -->
+    <filter id="innerGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer Precision Ring -->
+  <circle cx="200" cy="100" r="97" fill="none" stroke="url(#premiumGold)" stroke-width="0.5" opacity="0.6"/>
+
+  <!-- Main Hexagonal Background - Swiss Precision -->
+  <polygon points="200,20 260,55 260,145 200,180 140,145 140,55"
+           fill="url(#deepAnthracite)"
+           stroke="url(#premiumGold)"
+           stroke-width="2"
+           filter="url(#precisionShadow)"/>
+
+  <!-- Inner Hexagonal Light -->
+  <polygon points="200,25 255,57.5 255,142.5 200,175 145,142.5 145,57.5"
+           fill="url(#subtleLight)"
+           opacity="0.1"/>
+
+  <!-- Swiss Cross Reference Elements -->
+  <g transform="translate(200, 45)">
+    <rect x="-15" y="-1" width="30" height="2" fill="url(#premiumGold)" opacity="0.8"/>
+    <rect x="-1" y="-8" width="2" height="16" fill="url(#premiumGold)" opacity="0.8"/>
+  </g>
+
+  <!-- F4DEZONE - Premium Typography -->
+  <text x="200" y="75"
+        font-family="Helvetica, Arial, sans-serif"
+        font-size="24"
+        font-weight="300"
+        fill="url(#premiumGold)"
+        text-anchor="middle"
+        letter-spacing="3px"
+        filter="url(#innerGlow)">
+    F4DEZ<tspan font-weight="700" font-size="26">Ø</tspan>NE
+  </text>
+
+  <!-- Precision Line -->
+  <line x1="160" y1="85" x2="240" y2="85"
+        stroke="url(#premiumGold)"
+        stroke-width="1"
+        opacity="0.7"/>
+
+  <!-- BARBERS - Swiss Typography -->
+  <text x="200" y="100"
+        font-family="Helvetica, Arial, sans-serif"
+        font-size="10"
+        font-weight="400"
+        fill="#ffffff"
+        text-anchor="middle"
+        letter-spacing="8px"
+        opacity="0.9">
+    BARBERS
+  </text>
+
+  <!-- Swiss Precision Separator -->
+  <line x1="160" y1="108" x2="240" y2="108"
+        stroke="url(#premiumGold)"
+        stroke-width="1"
+        opacity="0.7"/>
+
+  <!-- LVGA Premium Monogram -->
+  <g transform="translate(200, 125)">
+    <!-- Monogram Background -->
+    <rect x="-20" y="-10" width="40" height="20"
+          fill="url(#premiumGold)"
+          opacity="0.1"
+          rx="2"/>
+
+    <!-- Swiss Grid System -->
+    <rect x="-18" y="-8" width="36" height="16"
+          fill="none"
+          stroke="url(#premiumGold)"
+          stroke-width="1"
+          opacity="0.6"
+          rx="1"/>
+
+    <!-- LVGA Letters - Swiss Precision -->
+    <g font-family="Helvetica, Arial, sans-serif"
+       font-size="6"
+       font-weight="300"
+       fill="url(#premiumGold)">
+      <text x="-9" y="-2" text-anchor="middle">L</text>
+      <text x="9" y="-2" text-anchor="middle">V</text>
+      <text x="-9" y="6" text-anchor="middle">G</text>
+      <text x="9" y="6" text-anchor="middle">A</text>
+    </g>
+
+    <!-- Swiss Cross in Center -->
+    <g opacity="0.4">
+      <line x1="-6" y1="0" x2="6" y2="0" stroke="url(#premiumGold)" stroke-width="0.5"/>
+      <line x1="0" y1="-4" x2="0" y2="4" stroke="url(#premiumGold)" stroke-width="0.5"/>
+    </g>
+  </g>
+
+  <!-- Swiss Precision Decorative Elements -->
+  <g transform="translate(200, 150)">
+    <!-- Left Geometric Element -->
+    <g transform="translate(-40, 0)">
+      <polygon points="-6,0 -2,-2 2,-2 6,0 2,2 -2,2"
+               fill="url(#premiumGold)"
+               opacity="0.8"/>
+    </g>
+
+    <!-- Right Geometric Element -->
+    <g transform="translate(40, 0)">
+      <polygon points="-6,0 -2,-2 2,-2 6,0 2,2 -2,2"
+               fill="url(#premiumGold)"
+               opacity="0.8"/>
+    </g>
+
+    <!-- Central Swiss Diamond -->
+    <polygon points="0,-3 3,0 0,3 -3,0"
+             fill="url(#premiumGold)"
+             opacity="0.9"/>
+    <circle cx="0" cy="0" r="1" fill="url(#deepAnthracite)"/>
+  </g>
+
+  <!-- Swiss Precision Accents -->
+  <g transform="translate(200, 100)">
+    <!-- Corner Precision Marks -->
+    <g opacity="0.3">
+      <line x1="-80" y1="-60" x2="-75" y2="-60" stroke="url(#premiumGold)" stroke-width="1"/>
+      <line x1="-80" y1="-60" x2="-80" y2="-55" stroke="url(#premiumGold)" stroke-width="1"/>
+
+      <line x1="80" y1="-60" x2="75" y2="-60" stroke="url(#premiumGold)" stroke-width="1"/>
+      <line x1="80" y1="-60" x2="80" y2="-55" stroke="url(#premiumGold)" stroke-width="1"/>
+
+      <line x1="-80" y1="60" x2="-75" y2="60" stroke="url(#premiumGold)" stroke-width="1"/>
+      <line x1="-80" y1="60" x2="-80" y2="55" stroke="url(#premiumGold)" stroke-width="1"/>
+
+      <line x1="80" y1="60" x2="75" y2="60" stroke="url(#premiumGold)" stroke-width="1"/>
+      <line x1="80" y1="60" x2="80" y2="55" stroke="url(#premiumGold)" stroke-width="1"/>
+    </g>
+  </g>
+
+  <!-- Final Swiss Precision Ring -->
+  <polygon points="200,20 260,55 260,145 200,180 140,145 140,55"
+           fill="none"
+           stroke="url(#premiumGold)"
+           stroke-width="0.5"
+           opacity="0.4"/>
+</svg>

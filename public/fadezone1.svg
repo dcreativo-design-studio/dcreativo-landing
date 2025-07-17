@@ -1,0 +1,64 @@
+<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main circle background - antracite premium -->
+  <circle cx="200" cy="100" r="95" fill="#2d2d2d" stroke="#d4af37" stroke-width="3"/>
+
+  <!-- F4DEZONE main text - premium style -->
+  <text x="200" y="75" font-family="Arial Black, sans-serif" font-size="24" font-weight="900" fill="#d4af37" text-anchor="middle" letter-spacing="1px">
+    F4DEZ<tspan fill="#d4af37">O</tspan>NE
+  </text>
+
+  <!-- Slash through the O - positioned over the O -->
+  <g transform="translate(225, 67)">
+    <!-- Diagonal slash that crosses entire O -->
+    <line x1="-8" y1="12" x2="8" y2="-12" stroke="#d4af37" stroke-width="4"/>
+  </g>
+
+  <!-- BARBERS text -->
+  <text x="200" y="95" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="4px">
+    BARBERS
+  </text>
+
+  <!-- Lugano coat of arms - smaller size -->
+  <g transform="translate(200, 125)">
+    <!-- Red background square (stemma di Lugano) - smaller -->
+    <rect x="-20" y="-12" width="40" height="24" fill="#c41e3a" stroke="#ffffff" stroke-width="1"/>
+
+    <!-- Silver/White cross (croce argentata) - smaller -->
+    <g stroke="#ffffff" stroke-width="1.5" fill="#ffffff">
+      <!-- Vertical bar of cross -->
+      <rect x="-1.5" y="-11" width="3" height="22"/>
+      <!-- Horizontal bar of cross -->
+      <rect x="-19" y="-1.5" width="38" height="3"/>
+    </g>
+
+    <!-- LVGA letters in the four corners - smaller -->
+    <text x="-12" y="-5" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#ffffff" text-anchor="middle">L</text>
+    <text x="12" y="-5" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#ffffff" text-anchor="middle">V</text>
+    <text x="-12" y="8" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#ffffff" text-anchor="middle">G</text>
+    <text x="12" y="8" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#ffffff" text-anchor="middle">A</text>
+  </g>
+
+  <!-- Premium decorative elements -->
+  <g transform="translate(200, 145)">
+    <!-- Left ornament -->
+    <g transform="translate(-40, 0)">
+      <rect x="-8" y="-0.5" width="16" height="1" fill="#d4af37"/>
+      <polygon points="-10,0 -6,-2 -6,2" fill="#d4af37"/>
+    </g>
+
+    <!-- Right ornament -->
+    <g transform="translate(40, 0)">
+      <rect x="-8" y="-0.5" width="16" height="1" fill="#d4af37"/>
+      <polygon points="10,0 6,-2 6,2" fill="#d4af37"/>
+    </g>
+
+    <!-- Central diamond -->
+    <polygon points="0,-3 3,0 0,3 -3,0" fill="#d4af37"/>
+  </g>
+
+  <!-- Outer premium ring -->
+  <circle cx="200" cy="100" r="98" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.8"/>
+
+  <!-- Inner subtle ring -->
+  <circle cx="200" cy="100" r="92" fill="none" stroke="#d4af37" stroke-width="0.5" opacity="0.4"/>
+</svg>
