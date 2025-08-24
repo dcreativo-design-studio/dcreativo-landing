@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionario Digitale - Riccio Digital | Estetica Galatea</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary-blue: #1877F2;
+            --primary-green: #34A853;
+            --primary-red: #EA4335;
+            --primary-yellow: #FBBC04;
+            --dark-blue: #166FE5;
+            --light-blue: #E3F2FD;
+            --gradient-primary: linear-gradient(135deg, #1877F2 0%, #34A853 50%, #EA4335 100%);
+            --gradient-secondary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --shadow-primary: 0 20px 40px rgba(24, 119, 242, 0.1);
+            --shadow-secondary: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .brand-gradient {
+            background: var(--gradient-primary);
+        }
+
+        .brand-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: var(--shadow-secondary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-number {
+            background: var(--gradient-secondary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .brand-input {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .brand-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.1);
+            outline: none;
+            background: white;
+        }
+
+        .brand-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .brand-checkbox:checked {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+
+        .brand-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .brand-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .brand-radio:checked {
+            border-color: var(--primary-blue);
+        }
+
+        .brand-radio:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+        }
+
+        .brand-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(90deg, #e5e7eb 0%, var(--primary-blue) 0%);
+            height: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .brand-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(24, 119, 242, 0.3);
+        }
+
+        .brand-slider::-moz-range-thumb {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 8px rgba(24, 119, 242, 0.3);
+        }
+
+        .brand-button {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-primary);
+        }
+
+        .brand-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 50px rgba(24, 119, 242, 0.2);
+        }
+
+        .file-drop-zone {
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .file-drop-zone:hover {
+            border-color: var(--primary-blue);
+            background: rgba(24, 119, 242, 0.05);
+        }
+
+        .file-drop-zone.dragover {
+            border-color: var(--primary-blue);
+            background: rgba(24, 119, 242, 0.1);
+            transform: scale(1.02);
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .color-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-option.selected {
+            border-color: white;
+            box-shadow: 0 0 0 3px var(--primary-blue);
+        }
+
+        .preview-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: var(--shadow-primary);
+        }
+
+        @media (max-width: 768px) {
+            .section-number {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .floating-action {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm">
+        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header Brand -->
+        <div class="brand-card rounded-3xl p-8 mb-12 fade-in">
+            <div class="flex flex-col lg:flex-row items-center justify-between">
+                <div class="text-center lg:text-left mb-6 lg:mb-0">
+                    <div class="flex items-center justify-center lg:justify-start mb-4">
+                        <div class="brand-gradient w-16 h-16 rounded-2xl flex items-center justify-center mr-4">
+                            <i class="fas fa-digital-tachograph text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl lg:text-4xl font-900 bg-gradient-to-r from-blue-600 via-green-500 to-red-500 bg-clip-text text-transparent">
+                                Riccio Digital
+                            </h1>
+                            <p class="text-gray-600 font-medium">Digital Marketing & Web Solutions</p>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-4">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Progetto Digitale: Estetica Galatea</h2>
+                        <p class="text-gray-600">Celebrando 40 anni di eccellenza nel settore estetico</p>
+                        <p class="text-sm text-gray-500 mt-2">Questionario di Discovery - <span id="currentDate"></span></p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="bg-gradient-to-br from-pink-400 to-purple-500 w-24 h-24 rounded-full flex items-center justify-center mb-4">
+                        <span class="text-white text-3xl font-bold">EG</span>
+                    </div>
+                    <div class="bg-amber-100 px-4 py-2 rounded-full">
+                        <span class="text-amber-800 font-semibold text-sm">1986 - 2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="questionnaireForm">
+            <!-- Sezione 1: Informazioni Generali -->
+            <div class="section-card rounded-2xl p-8 mb-8 fade-in" data-section="1">
+                <div class="flex items-center mb-8">
+                    <div class="section-number mr-4">1</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">Informazioni Cliente</h3>
+                        <p class="text-gray-600">Dati di contatto e informazioni generali</p>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="block text-gray-700 font-semibold text-sm">Nome Completo *</label>
+                        <input type="text" id="fullName" value="Silvana Poma" required
+                               class="brand-input w-full px-4 py-3 text-gray-800">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-gray-700 font-semibold text-sm">Nome dell'Attività *</label>
+                        <input type="text" id="businessName" value="Estetica Galatea" required
+                               class="brand-input w-full px-4 py-3 text-gray-800">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-gray-700 font-semibold text-sm">Email *</label>
+                        <input type="email" id="email" value="esteticagalatea@bluewin.ch" required
+                               class="brand-input w-full px-4 py-3 text-gray-800">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-gray-700 font-semibold text-sm">Telefono *</label>
+                        <input type="tel" id="phone" value="091 863 32 05" required
+                               class="brand-input w-full px-4 py-3 text-gray-800">
+                    </div>
+
+                    <div class="lg:col-span-2 space-y-2">
+                        <label class="block text-gray-700 font-semibold text-sm">Indirizzo Completo *</label>
+                        <input type="text" id="address" value="Via Cantonale 171, 6527 Lodrino, Switzerland" required
+                               class="brand-input w-full px-4 py-3 text-gray-800">
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6">
+                    <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-trophy text-yellow-500 mr-2"></i>
+                        Milestone Importante
+                    </h4>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-blue-800 font-semibold text-lg">39 anni di esperienza</p>
+                            <p class="text-blue-600 text-sm">Dal 8 marzo 1986</p>
+                        </div>
+                        <div>
+                            <p class="text-purple-800 font-semibold text-lg">Prossimo traguardo: 40 anni</p>
+                            <p class="text-purple-600 text-sm">Marzo 2026 - Un'occasione speciale da celebrare!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sezione Upload Immagini -->
+            <div class="section-card rounded-2xl p-8 mb-8 fade-in" data-section="2">
+                <div class="flex items-center mb-8">
+                    <div class="section-number mr-4">2</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">Materiali Visivi</h3>
+                        <p class="text-gray-600">Carica immagini, logo attuale e materiali di riferimento</p>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-image text-blue-500 mr-2"></i>
+                            Logo Attuale
+                        </h4>
+                        <div class="file-drop-zone" id="logoDropZone">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                            <p class="text-gray-600 font-medium">Trascina qui il logo attuale</p>
+                            <p class="text-gray-500 text-sm mt-2">oppure clicca per selezionare</p>
+                            <input type="file" id="logoUpload" accept="image/*" class="hidden" multiple>
+                        </div>
+                        <div id="logoPreview" class="mt-4 grid grid-cols-2 gap-4"></div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-images text-green-500 mr-2"></i>
+                            Foto del Centro
+                        </h4>
+                        <div class="file-drop-zone" id="photosDropZone">
+                            <i class="fas fa-camera text-4xl text-gray-400 mb-4"></i>
+                            <p class="text-gray-600 font-medium">Foto interni, esterni, trattamenti</p>
+                            <p class="text-gray-500 text-sm mt-2">Formati supportati: JPG, PNG, WEBP</p>
+                            <input type="file" id="photosUpload" accept="image/*" class="hidden" multiple>
+                        </div>
+                        <div id="photosPreview" class="mt-4 grid grid-cols-3 gap-2"></div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-palette text-purple-500 mr-2"></i>
+                        Riferimenti di Stile
+                    </h4>
+                    <div class="file-drop-zone" id="referencesDropZone">
+                        <i class="fas fa-star text-4xl text-gray-400 mb-4"></i>
+                        <p class="text-gray-600 font-medium">Immagini di riferimento, mood board, ispirazioni</p>
+                        <p class="text-gray-500 text-sm mt-2">Tutto ciò che può aiutarci a capire il tuo gusto</p>
+                        <input type="file" id="referencesUpload" accept="image/*" class="hidden" multiple>
+                    </div>
+                    <div id="referencesPreview" class="mt-4 grid grid-cols-4 gap-2"></div>
+                </div>
+            </div>
+
+            <!-- Sezione 3: Obiettivi del Progetto -->
+            <div class="section-card rounded-2xl p-8 mb-8 fade-in" data-section="3">
+                <div class="flex items-center mb-8">
+                    <div class="section-number mr-4">3</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">Obiettivi del Progetto</h3>
+                        <p class="text-gray-600">Definisci le priorità e la visione per il nuovo progetto digitale</p>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-bullseye text-red-500 mr-2"></i>
+                            Priorità Principali
+                        </h4>
+                        <div class="grid lg:grid-cols-2 gap-4">
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-blue-50 transition-colors">
+                                <input type="checkbox" id="booking_system" checked class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Sistema di prenotazioni online</span>
+                                    <p class="text-sm text-gray-600">Automatizza la gestione degli appuntamenti</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-green-50 transition-colors">
+                                <input type="checkbox" id="brand_renewal" checked class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Rinnovamento identità visiva</span>
+                                    <p class="text-sm text-gray-600">Nuovo logo e design moderno</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-purple-50 transition-colors">
+                                <input type="checkbox" id="social_management" checked class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Gestione social media</span>
+                                    <p class="text-sm text-gray-600">Presenza professionale sui social</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-yellow-50 transition-colors">
+                                <input type="checkbox" id="online_presence" class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Migliorare visibilità online</span>
+                                    <p class="text-sm text-gray-600">SEO e presenza digitale</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-indigo-50 transition-colors">
+                                <input type="checkbox" id="customer_loyalty" class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Programma fedeltà digitale</span>
+                                    <p class="text-sm text-gray-600">Sistema di punti e rewards</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-pink-50 transition-colors">
+                                <input type="checkbox" id="anniversary_celebration" class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Celebrazione 40° anniversario</span>
+                                    <p class="text-sm text-gray-600">Campagna speciale per il 2026</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-3">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                            La tua visione per il nuovo progetto digitale
+                        </label>
+                        <textarea id="vision" rows="4"
+                                  class="brand-input w-full px-4 py-3 text-gray-800 resize-none"
+                                  placeholder="Descrivi come immagini il nuovo sito web e la presenza digitale. Che sensazioni dovrebbe trasmettere ai tuoi clienti?"></textarea>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-calendar-alt text-blue-500 mr-2"></i>
+                            Timeline Preferita
+                        </h4>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-blue-50 transition-colors">
+                                <input type="radio" name="timeline" value="1-2 mesi" class="brand-radio mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">1-2 mesi</span>
+                                    <p class="text-sm text-gray-600">Lancio rapido</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-green-50 transition-colors">
+                                <input type="radio" name="timeline" value="3-4 mesi" class="brand-radio mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">3-4 mesi</span>
+                                    <p class="text-sm text-gray-600">Sviluppo standard</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-purple-50 transition-colors">
+                                <input type="radio" name="timeline" value="5-6 mesi" class="brand-radio mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">5-6 mesi</span>
+                                    <p class="text-sm text-gray-600">Progetto completo</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-gray-50 transition-colors">
+                                <input type="radio" name="timeline" value="Flessibile" class="brand-radio mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Flessibile</span>
+                                    <p class="text-sm text-gray-600">Adattabile alle esigenze</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sezione 4: Identità Visiva -->
+            <div class="section-card rounded-2xl p-8 mb-8 fade-in" data-section="4">
+                <div class="flex items-center mb-8">
+                    <div class="section-number mr-4">4</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">Identità Visiva e Brand</h3>
+                        <p class="text-gray-600">Definisci lo stile e l'aspetto del nuovo brand</p>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-6">
+                        <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-crown text-purple-500 mr-2"></i>
+                            Il Significato di "Galatea"
+                        </h4>
+                        <p class="text-purple-800 text-sm mb-3">
+                            <strong>Galatea</strong> deriva dalla mitologia greca: era una ninfa marina, simbolo di bellezza,
+                            eleganza e grazia. Nella leggenda, rappresenta la trasformazione dalla pietra alla vita,
+                            perfetto per un centro estetico che "trasforma" e valorizza la bellezza naturale.
+                        </p>
+                        <textarea id="galatea_meaning" rows="2"
+                                  class="brand-input w-full px-4 py-3 text-gray-800 resize-none"
+                                  placeholder="Come vorresti che questo significato si riflettesse nel nuovo design?"></textarea>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-palette text-pink-500 mr-2"></i>
+                            Palette Colori Preferita
+                        </h4>
+                        <div class="color-palette">
+                            <div class="color-option bg-gradient-to-br from-blue-400 to-blue-600" data-color="blue" title="Blu - Fiducia e professionalità"></div>
+                            <div class="color-option bg-gradient-to-br from-pink-400 to-pink-600" data-color="pink" title="Rosa - Femminilità e dolcezza"></div>
+                            <div class="color-option bg-gradient-to-br from-purple-400 to-purple-600" data-color="purple" title="Viola - Eleganza e lusso"></div>
+                            <div class="color-option bg-gradient-to-br from-green-400 to-green-600" data-color="green" title="Verde - Natura e benessere"></div>
+                            <div class="color-option bg-gradient-to-br from-yellow-400 to-amber-500" data-color="gold" title="Oro - Premium e qualità"></div>
+                            <div class="color-option bg-gradient-to-br from-teal-400 to-cyan-500" data-color="teal" title="Turchese - Freschezza e innovazione"></div>
+                            <div class="color-option bg-gradient-to-br from-gray-400 to-gray-600" data-color="neutral" title="Neutri - Eleganza minimalista"></div>
+                            <div class="color-option bg-gradient-to-br from-rose-400 to-pink-500" data-color="rose" title="Rosa antico - Romanticismo"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-paint-brush text-indigo-500 mr-2"></i>
+                            Stile Desiderato
+                        </h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-blue-50 transition-colors border border-gray-200">
+                                <input type="radio" name="brand_style" value="Moderno e minimale" class="brand-radio mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Moderno e minimale</span>
+                                    <p class="text-sm text-gray-600">Linee pulite, spazi bianchi</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-purple-50 transition-colors border border-gray-200">
+                                <input type="radio" name="brand_style" value="Elegante e sofisticato" class="brand-radio mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Elegante e sofisticato</span>
+                                    <p class="text-sm text-gray-600">Lusso e raffinatezza</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-green-50 transition-colors border border-gray-200">
+                                <input type="radio" name="brand_style" value="Naturale e organico" class="brand-radio mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Naturale e organico</span>
+                                    <p class="text-sm text-gray-600">Forme morbide, ispirazioni naturali</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-amber-50 transition-colors border border-gray-200">
+                                <input type="radio" name="brand_style" value="Classico contemporaneo" class="brand-radio mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Classico contemporaneo</span>
+                                    <p class="text-sm text-gray-600">Tradizione e modernità</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid lg:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-3">
+                                <i class="fas fa-thumbs-up text-green-500 mr-2"></i>
+                                Cosa ti piace del logo attuale?
+                            </label>
+                            <textarea id="current_logo_likes" rows="3"
+                                      class="brand-input w-full px-4 py-3 text-gray-800 resize-none"
+                                      placeholder="Elementi che vorresti mantenere o che apprezzi..."></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-3">
+                                <i class="fas fa-edit text-orange-500 mr-2"></i>
+                                Cosa vorresti migliorare?
+                            </label>
+                            <textarea id="current_logo_dislikes" rows="3"
+                                      class="brand-input w-full px-4 py-3 text-gray-800 resize-none"
+                                      placeholder="Elementi da cambiare o modernizzare..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sezione 5: Servizi e Funzionalità -->
+            <div class="section-card rounded-2xl p-8 mb-8 fade-in" data-section="5">
+                <div class="flex items-center mb-8">
+                    <div class="section-number mr-4">5</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">Servizi e Funzionalità del Sito</h3>
+                        <p class="text-gray-600">Definisci i servizi da mostrare e le funzionalità del sito web</p>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-spa text-green-500 mr-2"></i>
+                            Servizi Attuali di Estetica Galatea
+                        </h4>
+                        <div class="grid lg:grid-cols-2 gap-3">
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-green-50 transition-colors">
+                                <input type="checkbox" id="facial_treatments" checked class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Trattamenti del viso e pulizie</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-blue-50 transition-colors">
+                                <input type="checkbox" id="waxing" checked class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Cerette</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-purple-50 transition-colors">
+                                <input type="checkbox" id="eyelash_lamination" checked class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Laminazione ciglia</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-pink-50 transition-colors">
+                                <input type="checkbox" id="manicure_pedicure" checked class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Manicure e pedicure</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-indigo-50 transition-colors">
+                                <input type="checkbox" id="gel_polish" checked class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Smalto semipermanente</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-yellow-50 transition-colors">
+                                <input type="checkbox" id="massage_treatments" checked class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Massaggi (Bamboo, Stone, Ayurvedico)</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-red-50 transition-colors">
+                                <input type="checkbox" id="body_treatments" checked class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Trattamenti corpo (Detox, Anticellulite)</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-teal-50 transition-colors">
+                                <input type="checkbox" id="tech_treatments" checked class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Radiofrequenza e Lipolaser</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-orange-50 transition-colors">
+                                <input type="checkbox" id="home_service" checked class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Servizio a domicilio</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                <input type="checkbox" id="nursing_homes" checked class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Servizio case di riposo</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-cogs text-blue-500 mr-2"></i>
+                            Funzionalità Desiderate per il Sito Web
+                        </h4>
+                        <div class="grid lg:grid-cols-2 gap-4">
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-blue-50 transition-colors border border-gray-200">
+                                <input type="checkbox" id="booking_calendar" class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Sistema prenotazioni online</span>
+                                    <p class="text-sm text-gray-600">Calendario con disponibilità in tempo reale</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-green-50 transition-colors border border-gray-200">
+                                <input type="checkbox" id="gallery_treatments" class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Galleria prima/dopo</span>
+                                    <p class="text-sm text-gray-600">Mostra i risultati dei trattamenti</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-purple-50 transition-colors border border-gray-200">
+                                <input type="checkbox" id="loyalty_system" class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Programma fedeltà</span>
+                                    <p class="text-sm text-gray-600">Sistema punti e premi per clienti</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-yellow-50 transition-colors border border-gray-200">
+                                <input type="checkbox" id="gift_certificates" class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Buoni regalo digitali</span>
+                                    <p class="text-sm text-gray-600">Vendita online di gift card</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-indigo-50 transition-colors border border-gray-200">
+                                <input type="checkbox" id="blog_beauty" class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Blog bellezza</span>
+                                    <p class="text-sm text-gray-600">Consigli e articoli di beauty</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-pink-50 transition-colors border border-gray-200">
+                                <input type="checkbox" id="multilingual" class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Sito multilingue</span>
+                                    <p class="text-sm text-gray-600">Italiano, Tedesco, Francese</p>
+                                </div>
+                            </label>
+                            <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-gray-50 transition-colors border border-gray-200">
+                                <input type="checkbox" id="video_integration" class="brand-checkbox mt-1 mr-3">
+                                <div>
+                                    <span class="font-medium text-gray-800">Tour virtuale 360°</span>
+                                    <p class="text-sm text-gray-600">Esperienza immersiva del centro</p>
+                                </div>
+                            </label>
+                                <label class="flex items-start cursor-pointer p-4 rounded-xl hover:bg-gray-50 transition-colors border border-gray-200 mt-4">
+                                    <input type="checkbox" id="virtual_tour" class="brand-checkbox mt-1 mr-3">
+                                    <div>
+                                        <span class="font-medium text-gray-800">Shop online</span>
+                                        <p class="text-sm text-gray-600">Vendita prodotti cosmetici naturali</p>
+                                    </div>
+                                </label>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sezione 6: Social Media Strategy -->
+            <div class="section-card rounded-2xl p-8 mb-8 fade-in" data-section="6">
+                <div class="flex items-center mb-8">
+                    <div class="section-number mr-4">6</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">Strategia Social Media</h3>
+                        <p class="text-gray-600">Pianifica la presenza sui social network</p>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="bg-blue-50 rounded-xl p-6">
+                        <h4 class="font-bold text-blue-800 mb-3 flex items-center">
+                            <i class="fab fa-facebook text-blue-600 mr-2"></i>
+                            Situazione Attuale
+                        </h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-lg">
+                                <p class="text-blue-800 font-semibold">Facebook</p>
+                                <p class="text-blue-600 text-sm">280 follower - 6 seguiti</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg">
+                                <p class="text-gray-600 text-sm">Descrizione attuale:</p>
+                                <p class="text-gray-800 text-xs">"Trattamenti di estetica e benessere viso e corpo con cosmetici naturali"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-share-alt text-purple-500 mr-2"></i>
+                            Piattaforme da Gestire
+                        </h4>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-blue-50 transition-colors border border-blue-200">
+                                <input type="checkbox" id="facebook_management" checked class="brand-checkbox mr-3">
+                                <div class="text-center w-full">
+                                    <i class="fab fa-facebook text-blue-600 text-2xl mb-2"></i>
+                                    <p class="font-medium text-gray-800">Facebook</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-pink-50 transition-colors border border-pink-200">
+                                <input type="checkbox" id="instagram_management" class="brand-checkbox mr-3">
+                                <div class="text-center w-full">
+                                    <i class="fab fa-instagram text-pink-600 text-2xl mb-2"></i>
+                                    <p class="font-medium text-gray-800">Instagram</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-green-50 transition-colors border border-green-200">
+                                <input type="checkbox" id="whatsapp_business" class="brand-checkbox mr-3">
+                                <div class="text-center w-full">
+                                    <i class="fab fa-whatsapp text-green-600 text-2xl mb-2"></i>
+                                    <p class="font-medium text-gray-800">WhatsApp Business</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-calendar-check text-indigo-500 mr-2"></i>
+                            Frequenza di Pubblicazione
+                        </h4>
+                        <div class="space-y-3">
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-green-50 transition-colors border border-gray-200">
+                                <input type="radio" name="posting_frequency" value="3-4 volte a settimana" class="brand-radio mr-4">
+                                <div>
+                                    <span class="font-medium text-gray-800">3-4 volte a settimana</span>
+                                    <p class="text-sm text-gray-600">Presenza costante e professionale</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-blue-50 transition-colors border border-gray-200">
+                                <input type="radio" name="posting_frequency" value="Giornaliera" class="brand-radio mr-4">
+                                <div>
+                                    <span class="font-medium text-gray-800">Giornaliera</span>
+                                    <p class="text-sm text-gray-600">Massima visibilità</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-yellow-50 transition-colors border border-gray-200">
+                                <input type="radio" name="posting_frequency" value="2-3 volte a settimana" class="brand-radio mr-4">
+                                <div>
+                                    <span class="font-medium text-gray-800">2-3 volte a settimana</span>
+                                    <p class="text-sm text-gray-600">Equilibrio qualità/quantità</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-camera text-pink-500 mr-2"></i>
+                            Tipi di Contenuti
+                        </h4>
+                        <div class="grid lg:grid-cols-2 gap-3">
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-pink-50 transition-colors">
+                                <input type="checkbox" id="before_after_content" class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Prima/dopo dei trattamenti</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-purple-50 transition-colors">
+                                <input type="checkbox" id="treatments_showcase" class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Video trattamenti in corso</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-green-50 transition-colors">
+                                <input type="checkbox" id="natural_products" class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Prodotti naturali al 100%</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-blue-50 transition-colors">
+                                <input type="checkbox" id="team_presentation" class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Team di 4 professioniste</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-yellow-50 transition-colors">
+                                <input type="checkbox" id="beauty_tips" class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Consigli di bellezza</span>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-indigo-50 transition-colors">
+                                <input type="checkbox" id="testimonials" class="brand-checkbox mr-3">
+                                <span class="text-gray-800">Testimonianze clienti</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sezione 7: Budget e Investimento -->
+            <div class="section-card rounded-2xl p-8 mb-8 fade-in" data-section="7">
+                <div class="flex items-center mb-8">
+                    <div class="section-number mr-4">7</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">Budget e Investimento</h3>
+                        <p class="text-gray-600">Definisci il budget per il progetto digitale</p>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-euro-sign text-green-500 mr-2"></i>
+                            Budget Totale Progetto
+                        </h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-green-50 transition-colors border border-gray-200">
+                                <input type="radio" name="total_budget" value="5.000-10.000 CHF" class="brand-radio mr-4">
+                                <div>
+                                    <span class="font-medium text-gray-800">5.000-10.000 CHF</span>
+                                    <p class="text-sm text-gray-600">Sito + Brand base</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-blue-50 transition-colors border border-gray-200">
+                                <input type="radio" name="total_budget" value="10.000-20.000 CHF" class="brand-radio mr-4">
+                                <div>
+                                    <span class="font-medium text-gray-800">10.000-20.000 CHF</span>
+                                    <p class="text-sm text-gray-600">Progetto completo</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-purple-50 transition-colors border border-gray-200">
+                                <input type="radio" name="total_budget" value="20.000-30.000 CHF" class="brand-radio mr-4">
+                                <div>
+                                    <span class="font-medium text-gray-800">20.000-30.000 CHF</span>
+                                    <p class="text-sm text-gray-600">Premium + Campagna 40 anni</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-yellow-50 transition-colors border border-gray-200">
+                                <input type="radio" name="total_budget" value="Da discutere" class="brand-radio mr-4">
+                                <div>
+                                    <span class="font-medium text-gray-800">Da definire insieme</span>
+                                    <p class="text-sm text-gray-600">Valutiamo le opzioni</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-sync-alt text-blue-500 mr-2"></i>
+                            Budget Mensile Gestione
+                        </h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-blue-50 transition-colors border border-gray-200">
+                                <input type="radio" name="monthly_budget" value="500-1.000 CHF" class="brand-radio mr-4">
+                                <div>
+                                    <span class="font-medium text-gray-800">500-1.000 CHF</span>
+                                    <p class="text-sm text-gray-600">Social + Manutenzione base</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-green-50 transition-colors border border-gray-200">
+                                <input type="radio" name="monthly_budget" value="1.000-2.000 CHF" class="brand-radio mr-4">
+                                <div>
+                                    <span class="font-medium text-gray-800">1.000-2.000 CHF</span>
+                                    <p class="text-sm text-gray-600">Gestione completa + ADV</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-purple-50 transition-colors border border-gray-200">
+                                <input type="radio" name="monthly_budget" value="2.000+ CHF" class="brand-radio mr-4">
+                                <div>
+                                    <span class="font-medium text-gray-800">2.000+ CHF</span>
+                                    <p class="text-sm text-gray-600">Marketing strategico premium</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center cursor-pointer p-4 rounded-xl hover:bg-yellow-50 transition-colors border border-gray-200">
+                                <input type="radio" name="monthly_budget" value="Da valutare" class="brand-radio mr-4">
+                                <div>
+                                    <span class="font-medium text-gray-800">Da valutare</span>
+                                    <p class="text-sm text-gray-600">In base ai risultati</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-chart-line text-purple-500 mr-2"></i>
+                            Priorità di Investimento
+                        </h4>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-gray-700 font-medium">Sito web e sistema prenotazioni</label>
+                                    <span id="websitePriority" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">9</span>
+                                </div>
+                                <input type="range" id="priority_website" min="1" max="10" value="9" class="brand-slider w-full">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-gray-700 font-medium">Nuovo logo e identità visiva</label>
+                                    <span id="brandingPriority" class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">8</span>
+                                </div>
+                                <input type="range" id="priority_branding" min="1" max="10" value="8" class="brand-slider w-full">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-gray-700 font-medium">Gestione social media</label>
+                                    <span id="socialPriority" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">7</span>
+                                </div>
+                                <input type="range" id="priority_social" min="1" max="10" value="7" class="brand-slider w-full">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-gray-700 font-medium">Campagna 40° anniversario</label>
+                                    <span id="anniversaryPriority" class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">8</span>
+                                </div>
+                                 <input type="range" id="priority_anniversary" min="1" max="10" value="8" class="brand-slider w-full">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sezione 8: Note e Richieste Speciali -->
+            <div class="section-card rounded-2xl p-8 mb-8 fade-in" data-section="8">
+                <div class="flex items-center mb-8">
+                    <div class="section-number mr-4">8</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">Note e Richieste Speciali</h3>
+                        <p class="text-gray-600">Aggiungi dettagli importanti e richieste specifiche</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-3">
+                            <i class="fas fa-star text-yellow-500 mr-2"></i>
+                            Siti web di riferimento che ti ispirano
+                        </label>
+                        <textarea id="reference_sites" rows="3"
+                                  class="brand-input w-full px-4 py-3 text-gray-800 resize-none"
+                                  placeholder="Condividi link a siti web che trovi belli, funzionali o ispiranti..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-3">
+                            <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                            Cosa assolutamente NON vuoi
+                        </label>
+                        <textarea id="avoid_features" rows="3"
+                                  class="brand-input w-full px-4 py-3 text-gray-800 resize-none"
+                                  placeholder="Elementi, colori, stili o funzionalità da evitare assolutamente..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-3">
+                            <i class="fas fa-bullhorn text-purple-500 mr-2"></i>
+                            Aspettative dalla gestione social
+                        </label>
+                        <textarea id="social_expectations" rows="3"
+                                  class="brand-input w-full px-4 py-3 text-gray-800 resize-none"
+                                  placeholder="Cosa ti aspetti dalla gestione professionale dei tuoi social media..."></textarea>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6">
+                        <h4 class="font-bold text-amber-800 mb-3 flex items-center">
+                            <i class="fas fa-birthday-cake text-orange-500 mr-2"></i>
+                            Celebrazione 40° Anniversario (2026)
+                        </h4>
+                        <p class="text-amber-700 text-sm mb-3">
+                            Il prossimo anno Estetica Galatea compirà <strong>40 anni</strong> di attività - un traguardo straordinario
+                            che merita una celebrazione speciale nel mondo digitale!
+                        </p>
+                        <textarea id="anniversary_ideas" rows="4"
+                                  class="brand-input w-full px-4 py-3 text-gray-800 resize-none"
+                                  placeholder="Idee per celebrare questo traguardo: sezione storia, eventi speciali, campagne social commemorative, promozioni anniversary, video celebrativo..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-3">
+                            <i class="fas fa-comments text-blue-500 mr-2"></i>
+                            Altre richieste o domande
+                        </label>
+                        <textarea id="additional_requests" rows="4"
+                                  class="brand-input w-full px-4 py-3 text-gray-800 resize-none"
+                                  placeholder="Qualsiasi altra informazione che ritieni importante per il progetto..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anteprima Layout Generato -->
+            <div class="preview-section fade-in" id="layoutPreview" style="display: none;">
+                <div class="flex items-center mb-6">
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-500 w-12 h-12 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-magic text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">Anteprima Layout Generato</h3>
+                        <p class="text-gray-600">Bozza automatica del design per il nuovo sito di Estetica Galatea</p>
+                    </div>
+                </div>
+
+                <div id="generatedLayout" class="bg-white rounded-xl border-2 border-gray-200 overflow-hidden">
+                    <!-- Il layout verrà generato dinamicamente qui -->
+                </div>
+
+                <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+                    <p class="text-blue-800 text-sm">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Questa è una bozza automatica basata sulle tue risposte. Il design finale sarà molto più raffinato e personalizzato.
+                    </p>
+                </div>
+            </div>
+        </form>
+
+        <!-- Pulsanti di Azione -->
+        <div class="brand-card rounded-2xl p-8 text-center fade-in">
+            <div class="grid md:grid-cols-3 gap-4">
+                <button type="button" onclick="generateLayoutPreview()"
+                        class="brand-button flex items-center justify-center">
+                    <i class="fas fa-eye mr-2"></i>
+                    Genera Anteprima Layout
+                </button>
+
+                <button type="button" onclick="generateProfessionalPDF()"
+                        class="brand-button flex items-center justify-center">
+                    <i class="fas fa-file-pdf mr-2"></i>
+                    Genera PDF Professionale
+                </button>
+
+                <button type="button" onclick="saveProjectData()"
+                        class="brand-button flex items-center justify-center">
+                    <i class="fas fa-save mr-2"></i>
+                    Salva Progetto
+                </button>
+            </div>
+
+            <div class="mt-6 text-center">
+                <p class="text-gray-600 text-sm">
+                    <i class="fas fa-shield-alt text-green-500 mr-1"></i>
+                    I tuoi dati sono al sicuro - Riccio Digital garantisce la massima privacy
+                </p>
+                <p class="text-gray-500 text-xs mt-2">
+                    Questionario compilato il <span id="footerDate"></span> per il progetto digitale di Estetica Galatea
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Progress Indicator -->
+    <div class="floating-action">
+        <div class="bg-white rounded-full p-4 shadow-lg border border-gray-200">
+            <div class="text-center">
+                <div class="text-2xl font-bold text-gray-800" id="completionPercentage">0%</div>
+                <div class="text-xs text-gray-600">Completato</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variabili globali
+        let uploadedFiles = {
+            logo: [],
+            photos: [],
+            references: []
+        };
+
+        let formProgress = 0;
+
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+            setupFileUploads();
+            updateProgress();
+        });
+
+        function initializePage() {
+            const today = new Date();
+            const dateString = today.toLocaleDateString('it-IT', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('currentDate').textContent = dateString;
+            document.getElementById('footerDate').textContent = dateString;
+
+            // Inizializza slider values
+            updateSliderValues();
+            setupColorPalette();
+
+            // Setup animazioni
+            setupScrollAnimations();
+        }
+
+        function setupEventListeners() {
+            // Range sliders
+            document.getElementById('priority_website').addEventListener('input', updateSliderValues);
+            document.getElementById('priority_branding').addEventListener('input', updateSliderValues);
+            document.getElementById('priority_social').addEventListener('input', updateSliderValues);
+            document.getElementById('priority_anniversary').addEventListener('input', updateSliderValues);
+
+            // Form changes per progress
+            const formInputs = document.querySelectorAll('input, textarea, select');
+            formInputs.forEach(input => {
+                input.addEventListener('change', updateProgress);
+                input.addEventListener('input', updateProgress);
+            });
+        }
+
+        function setupFileUploads() {
+            setupDropZone('logoDropZone', 'logoUpload', 'logo');
+            setupDropZone('photosDropZone', 'photosUpload', 'photos');
+            setupDropZone('referencesDropZone', 'referencesUpload', 'references');
+        }
+
+        function setupDropZone(dropZoneId, uploadId, category) {
+            const dropZone = document.getElementById(dropZoneId);
+            const upload = document.getElementById(uploadId);
+
+            dropZone.addEventListener('click', () => upload.click());
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                handleFiles(e.dataTransfer.files, category);
+            });
+
+            upload.addEventListener('change', (e) => {
+                handleFiles(e.target.files, category);
+            });
+        }
+
+        function handleFiles(files, category) {
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    uploadedFiles[category].push(file);
+                    createImagePreview(file, category);
+                }
+            });
+        }
+
+        function createImagePreview(file, category) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const previewContainer = document.getElementById(category + 'Preview');
+                const imageDiv = document.createElement('div');
+                imageDiv.className = 'relative group';
+                imageDiv.innerHTML = `
+                    <img src="${e.target.result}" alt="${file.name}"
+                         class="w-full h-20 object-cover rounded-lg border border-gray-200">
+                    <button onclick="removeImage('${category}', '${file.name}')"
+                            class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1 rounded-b-lg truncate">
+                        ${file.name}
+                    </div>
+                `;
+                previewContainer.appendChild(imageDiv);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage(category, fileName) {
+            uploadedFiles[category] = uploadedFiles[category].filter(file => file.name !== fileName);
+            // Ricostruisci le preview
+            const previewContainer = document.getElementById(category + 'Preview');
+            previewContainer.innerHTML = '';
+            uploadedFiles[category].forEach(file => createImagePreview(file, category));
+        }
+
+        function setupColorPalette() {
+            const colorOptions = document.querySelectorAll('.color-option');
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    colorOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+        }
+
+        function updateSliderValues() {
+            document.getElementById('websitePriority').textContent = document.getElementById('priority_website').value;
+            document.getElementById('brandingPriority').textContent = document.getElementById('priority_branding').value;
+            document.getElementById('socialPriority').textContent = document.getElementById('priority_social').value;
+            document.getElementById('anniversaryPriority').textContent = document.getElementById('priority_anniversary').value;
+        }
+
+        function updateProgress() {
+            const totalFields = document.querySelectorAll('input, textarea, select').length;
+            const filledFields = Array.from(document.querySelectorAll('input, textarea, select')).filter(field => {
+                if (field.type === 'checkbox' || field.type === 'radio') {
+                    return document.querySelector(`input[name="${field.name}"]:checked`) !== null;
+                }
+                return field.value.trim() !== '';
+            }).length;
+
+            formProgress = Math.round((filledFields / totalFields) * 100);
+
+            document.getElementById('progressBar').style.width = formProgress + '%';
+            document.getElementById('completionPercentage').textContent = formProgress + '%';
+
+            // Aggiorna colore in base al progresso
+            const progressBar = document.getElementById('progressBar');
+            if (formProgress < 30) {
+                progressBar.style.background = 'linear-gradient(90deg, #EF4444, #F97316)';
+            } else if (formProgress < 70) {
+                progressBar.style.background = 'linear-gradient(90deg, #F59E0B, #EAB308)';
+            } else {
+                progressBar.style.background = 'var(--gradient-primary)';
+            }
+        }
+
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Funzione per generare l'anteprima del layout
+        function generateLayoutPreview() {
+            const formData = collectFormData();
+            const layoutContainer = document.getElementById('generatedLayout');
+
+            // Determina colori basati sulle selezioni
+            const selectedColors = getSelectedColors();
+            const brandStyle = formData.brandStyle || 'Elegante e sofisticato';
+
+            // Genera il layout HTML
+            const layoutHTML = generateLayoutHTML(formData, selectedColors, brandStyle);
+            layoutContainer.innerHTML = layoutHTML;
+
+            // Mostra la sezione preview
+            document.getElementById('layoutPreview').style.display = 'block';
+            document.getElementById('layoutPreview').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function getSelectedColors() {
+            const selected = document.querySelector('.color-option.selected');
+            if (selected) {
+                const colorName = selected.dataset.color;
+                const colorMap = {
+                    'blue': { primary: '#1877F2', secondary: '#E3F2FD', accent: '#0D47A1' },
+                    'pink': { primary: '#E91E63', secondary: '#FCE4EC', accent: '#AD1457' },
+                    'purple': { primary: '#9C27B0', secondary: '#F3E5F5', accent: '#6A1B9A' },
+                    'green': { primary: '#4CAF50', secondary: '#E8F5E8', accent: '#2E7D32' },
+                    'gold': { primary: '#FF9800', secondary: '#FFF3E0', accent: '#E65100' },
+                    'teal': { primary: '#00BCD4', secondary: '#E0F2F1', accent: '#00695C' },
+                    'neutral': { primary: '#607D8B', secondary: '#F5F5F5', accent: '#37474F' },
+                    'rose': { primary: '#E91E63', secondary: '#FCE4EC', accent: '#C2185B' }
+                };
+                return colorMap[colorName] || colorMap.purple;
+            }
+            return { primary: '#9C27B0', secondary: '#F3E5F5', accent: '#6A1B9A' };
+        }
+
+        function generateLayoutHTML(formData, colors, style) {
+            const isModern = style.includes('Moderno');
+            const isElegant = style.includes('Elegante');
+            const isNatural = style.includes('Naturale');
+
+            return `
+                <div style="font-family: 'Inter', sans-serif; color: #333;">
+                    <!-- Header -->
+                    <header style="background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.accent} 100%);
+                                   color: white; padding: 2rem 1rem; text-align: center;">
+                        <div style="max-width: 1200px; margin: 0 auto;">
+                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                                <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2);
+                                           border-radius: ${isModern ? '12px' : '50%'}; display: flex;
+                                           align-items: center; justify-content: center; margin-right: 1rem;">
+                                    <span style="font-size: 24px; font-weight: bold;">EG</span>
+                                </div>
+                                <div>
+                                    <h1 style="margin: 0; font-size: 2.5rem; font-weight: 800;">Estetica Galatea</h1>
+                                    <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">40 anni di esperienza nella bellezza</p>
+                                </div>
+                            </div>
+                            ${formData.anniversary_celebration ?
+                                `<div style="background: rgba(255,255,255,0.1); padding: 1rem;
+                                            border-radius: 12px; margin-top: 1rem;">
+                                    <h3 style="margin: 0 0 0.5rem 0;">🎉 Celebriamo 40 Anni di Eccellenza!</h3>
+                                    <p style="margin: 0; font-size: 0.9rem;">Dal 1986 al vostro servizio</p>
+                                </div>` : ''
+                            }
+                        </div>
+                    </header>
+
+                    <!-- Navigation -->
+                    <nav style="background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                               padding: 1rem; position: sticky; top: 0; z-index: 100;">
+                        <div style="max-width: 1200px; margin: 0 auto; display: flex;
+                                   justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                            <a href="#" style="color: ${colors.primary}; text-decoration: none;
+                                             font-weight: 600; padding: 0.5rem 1rem;
+                                             border-radius: 8px; transition: all 0.3s;">Home</a>
+                            <a href="#" style="color: #666; text-decoration: none; font-weight: 600;
+                                             padding: 0.5rem 1rem;">Trattamenti</a>
+                            <a href="#" style="color: #666; text-decoration: none; font-weight: 600;
+                                             padding: 0.5rem 1rem;">Team</a>
+                            <a href="#" style="color: #666; text-decoration: none; font-weight: 600;
+                                             padding: 0.5rem 1rem;">Prenota Online</a>
+                            <a href="#" style="color: #666; text-decoration: none; font-weight: 600;
+                                             padding: 0.5rem 1rem;">Contatti</a>
+                        </div>
+                    </nav>
+
+                    <!-- Hero Section -->
+                    <section style="background: ${colors.secondary}; padding: 4rem 1rem; text-align: center;">
+                        <div style="max-width: 1200px; margin: 0 auto;">
+                            <h2 style="font-size: 3rem; font-weight: 700; color: ${colors.accent};
+                                      margin-bottom: 1rem;">Bellezza Naturale dal 1986</h2>
+                            <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                                Scopri l'esperienza di 4 professioniste specializzate in trattamenti estetici
+                                con prodotti naturali al 100%. La tua bellezza è la nostra passione.
+                            </p>
+                            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                                <button style="background: ${colors.primary}; color: white;
+                                              padding: 1rem 2rem; border: none; border-radius: 12px;
+                                              font-weight: 600; font-size: 1.1rem; cursor: pointer;">
+                                    Prenota Ora
+                                </button>
+                                <button style="background: transparent; color: ${colors.primary};
+                                              padding: 1rem 2rem; border: 2px solid ${colors.primary};
+                                              border-radius: 12px; font-weight: 600; font-size: 1.1rem;">
+                                    Scopri i Trattamenti
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Services Section -->
+                    <section style="padding: 4rem 1rem;">
+                        <div style="max-width: 1200px; margin: 0 auto;">
+                            <h2 style="text-align: center; font-size: 2.5rem; font-weight: 700;
+                                      color: ${colors.accent}; margin-bottom: 3rem;">I Nostri Trattamenti</h2>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                                       gap: 2rem;">
+                                ${generateServiceCards(formData, colors)}
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Team Section -->
+                    <section style="background: ${colors.secondary}; padding: 4rem 1rem;">
+                        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+                            <h2 style="font-size: 2.5rem; font-weight: 700; color: ${colors.accent};
+                                      margin-bottom: 1rem;">Il Nostro Team</h2>
+                            <p style="font-size: 1.1rem; color: #666; margin-bottom: 3rem;">
+                                4 professioniste esperte al vostro servizio, con anni di formazione continua
+                            </p>
+                            <div style="background: white; padding: 2rem; border-radius: 20px;
+                                       box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                                <h3 style="color: ${colors.primary}; font-size: 1.5rem; margin-bottom: 1rem;">
+                                    Silvana Poma - Fondatrice
+                                </h3>
+                                <p style="color: #666;">
+                                    40 anni di esperienza, specializzata in trattamenti naturali e benessere.
+                                    Una passione diventata eccellenza.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- CTA Section -->
+                    <section style="background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.accent} 100%);
+                                   color: white; padding: 4rem 1rem; text-align: center;">
+                        <div style="max-width: 800px; margin: 0 auto;">
+                            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">
+                                Prenota il Tuo Trattamento
+                            </h2>
+                            <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.9;">
+                                Sistema di prenotazione online 24/7. Scegli data, ora e trattamento preferito.
+                            </p>
+                            <button style="background: white; color: ${colors.primary};
+                                          padding: 1.2rem 3rem; border: none; border-radius: 12px;
+                                          font-weight: 600; font-size: 1.2rem; cursor: pointer;">
+                                Prenota Subito
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- Footer -->
+                    <footer style="background: #333; color: white; padding: 3rem 1rem 1rem;">
+                        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Estetica Galatea</h3>
+                            <p style="margin-bottom: 1rem;">Via Cantonale 171, 6527 Lodrino, Switzerland</p>
+                            <p style="margin-bottom: 2rem;">Tel: 091 863 32 05 | Email: esteticagalatea@bluewin.ch</p>
+                            <div style="border-top: 1px solid #666; padding-top: 1rem; margin-top: 2rem;">
+                                <p style="font-size: 0.9rem; opacity: 0.7;">
+                                    © 2026 Estetica Galatea - 40 anni di eccellenza | Design by Riccio Digital
+                                </p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            `;
+        }
+
+        function generateServiceCards(formData, colors) {
+            const services = [
+                { name: 'Trattamenti Viso', desc: 'Pulizie profonde e trattamenti anti-età', icon: '✨' },
+                { name: 'Massaggi Rilassanti', desc: 'Bamboo, Stone e Ayurvedico', icon: '💆‍♀️' },
+                { name: 'Manicure & Pedicure', desc: 'Cura delle mani e dei piedi', icon: '💅' },
+                { name: 'Tecnologie Avanzate', desc: 'Radiofrequenza e Lipolaser', icon: '🔬' }
+            ];
+
+            return services.map(service => `
+                <div style="background: white; padding: 2rem; border-radius: 16px;
+                           box-shadow: 0 8px 24px rgba(0,0,0,0.1); text-align: center;
+                           transition: transform 0.3s; cursor: pointer;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">${service.icon}</div>
+                    <h3 style="color: ${colors.accent}; font-size: 1.3rem; font-weight: 600;
+                              margin-bottom: 0.5rem;">${service.name}</h3>
+                    <p style="color: #666; line-height: 1.6;">${service.desc}</p>
+                    <button style="background: ${colors.primary}; color: white;
+                                  padding: 0.8rem 1.5rem; border: none; border-radius: 8px;
+                                  font-weight: 600; margin-top: 1rem;">
+                        Scopri di più
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Funzione per raccogliere tutti i dati del form
+        function collectFormData() {
+            return {
+                // Informazioni base
+                fullName: document.getElementById('fullName').value,
+                businessName: document.getElementById('businessName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+
+                // Obiettivi
+                booking_system: document.getElementById('booking_system')?.checked,
+                brand_renewal: document.getElementById('brand_renewal')?.checked,
+                social_management: document.getElementById('social_management')?.checked,
+                anniversary_celebration: document.getElementById('anniversary_celebration')?.checked,
+                vision: document.getElementById('vision').value,
+                timeline: document.querySelector('input[name="timeline"]:checked')?.value,
+
+                // Brand e stile
+                galatea_meaning: document.getElementById('galatea_meaning').value,
+                selectedColors: getSelectedColors(),
+                brandStyle: document.querySelector('input[name="brand_style"]:checked')?.value,
+                current_logo_likes: document.getElementById('current_logo_likes').value,
+                current_logo_dislikes: document.getElementById('current_logo_dislikes').value,
+
+                // Budget
+                total_budget: document.querySelector('input[name="total_budget"]:checked')?.value,
+                monthly_budget: document.querySelector('input[name="monthly_budget"]:checked')?.value,
+                priority_website: document.getElementById('priority_website').value,
+                priority_branding: document.getElementById('priority_branding').value,
+                priority_social: document.getElementById('priority_social').value,
+                priority_anniversary: document.getElementById('priority_anniversary').value,
+                // Social
+            posting_frequency: document.querySelector('input[name="posting_frequency"]:checked')?.value,
+
+            // Note
+            reference_sites: document.getElementById('reference_sites').value,
+            avoid_features: document.getElementById('avoid_features').value,
+            social_expectations: document.getElementById('social_expectations').value,
+            anniversary_ideas: document.getElementById('anniversary_ideas').value,
+            additional_requests: document.getElementById('additional_requests').value,
+
+            // File uploads
+            uploadedFiles: uploadedFiles,
+
+            // Timestamp
+            timestamp: new Date().toISOString(),
+            formattedDate: document.getElementById('currentDate').textContent
+        };
+    }
+
+    // Funzione per generare PDF professionale
+    function generateProfessionalPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        const formData = collectFormData();
+
+        // Configurazione PDF
+        let yPosition = 20;
+        const pageHeight = doc.internal.pageSize.height;
+        const margin = 20;
+        const lineHeight = 6;
+
+        function checkPageBreak() {
+            if (yPosition > pageHeight - 30) {
+                doc.addPage();
+                yPosition = 20;
+            }
+        }
+
+        function addHeader() {
+            doc.setFillColor(24, 119, 242);
+            doc.rect(0, 0, 210, 40, 'F');
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(24);
+            doc.setFont("helvetica", "bold");
+            doc.text("RICCIO DIGITAL", margin, 20);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+            doc.text("Digital Marketing & Web Solutions", margin, 28);
+            doc.text("dcreativo.ch", margin, 35);
+
+            yPosition = 50;
+        }
+
+        function addTitle(text, size = 16) {
+            checkPageBreak();
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(size);
+            doc.setFont("helvetica", "bold");
+            doc.text(text, margin, yPosition);
+            yPosition += lineHeight + 5;
+        }
+
+        function addSubtitle(text, size = 12) {
+            checkPageBreak();
+            doc.setTextColor(52, 168, 83);
+            doc.setFontSize(size);
+            doc.setFont("helvetica", "bold");
+            doc.text(text, margin, yPosition);
+            yPosition += lineHeight + 2;
+        }
+
+        function addText(text, indent = 0) {
+            if (!text || text.trim() === '') return;
+            checkPageBreak();
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            const splitText = doc.splitTextToSize(text, 170 - indent);
+            doc.text(splitText, margin + indent, yPosition);
+            yPosition += splitText.length * lineHeight;
+        }
+
+        function addBox(title, content, color = [240, 240, 240]) {
+            if (!content || content.trim() === '') return;
+            checkPageBreak();
+            const boxHeight = 20;
+            doc.setFillColor(color[0], color[1], color[2]);
+            doc.rect(margin, yPosition - 5, 170, boxHeight, 'F');
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "bold");
+            doc.text(title, margin + 5, yPosition + 2);
+            doc.setFont("helvetica", "normal");
+            const splitContent = doc.splitTextToSize(content, 160);
+            doc.text(splitContent, margin + 5, yPosition + 8);
+            yPosition += boxHeight + 5;
+        }
+
+        // Genera PDF
+        addHeader();
+
+        // Titolo principale
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(20);
+        doc.setFont("helvetica", "bold");
+        doc.text("QUESTIONARIO PROGETTO DIGITALE", margin, yPosition);
+        yPosition += 10;
+
+        doc.setFontSize(16);
+        doc.setTextColor(126, 34, 206);
+        doc.text("ESTETICA GALATEA - 40 ANNI DI ECCELLENZA", margin, yPosition);
+        yPosition += 15;
+
+        // Info cliente
+        addTitle("INFORMAZIONI CLIENTE");
+        addText(`Cliente: ${formData.fullName}`);
+        addText(`Attività: ${formData.businessName}`);
+        addText(`Email: ${formData.email}`);
+        addText(`Telefono: ${formData.phone}`);
+        addText(`Indirizzo: ${formData.address}`);
+        addText(`Data compilazione: ${formData.formattedDate}`);
+        yPosition += 8;
+
+        // Milestone
+        addBox("MILESTONE IMPORTANTE", "39 anni di esperienza (1986-2025) - Prossimo traguardo: 40 anni nel 2026!", [255, 248, 220]);
+
+        // Obiettivi del progetto
+        addTitle("OBIETTIVI DEL PROGETTO");
+        const priorities = [];
+        if (formData.booking_system) priorities.push("Sistema prenotazioni online");
+        if (formData.brand_renewal) priorities.push("Rinnovamento identità visiva");
+        if (formData.social_management) priorities.push("Gestione social media");
+        if (formData.anniversary_celebration) priorities.push("Celebrazione 40° anniversario");
+
+        if (priorities.length > 0) {
+            addSubtitle("Priorità principali:");
+            priorities.forEach(priority => addText(`• ${priority}`, 5));
+        }
+
+        if (formData.vision) {
+            addBox("VISIONE DEL PROGETTO", formData.vision, [232, 245, 233]);
+        }
+
+        if (formData.timeline) {
+            addText(`Timeline preferita: ${formData.timeline}`);
+        }
+        yPosition += 8;
+
+        // Brand e identità visiva
+        addTitle("IDENTITÀ VISIVA E BRAND");
+
+        if (formData.galatea_meaning) {
+            addBox("SIGNIFICATO DI GALATEA", formData.galatea_meaning, [248, 231, 249]);
+        }
+
+        if (formData.brandStyle) {
+            addText(`Stile desiderato: ${formData.brandStyle}`);
+        }
+
+        if (formData.current_logo_likes) {
+            addSubtitle("Aspetti positivi logo attuale:");
+            addText(formData.current_logo_likes, 5);
+        }
+
+        if (formData.current_logo_dislikes) {
+            addSubtitle("Da migliorare nel logo:");
+            addText(formData.current_logo_dislikes, 5);
+        }
+        yPosition += 8;
+
+        // Budget e investimento
+        addTitle("BUDGET E INVESTIMENTO");
+
+        if (formData.total_budget) {
+            addText(`Budget totale progetto: ${formData.total_budget}`);
+        }
+
+        if (formData.monthly_budget) {
+            addText(`Budget mensile gestione: ${formData.monthly_budget}`);
+        }
+
+        addSubtitle("Priorità di investimento (scala 1-10):");
+        addText(`• Sito web e prenotazioni: ${formData.priority_website}/10`, 5);
+        addText(`• Brand e identità visiva: ${formData.priority_branding}/10`, 5);
+        addText(`• Social media: ${formData.priority_social}/10`, 5);
+        addText(`• Campagna 40° anniversario: ${formData.priority_anniversary}/10`, 5);
+        yPosition += 8;
+
+        // Social media strategy
+        addTitle("STRATEGIA SOCIAL MEDIA");
+
+        if (formData.posting_frequency) {
+            addText(`Frequenza pubblicazione: ${formData.posting_frequency}`);
+        }
+
+        if (formData.social_expectations) {
+            addBox("ASPETTATIVE GESTIONE SOCIAL", formData.social_expectations, [227, 242, 253]);
+        }
+        yPosition += 8;
+
+        // Celebrazione 40° anniversario
+        if (formData.anniversary_ideas) {
+            addTitle("CELEBRAZIONE 40° ANNIVERSARIO");
+            addBox("IDEE SPECIALI PER IL 2026", formData.anniversary_ideas, [255, 237, 213]);
+        }
+
+        // Note e richieste speciali
+        addTitle("NOTE E RICHIESTE SPECIALI");
+
+        if (formData.reference_sites) {
+            addSubtitle("Siti di riferimento:");
+            addText(formData.reference_sites, 5);
+        }
+
+        if (formData.avoid_features) {
+            addSubtitle("Da evitare assolutamente:");
+            addText(formData.avoid_features, 5);
+        }
+
+        if (formData.additional_requests) {
+            addBox("RICHIESTE AGGIUNTIVE", formData.additional_requests, [240, 248, 255]);
+        }
+
+        // File allegati
+        addTitle("MATERIALI ALLEGATI");
+        const totalFiles = uploadedFiles.logo.length + uploadedFiles.photos.length + uploadedFiles.references.length;
+        addText(`Totale file caricati: ${totalFiles}`);
+        addText(`• Logo attuale: ${uploadedFiles.logo.length} file`);
+        addText(`• Foto del centro: ${uploadedFiles.photos.length} file`);
+        addText(`• Riferimenti di stile: ${uploadedFiles.references.length} file`);
+
+        // Footer
+        checkPageBreak();
+        yPosition = pageHeight - 30;
+        doc.setFillColor(50, 50, 50);
+        doc.rect(0, yPosition - 5, 210, 25, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(8);
+        doc.text("Questionario generato da Riccio Digital - dcreativo.ch", margin, yPosition + 5);
+        doc.text(`Data: ${formData.formattedDate} | Progetto: Estetica Galatea 40° Anniversario`, margin, yPosition + 12);
+
+        // Salva PDF
+        const fileName = `Riccio_Digital_Questionario_Estetica_Galatea_${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.save(fileName);
+
+        // Mostra messaggio di successo
+        showNotification("PDF generato con successo!", "success");
+    }
+
+    // Funzione per salvare i dati del progetto
+    function saveProjectData() {
+        const formData = collectFormData();
+
+        // Crea file JSON
+        const dataStr = JSON.stringify(formData, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        const exportFileDefaultName = `Riccio_Digital_Progetto_Estetica_Galatea_${new Date().toISOString().split('T')[0]}.json`;
+
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+
+        // Salva anche in localStorage come backup
+        localStorage.setItem('riccio_digital_galatea_project', JSON.stringify(formData));
+
+        showNotification("Progetto salvato con successo!", "success");
+    }
+
+    // Funzione per mostrare notifiche
+    function showNotification(message, type = "info") {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-20 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transform translate-x-full transition-transform duration-300`;
+
+        const colors = {
+            success: 'bg-green-500 text-white',
+            error: 'bg-red-500 text-white',
+            info: 'bg-blue-500 text-white',
+            warning: 'bg-yellow-500 text-black'
+        };
+
+        notification.className += ' ' + colors[type];
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'}-circle mr-2"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Mostra notifica
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+
+        // Nascondi dopo 3 secondi
+        setTimeout(() => {
+            notification.style.transform = 'translateX(full)';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+
+    // Auto-save dei dati ogni 2 minuti
+    setInterval(() => {
+        const formData = collectFormData();
+        localStorage.setItem('riccio_digital_autosave', JSON.stringify(formData));
+    }, 120000);
+
+    // Carica dati auto-salvati all'avvio
+    window.addEventListener('load', () => {
+        const autosaved = localStorage.getItem('riccio_digital_autosave');
+        if (autosaved) {
+            try {
+                const data = JSON.parse(autosaved);
+                const lastSave = new Date(data.timestamp);
+                const now = new Date();
+                const hoursSinceLastSave = (now - lastSave) / (1000 * 60 * 60);
+
+                if (hoursSinceLastSave < 24) {
+                    const shouldLoad = confirm(`Trovati dati salvati automaticamente dal ${lastSave.toLocaleString('it-IT')}. Vuoi caricarli?`);
+                    if (shouldLoad) {
+                        populateFormData(data);
+                        showNotification("Dati auto-salvati caricati!", "info");
+                    }
+                }
+            } catch (error) {
+                console.error('Errore nel caricamento dati auto-salvati:', error);
+            }
+        }
+    });
+
+    // Funzione per popolare il form con dati salvati
+    function populateFormData(data) {
+        // Campi di testo base
+        if (data.fullName) document.getElementById('fullName').value = data.fullName;
+        if (data.businessName) document.getElementById('businessName').value = data.businessName;
+        if (data.email) document.getElementById('email').value = data.email;
+        if (data.phone) document.getElementById('phone').value = data.phone;
+        if (data.address) document.getElementById('address').value = data.address;
+
+        // Textarea
+        if (data.vision) document.getElementById('vision').value = data.vision;
+        if (data.galatea_meaning) document.getElementById('galatea_meaning').value = data.galatea_meaning;
+        if (data.current_logo_likes) document.getElementById('current_logo_likes').value = data.current_logo_likes;
+        if (data.current_logo_dislikes) document.getElementById('current_logo_dislikes').value = data.current_logo_dislikes;
+        if (data.reference_sites) document.getElementById('reference_sites').value = data.reference_sites;
+        if (data.avoid_features) document.getElementById('avoid_features').value = data.avoid_features;
+        if (data.social_expectations) document.getElementById('social_expectations').value = data.social_expectations;
+        if (data.anniversary_ideas) document.getElementById('anniversary_ideas').value = data.anniversary_ideas;
+        if (data.additional_requests) document.getElementById('additional_requests').value = data.additional_requests;
+
+        // Checkbox
+        if (data.booking_system) document.getElementById('booking_system').checked = data.booking_system;
+        if (data.brand_renewal) document.getElementById('brand_renewal').checked = data.brand_renewal;
+        if (data.social_management) document.getElementById('social_management').checked = data.social_management;
+        if (data.anniversary_celebration) document.getElementById('anniversary_celebration').checked = data.anniversary_celebration;
+
+        // Radio buttons
+        if (data.timeline) {
+            const timelineRadio = document.querySelector(`input[name="timeline"][value="${data.timeline}"]`);
+            if (timelineRadio) timelineRadio.checked = true;
+        }
+
+        if (data.brandStyle) {
+            const styleRadio = document.querySelector(`input[name="brand_style"][value="${data.brandStyle}"]`);
+            if (styleRadio) styleRadio.checked = true;
+        }
+
+        if (data.total_budget) {
+            const budgetRadio = document.querySelector(`input[name="total_budget"][value="${data.total_budget}"]`);
+            if (budgetRadio) budgetRadio.checked = true;
+        }
+
+        if (data.monthly_budget) {
+            const monthlyRadio = document.querySelector(`input[name="monthly_budget"][value="${data.monthly_budget}"]`);
+            if (monthlyRadio) monthlyRadio.checked = true;
+        }
+
+        if (data.posting_frequency) {
+            const freqRadio = document.querySelector(`input[name="posting_frequency"][value="${data.posting_frequency}"]`);
+            if (freqRadio) freqRadio.checked = true;
+        }
+
+        // Sliders
+        if (data.priority_website) document.getElementById('priority_website').value = data.priority_website;
+        if (data.priority_branding) document.getElementById('priority_branding').value = data.priority_branding;
+        if (data.priority_social) document.getElementById('priority_social').value = data.priority_social;
+        if (data.priority_anniversary) document.getElementById('priority_anniversary').value = data.priority_anniversary;
+
+        // Aggiorna valori slider
+        updateSliderValues();
+        updateProgress();
+    }
+
+    // Previeni la perdita di dati
+    window.addEventListener('beforeunload', (e) => {
+        const formData = collectFormData();
+        localStorage.setItem('riccio_digital_emergency_save', JSON.stringify(formData));
+    });
+
+    // Gestione responsive per mobile
+    function handleMobileOptimization() {
+        const isMobile = window.innerWidth < 768;
+
+        if (isMobile) {
+            // Ottimizza per mobile
+            document.querySelectorAll('.section-card').forEach(card => {
+                card.style.padding = '1.5rem';
+            });
+
+            document.querySelectorAll('.grid').forEach(grid => {
+                grid.style.gridTemplateColumns = '1fr';
+            });
+        }
+    }
+
+    window.addEventListener('resize', handleMobileOptimization);
+    handleMobileOptimization();
+
+    // Tracking del tempo di compilazione
+    const startTime = new Date();
+
+    function trackCompletionTime() {
+        const endTime = new Date();
+        const timeSpent = Math.round((endTime - startTime) / 1000 / 60); // minuti
+
+        const formData = collectFormData();
+        formData.completionTimeMinutes = timeSpent;
+
+        console.log(`Tempo di compilazione: ${timeSpent} minuti`);
+        return timeSpent;
+    }
+
+    // Aggiungi tracking al salvataggio
+    const originalSaveFunction = saveProjectData;
+    saveProjectData = function() {
+        trackCompletionTime();
+        originalSaveFunction();
+    };
+
+    const originalPDFFunction = generateProfessionalPDF;
+    generateProfessionalPDF = function() {
+        trackCompletionTime();
+        originalPDFFunction();
+    };
+
+</script>
+</body>
+</html>

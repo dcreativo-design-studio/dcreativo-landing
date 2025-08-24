@@ -22,7 +22,9 @@
     { "source": "/centrosinapsi1", "destination": "/centrosinapsi1.html" },
     { "source": "/centrosinapsi", "destination": "/centrosinapsi.html" },
    { "source": "/f4dezone",
-      "destination": "/f4dezone.html"}
+      "destination": "/f4dezone.html"},
+    { "source": "/galatea",
+      "destination": "/galatea.html"}
 
   ],
   "headers": [
