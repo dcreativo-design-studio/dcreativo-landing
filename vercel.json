@@ -24,7 +24,11 @@
    { "source": "/f4dezone",
       "destination": "/f4dezone.html"},
     { "source": "/galatea",
-      "destination": "/galatea.html"}
+      "destination": "/galatea.html"},
+    { "source": "/acconto",
+      "destination": "/acconto.html"}
+
+
 
   ],
   "headers": [
