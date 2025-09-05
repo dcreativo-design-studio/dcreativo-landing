@@ -192,8 +192,8 @@ const Contact = () => {
             </h2>
           </div>
           <p className="text-dark-600 dark:text-light-400 text-lg">
-            Hai un'idea per un progetto o vuoi semplicemente saperne di più sui miei servizi?
-            Contattami e discutiamo di come posso aiutarti a realizzare la tua visione.
+            Hai un'idea per un progetto o vuoi semplicemente saperne di più sui nostri servizi?
+            Contattaci e discutiamo di come possiamo aiutarti a realizzare la tua visione.
           </p>
         </motion.div>
 
@@ -265,7 +265,7 @@ const Contact = () => {
               </div>
 
               <div className="mt-12">
-                <h4 className="font-bold mb-4">Seguimi</h4>
+                <h4 className="font-bold mb-4">Seguici</h4>
                 <div className="flex space-x-4">
                   <a
                     href="https://github.com/dcreativo-design-studio"
@@ -339,7 +339,7 @@ const Contact = () => {
             className="lg:col-span-3"
           >
             <div className="bg-white dark:bg-dark-700 rounded-xl shadow-lg p-8 border border-light-300 dark:border-dark-500">
-              <h3 className="text-2xl font-bold mb-6">Inviami un messaggio</h3>
+              <h3 className="text-2xl font-bold mb-6">Inviaci un messaggio</h3>
 
               <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

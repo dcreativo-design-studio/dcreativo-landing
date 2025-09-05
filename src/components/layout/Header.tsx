@@ -14,11 +14,11 @@ const Header = () => {
 
   // Navigation items
   const navItems = [
-    { label: 'Chi Sono', href: '#about' },
-    { label: 'Competenze', href: '#skills' },
+    { label: 'Chi Siamo', href: '#about' },
+    { label: 'Demo Barbershop', href: '#barbershop-showcase' },
+    { label: 'Demo Gestionale', href: '#family-center-showcase' },
+    { label: 'Calcolatore ROI', href: '#roi-calculator' },
     { label: 'Processo', href: '#process' },
-    { label: 'Progetti', href: '#projects' },
-    { label: 'Automazioni', href: '#automation' },
     { label: 'Contatti', href: '#contact' },
   ];
 
@@ -54,14 +54,14 @@ const Header = () => {
         <Link href="/" className="flex items-center">
           <div className="relative h-10 w-10 mr-3">
             <Image
-              src="/logo/dcreativo-logo.svg"
+              src="/logo/logo.png"
               alt="DCreativo Logo"
               fill
               priority
               className="object-contain"
             />
           </div>
-          <span className="text-xl font-display font-bold gradient-text">DCreativo</span>
+          <span className="text-xl font-display font-bold gradient-text">RICCIO DIGITAL</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -90,7 +90,7 @@ const Header = () => {
             href="#contact"
             className="ml-4 btn-primary"
           >
-            Parliamo del tuo progetto
+            Richiedi Demo Live
           </Link>
         </nav>
 
@@ -141,7 +141,7 @@ const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-3 mt-2 btn-primary text-center"
               >
-                Parliamo del tuo progetto
+                Richiedi Demo Live
               </Link>
             </nav>
           </motion.div>

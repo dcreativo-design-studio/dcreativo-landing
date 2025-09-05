@@ -26,6 +26,13 @@
 
   /* Scroll Behavior */
   scroll-behavior: smooth;
+  
+  /* Animation performance */
+  --animation-duration-fast: 0.3s;
+  --animation-duration-normal: 0.6s;
+  --animation-duration-slow: 1s;
+  --animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --animation-easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .dark {
@@ -187,5 +194,83 @@
     height: 100%;
     background: linear-gradient(to bottom, transparent 0%, theme('colors.dark.800') 100%);
     opacity: 0.7;
+  }
+
+  /* Video Animation Support */
+  .video-container {
+    @apply relative overflow-hidden rounded-2xl;
+  }
+
+  .video-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent;
+  }
+
+  .play-button {
+    @apply bg-white/20 backdrop-blur-sm rounded-full transition-all duration-300 hover:bg-white/30 hover:scale-110;
+  }
+
+  /* Loading Animation Support */
+  .loading-orb {
+    @apply absolute rounded-full blur-3xl;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -20px) scale(1.1); }
+    50% { transform: translate(-20px, 20px) scale(0.9); }
+    75% { transform: translate(10px, -30px) scale(1.05); }
+  }
+
+  /* Smooth transitions for all interactive elements */
+  .interactive-element {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .interactive-element:hover {
+    @apply transform scale-105;
+  }
+
+  /* Video transform animations */
+  .video-flip-enter {
+    animation: videoFlipIn 0.8s ease-out forwards;
+  }
+
+  @keyframes videoFlipIn {
+    from {
+      opacity: 0;
+      transform: rotateY(-90deg);
+    }
+    to {
+      opacity: 1;
+      transform: rotateY(0deg);
+    }
+  }
+
+  .video-3d-enter {
+    animation: video3DIn 1s ease-out forwards;
+  }
+
+  @keyframes video3DIn {
+    from {
+      opacity: 0;
+      transform: rotateX(-90deg) scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: rotateX(0deg) scale(1);
+    }
+  }
+
+  /* Prevent video controls from interfering with custom animations */
+  video::-webkit-media-controls-panel {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  /* Improve performance for animations */
+  .gpu-accelerated {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
 }

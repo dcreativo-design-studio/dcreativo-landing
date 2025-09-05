@@ -39,13 +39,13 @@ const Footer = () => {
             <Link href="/" className="flex items-center mb-4">
               <div className="relative h-12 w-12 mr-3">
                 <Image
-                  src="/logo/dcreativo-logo.svg"
+                  src="/logo/logo.png"
                   alt="DCreativo Logo"
                   fill
                   className="object-contain"
                 />
               </div>
-              <span className="text-2xl font-display font-bold gradient-text">DCreativo</span>
+              <span className="text-2xl font-display font-bold gradient-text">RICCIO DIGITAL</span>
             </Link>
             <p className="text-dark-600 dark:text-light-400 mb-4">
               Soluzioni web all'avanguardia con automazioni intelligenti per la tua attività.
@@ -93,26 +93,26 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#skills"
+                  href="#barbershop-showcase"
                   className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
-                  Competenze
+                  Demo Barbershop
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#process"
+                  href="#family-center-showcase"
                   className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
-                  Processo di Lavoro
+                  Demo Gestionale
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#projects"
+                  href="#roi-calculator"
                   className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
-                  Progetti
+                  Calcola il tuo ROI
                 </Link>
               </li>
             </ul>
@@ -124,34 +124,34 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="#skills"
+                  href="#barbershop-showcase"
                   className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
-                  Sviluppo Web
+                  App per Barbershop
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#automation"
+                  href="#family-center-showcase"
                   className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
-                  Sistemi Automatizzati
+                  Gestionale Multi-Servizi
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#automation"
+                  href="#process"
                   className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
-                  Gestione Prenotazioni
+                  Automazioni Digitali
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#skills"
+                  href="#roi-calculator"
                   className="text-dark-600 dark:text-light-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
-                  UI/UX Design
+                  Consulenza ROI
                 </Link>
               </li>
             </ul>
@@ -207,7 +207,7 @@ const Footer = () => {
         {/* Bottom footer with copyright and links */}
 <div className="border-t border-light-400 dark:border-dark-600 pt-6 flex flex-col md:flex-row justify-between items-center">
   <p className="text-sm text-dark-600 dark:text-light-400 mb-4 md:mb-0">
-    © {new Date().getFullYear()} DCreativo. Tutti i diritti riservati.
+    © {new Date().getFullYear()} RICCIO DIGITAL. Tutti i diritti riservati.
   </p>
   <div className="flex space-x-4 text-sm">
     <button
@@ -316,7 +316,7 @@ const PrivacyPolicyContent = () => {
       <section>
         <h3 className="text-xl font-bold mb-4">1. Introduzione</h3>
         <p className="mb-3">
-          Benvenuto nell'Informativa sulla Privacy di DCreativo. Il rispetto della tua privacy è di fondamentale importanza per noi.
+          Benvenuto nell'Informativa sulla Privacy di RICCIO DIGITAL. Il rispetto della tua privacy è di fondamentale importanza per noi.
           Questa informativa descrive quali dati personali raccogliamo, come li utilizziamo e le opzioni di cui disponi riguardo a tali dati.
         </p>
         <p>
@@ -427,24 +427,24 @@ const TermsOfServiceContent = () => {
       <section>
         <h3 className="text-xl font-bold mb-4">1. Accettazione dei Termini</h3>
         <p>
-          Utilizzando il sito web di DCreativo (dcreativo.ch) e i relativi servizi, l'utente accetta integralmente i presenti Termini di Servizio. Se non si accettano questi termini, si prega di non utilizzare il sito o i servizi offerti.
+          Utilizzando il sito web di RICCIO DIGITAL (dcreativo.ch) e i relativi servizi, l'utente accetta integralmente i presenti Termini di Servizio. Se non si accettano questi termini, si prega di non utilizzare il sito o i servizi offerti.
         </p>
       </section>
 
       <section>
         <h3 className="text-xl font-bold mb-4">2. Descrizione dei Servizi</h3>
         <p>
-          DCreativo offre servizi di sviluppo web, progettazione di applicazioni, automazione di processi digitali e consulenza tecnica. I dettagli specifici di ogni servizio saranno concordati direttamente con il cliente attraverso contratti o accordi separati.
+          RICCIO DIGITAL offre servizi di sviluppo web, progettazione di applicazioni, automazione di processi digitali e consulenza tecnica. I dettagli specifici di ogni servizio saranno concordati direttamente con il cliente attraverso contratti o accordi separati.
         </p>
       </section>
 
       <section>
         <h3 className="text-xl font-bold mb-4">3. Proprietà Intellettuale</h3>
         <p className="mb-3">
-          Tutti i contenuti presenti sul sito web di DCreativo, inclusi ma non limitati a testi, grafica, logo, immagini, audio, video, software e codice sorgente, sono di proprietà di DCreativo o dei rispettivi proprietari e sono protetti dalle leggi sul diritto d'autore.
+          Tutti i contenuti presenti sul sito web di RICCIO DIGITAL, inclusi ma non limitati a testi, grafica, logo, immagini, audio, video, software e codice sorgente, sono di proprietà di RICCIO DIGITAL o dei rispettivi proprietari e sono protetti dalle leggi sul diritto d'autore.
         </p>
         <p>
-          Il cliente mantiene la proprietà di tutti i contenuti che fornisce a DCreativo per l'esecuzione dei servizi. I diritti di proprietà intellettuale relativi ai prodotti finali saranno regolati dagli accordi specifici tra DCreativo e il cliente.
+          Il cliente mantiene la proprietà di tutti i contenuti che fornisce a RICCIO DIGITAL per l'esecuzione dei servizi. I diritti di proprietà intellettuale relativi ai prodotti finali saranno regolati dagli accordi specifici tra RICCIO DIGITAL e il cliente.
         </p>
       </section>
 
@@ -458,14 +458,14 @@ const TermsOfServiceContent = () => {
           <li>Non utilizzare il sito o i servizi per scopi illegali o non autorizzati</li>
           <li>Non tentare di accedere a aree riservate del sito senza autorizzazione</li>
           <li>Non interferire con il normale funzionamento del sito</li>
-          <li>Non violare i diritti di proprietà intellettuale di DCreativo o di terzi</li>
+          <li>Non violare i diritti di proprietà intellettuale di RICCIO DIGITAL o di terzi</li>
         </ul>
       </section>
 
       <section>
         <h3 className="text-xl font-bold mb-4">5. Limitazione di Responsabilità</h3>
         <p>
-          DCreativo si impegna a mantenere il sito web funzionante e sicuro, ma non può garantire che sia privo di errori o sempre disponibile. Il sito e i suoi contenuti sono forniti "così come sono" senza garanzie di alcun tipo, espresse o implicite.
+          RICCIO DIGITAL si impegna a mantenere il sito web funzionante e sicuro, ma non può garantire che sia privo di errori o sempre disponibile. Il sito e i suoi contenuti sono forniti "così come sono" senza garanzie di alcun tipo, espresse o implicite.
         </p>
       </section>
 
@@ -476,7 +476,7 @@ const TermsOfServiceContent = () => {
         </p>
         <ul className="list-disc pl-6 space-y-2">
           <li>I termini specifici, compresi tempi di consegna, pagamenti e specifiche tecniche, saranno concordati separatamente per ogni progetto</li>
-          <li>DCreativo si riserva il diritto di includere riferimenti ai progetti completati nel proprio portfolio, salvo diverso accordo con il cliente</li>
+          <li>RICCIO DIGITAL si riserva il diritto di includere riferimenti ai progetti completati nel proprio portfolio, salvo diverso accordo con il cliente</li>
           <li>Il cliente è responsabile della fornitura di contenuti, materiali e approvazioni nei tempi concordati</li>
         </ul>
       </section>
@@ -491,7 +491,7 @@ const TermsOfServiceContent = () => {
       <section>
         <h3 className="text-xl font-bold mb-4">8. Cessazione del Servizio</h3>
         <p>
-          DCreativo si riserva il diritto di sospendere o terminare l'accesso ai servizi in caso di violazione dei presenti termini. La cessazione dei servizi sarà regolata dagli accordi specifici con il cliente.
+          RICCIO DIGITAL si riserva il diritto di sospendere o terminare l'accesso ai servizi in caso di violazione dei presenti termini. La cessazione dei servizi sarà regolata dagli accordi specifici con il cliente.
         </p>
       </section>
 
@@ -505,7 +505,7 @@ const TermsOfServiceContent = () => {
       <section>
         <h3 className="text-xl font-bold mb-4">10. Modifiche ai Termini</h3>
         <p>
-          DCreativo si riserva il diritto di modificare questi Termini di Servizio in qualsiasi momento. Le modifiche saranno effettive dal momento della pubblicazione sul sito. L'uso continuato del sito dopo tali modifiche costituisce accettazione dei nuovi termini.
+          RICCIO DIGITAL si riserva il diritto di modificare questi Termini di Servizio in qualsiasi momento. Le modifiche saranno effettive dal momento della pubblicazione sul sito. L'uso continuato del sito dopo tali modifiche costituisce accettazione dei nuovi termini.
         </p>
       </section>
 
