@@ -221,7 +221,7 @@ const BarbershopShowcase = () => {
                       }
                     }}
                   >
-                    <source src="https://youtu.be/6X0FxjzQfjw" type="video/mp4" />
+                    <source src="/videos/barbershop-demo.mp4" type="video/mp4" />
                     Il tuo browser non supporta i video HTML5.
                   </video>
                 </motion.div>
