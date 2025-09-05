@@ -62,7 +62,7 @@ const About = () => {
     <span>Chi Siamo</span>
   </div>
   <h2 className="text-3xl md:text-4xl font-bold mb-6">
-    Trasformiamo la tua presenza digitale in <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500">
+    Trasformiamo la Tua Presenza Digitale in <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500">
       clienti reali ogni giorno
     </span>
   </h2>
