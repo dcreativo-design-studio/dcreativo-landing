@@ -155,88 +155,77 @@ const FamilyCenterShowcase = () => {
           </p>
 
           {/* Main Demo Video */}
+          /* Main Demo Video */
+<motion.div
+  initial={{ opacity: 0, scale: 0.95 }}
+  animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+  transition={{ duration: 0.8, delay: 0.2 }}
+  className="relative max-w-5xl mx-auto mb-12"
+>
+  <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border border-light-300 dark:border-dark-500">
+    {!isVideoPlaying ? (
+      <motion.div
+        onClick={() => {
+          setIsVideoPlaying(true);
+        }}
+        className="relative w-full h-full cursor-pointer group"
+      >
+        <Image
+          src="/images/family-center/main-showcase.jpg"
+          alt="Demo Sistema Gestionale Multi-Servizi"
+          fill
+          className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative max-w-5xl mx-auto mb-12"
+            whileHover={{ scale: 1.2, rotate: 5 }}
+            whileTap={{ scale: 0.9 }}
+            className="bg-white/20 backdrop-blur-sm rounded-full p-6 group-hover:bg-white/30 transition-all duration-300"
           >
-            <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border border-light-300 dark:border-dark-500">
-              {!isVideoPlaying ? (
-                <motion.div
-                  onClick={() => {
-                    setIsVideoPlaying(true);
-                    setTimeout(() => {
-                      if (videoRef.current) {
-                        videoRef.current.play();
-                      }
-                    }, 1000);
-                  }}
-                  className="relative w-full h-full cursor-pointer group"
-                >
-                  <Image
-                    src="/images/family-center/main-showcase.jpg"
-                    alt="Demo Sistema Gestionale Multi-Servizi"
-                    fill
-                    className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.div
-                      whileHover={{ scale: 1.2, rotate: 5 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="bg-white/20 backdrop-blur-sm rounded-full p-6 group-hover:bg-white/30 transition-all duration-300"
-                    >
-                      <FiPlayCircle className="w-16 h-16 text-white group-hover:text-primary-300 transition-colors" />
-                    </motion.div>
-                  </div>
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <div className="bg-black/80 backdrop-blur-sm rounded-xl p-4">
-                      <h3 className="font-bold mb-1 text-white">Sistema Completo Funzionante</h3>
-                      <p className="text-sm text-gray-300">Demo live del gestionale multi-servizi</p>
-                    </div>
-                  </div>
-
-                  {/* Floating Trust Badge */}
-                  <div className="absolute top-6 right-6 bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm animate-pulse">
-                    🚀 DEMO PRONTA
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8, rotateX: -90 }}
-                  animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-                  transition={{ duration: 1, ease: "easeOut" }}
-                  className="relative w-full h-full"
-                >
-                  <motion.div
-                    initial={{ clipPath: "circle(0% at 50% 50%)" }}
-                    animate={{ clipPath: "circle(100% at 50% 50%)" }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="w-full h-full"
-                  >
-                    <video
-                      ref={videoRef}
-                      width="100%"
-                      height="100%"
-                      controls
-                      autoPlay
-                      poster="/images/family-center/main-showcase.jpg"
-                      className="w-full h-full object-cover"
-                      onLoadedData={() => {
-                        if (videoRef.current) {
-                          videoRef.current.play();
-                        }
-                      }}
-                    >
-                      <source src="/videos/family-center-demo.mp4" type="video/mp4" />
-                      Il tuo browser non supporta i video HTML5.
-                    </video>
-                  </motion.div>
-                </motion.div>
-              )}
-            </div>
+            <FiPlayCircle className="w-16 h-16 text-white group-hover:text-primary-300 transition-colors" />
           </motion.div>
+        </div>
+        <div className="absolute bottom-6 left-6 right-6">
+          <div className="bg-black/80 backdrop-blur-sm rounded-xl p-4">
+            <h3 className="font-bold mb-1 text-white">Sistema Completo Funzionante</h3>
+            <p className="text-sm text-gray-300">Demo live del gestionale multi-servizi</p>
+          </div>
+        </div>
+
+        {/* Floating Trust Badge */}
+        <div className="absolute top-6 right-6 bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm animate-pulse">
+          🚀 DEMO PRONTA
+        </div>
+      </motion.div>
+    ) : (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8, rotateX: -90 }}
+        animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="relative w-full h-full"
+      >
+        <motion.div
+          initial={{ clipPath: "circle(0% at 50% 50%)" }}
+          animate={{ clipPath: "circle(100% at 50% 50%)" }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="w-full h-full"
+        >
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.youtube.com/embed/aJMcwdxAJXM?autoplay=1&rel=0&modestbranding=1"
+            title="Demo Sistema Gestionale Centro Famiglie"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+      </motion.div>
+    )}
+  </div>
+</motion.div>
         </motion.div>
 
         {/* Interactive Demo Section */}
