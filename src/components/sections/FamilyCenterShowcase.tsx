@@ -197,7 +197,7 @@ const FamilyCenterShowcase = () => {
         <div className="absolute top-6 right-6 bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm animate-pulse">
           🚀 DEMO PRONTA
         </div>
-      </motion.div>
+     </motion.div>
     ) : (
       <motion.div
         initial={{ opacity: 0, scale: 0.8, rotateX: -90 }}
@@ -214,7 +214,7 @@ const FamilyCenterShowcase = () => {
           <iframe
             width="100%"
             height="100%"
-            src="https://www.youtube.com/embed/aJMcwdxAJXM?autoplay=1&rel=0&modestbranding=1"
+            src="https://www.youtube.com/embed/x6Uj61KACJE?autoplay=1&rel=0&modestbranding=1"
             title="Demo Sistema Gestionale Centro Famiglie"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
