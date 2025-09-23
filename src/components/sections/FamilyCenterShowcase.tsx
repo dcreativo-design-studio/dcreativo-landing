@@ -381,7 +381,7 @@ const FamilyCenterShowcase = () => {
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                 <h4 className="font-bold mb-2">Supporto Completo</h4>
-                <p className="text-sm opacity-80">Formazione e assistenza inclusi</p>
+                <p className="text-sm opacity-80">Formazione e assistenza inclusi.</p>
               </div>
             </div>
 
