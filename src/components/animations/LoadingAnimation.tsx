@@ -36,7 +36,7 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
       {/* Background Animated Orbs */}
       <div className="absolute inset-0">
         <motion.div
-          animate={{ 
+          animate={{
             scale: [1, 1.2, 1],
             rotate: [0, 180, 360],
             opacity: [0.3, 0.6, 0.3]
@@ -45,7 +45,7 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
           className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl"
         />
         <motion.div
-          animate={{ 
+          animate={{
             scale: [1.2, 1, 1.2],
             rotate: [360, 180, 0],
             opacity: [0.4, 0.2, 0.4]
@@ -64,7 +64,7 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
           className="mb-8"
         >
           <motion.div
-            animate={{ 
+            animate={{
               rotateY: [0, 360],
               scale: [1, 1.1, 1]
             }}
@@ -86,7 +86,7 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
             className="text-4xl md:text-5xl font-bold text-white"
           >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-secondary-400 to-accent-400">
-              dCreativo
+              riccio digital
             </span>
           </motion.h1>
 
@@ -142,7 +142,7 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
                 delay: i * 0.2
               }}
               className={`absolute w-2 h-2 rounded-full ${
-                i % 3 === 0 ? 'bg-primary-400' : 
+                i % 3 === 0 ? 'bg-primary-400' :
                 i % 3 === 1 ? 'bg-secondary-400' : 'bg-accent-400'
               }`}
               style={{
