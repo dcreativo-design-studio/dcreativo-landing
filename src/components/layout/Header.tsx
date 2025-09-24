@@ -61,7 +61,7 @@ const Header = () => {
               className="object-contain"
             />
           </div>
-          <span className="text-xl font-display font-bold gradient-text">riccio digital</span>
+          <span className="text-xl font-display font-bold gradient-text">RICCIO DIGITAL</span>
         </Link>
 
         {/* Desktop Navigation */}

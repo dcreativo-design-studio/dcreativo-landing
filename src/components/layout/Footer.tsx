@@ -45,7 +45,7 @@ const Footer = () => {
                   className="object-contain"
                 />
               </div>
-              <span className="text-2xl font-display font-bold gradient-text">riccio digital</span>
+              <span className="text-2xl font-display font-bold gradient-text">RICCIO DIGTAL</span>
             </Link>
             <p className="text-dark-600 dark:text-light-400 mb-4">
               Soluzioni web all'avanguardia con automazioni intelligenti per la tua attività.
