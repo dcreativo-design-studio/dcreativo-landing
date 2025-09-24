@@ -86,7 +86,7 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
             className="text-4xl md:text-5xl font-bold text-white"
           >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-secondary-400 to-accent-400">
-              riccio digital
+              RICCIO DIGITAL
             </span>
           </motion.h1>
 
