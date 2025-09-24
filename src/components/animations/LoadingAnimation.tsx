@@ -154,6 +154,7 @@ const ScanEffect = () => {
   );
 };
 
+
 const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
   const [progress, setProgress] = useState(0);
   const [phase, setPhase] = useState<'init' | 'loading' | 'complete'>('init');
@@ -177,6 +178,7 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
     let currentTextIndex = 0;
     let currentCharIndex = 0;
     let isDeleting = false;
+    let timeout: NodeJS.Timeout;
 
     const typeWriter = () => {
       const currentText = texts[currentTextIndex];
@@ -190,16 +192,18 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
       }
 
       if (currentCharIndex === currentText.length && !isDeleting) {
-        setTimeout(() => { isDeleting = true; }, 1500);
+        timeout = setTimeout(() => { isDeleting = true; }, 1500);
       } else if (currentCharIndex === 0 && isDeleting) {
         isDeleting = false;
         currentTextIndex = (currentTextIndex + 1) % texts.length;
       }
+
+      timeout = setTimeout(typeWriter, isDeleting ? 50 : 100);
     };
 
-    const interval = setInterval(typeWriter, isDeleting ? 50 : 100);
-    return () => clearInterval(interval);
-  }, []);
+    typeWriter();
+    return () => clearTimeout(timeout);
+  }, [texts]);
 
   // Gestione del progresso di caricamento
   useEffect(() => {
@@ -245,7 +249,7 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
       <GeometricParticles />
 
       {/* Effetto di scansione */}
-      <ScanEffect progress={progress} />
+      <ScanEffect />
 
       {/* Orbs di sfondo migliorati */}
       <div className="absolute inset-0">
@@ -256,7 +260,10 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
             opacity: [0.2, 0.4, 0.2]
           }}
           transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-purple-500/30 to-transparent rounded-full blur-3xl"
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"
+          style={{
+            background: 'radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%)'
+          }}
         />
         <motion.div
           animate={{
@@ -265,7 +272,10 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
             opacity: [0.3, 0.6, 0.3]
           }}
           transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-          className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-radial from-cyan-500/30 to-transparent rounded-full blur-3xl"
+          className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-cyan-500/30 rounded-full blur-3xl"
+          style={{
+            background: 'radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, transparent 70%)'
+          }}
         />
       </div>
 
@@ -291,7 +301,7 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-              className="absolute -inset-6 rounded-full border-2 border-gradient-to-r from-purple-500/50 via-cyan-400/50 to-purple-500/50"
+              className="absolute -inset-6 rounded-full border-2 border-purple-500/50"
               style={{
                 background: 'conic-gradient(from 0deg, transparent, rgba(147, 51, 234, 0.5), transparent)',
               }}
